@@ -7,6 +7,10 @@ const familySchema = new Schema ({
     required: true
   },
   members: [ memberSchema ],
+  admins: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   questions: [{
     type: Schema.Types.ObjectId,
     ref: "Question"
