@@ -1,8 +1,17 @@
-const { nicknameSchema } = require('./schemas')
+const { memberSchema } = require('./schemas')
 const { Schema, model } = require('mongoose');
 
 const familySchema = new Schema ({
-  // TODO: Create Family Schema
+  familyName: {
+    type: String,
+    required: true
+  },
+  members: [ memberSchema ],
+  questions: [{
+    type: Schema.Types.ObjectId,
+    ref: "Question"
+  }],
+  lastQuestionAdded: { type: Date, default: Date.now }
 });
 
 const Family = model('Family', familySchema);

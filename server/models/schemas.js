@@ -1,6 +1,6 @@
 const { Schema } = require('mongoose');
 
-const nicknameSchema = new Schema({
+const memberSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User'
@@ -22,6 +22,7 @@ const answerSchema = new Schema({
   },
   amount: {
     type: Number,
+    //  TODO: Range is 0(general), 1(single claimable), 2(multiple claimable)
     default: 0
   },
   claimed: {
@@ -42,4 +43,4 @@ const claimedSchema = new Schema({
   answer: Number
 });
 
-module.exports = { nicknameSchema, answerSchema, claimedSchema };
+module.exports = { memberSchema, answerSchema, claimedSchema };
