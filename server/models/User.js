@@ -1,4 +1,4 @@
-// TODO: import answer and claimed schemas
+const { answerSchema, claimedSchema } = require('./schemas');
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 

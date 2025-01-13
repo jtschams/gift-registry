@@ -1,4 +1,4 @@
-// TODO: Import alias schema
+const { nicknameSchema } = require('./schemas')
 const { Schema, model } = require('mongoose');
 
 const familySchema = new Schema ({
