@@ -1,3 +1,5 @@
-// TODO: Import and Export models once they are implemented
+const Family = require('./Family');
+const User = require('./User');
+const Question = require('./Question');
 
-module.exports = {};
+module.exports = { Family, User, Question };
