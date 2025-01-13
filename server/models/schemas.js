@@ -36,7 +36,7 @@ const claimedSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref:'User'
   },
-  Question: {
+  question: {
     type: Schema.Types.ObjectId,
     ref: 'Question'
   },
