@@ -9,7 +9,6 @@ const memberSchema = new Schema({
     type: String,
     required: true,
     trim: true
-    // TODO: Set default as name?
   }
 });
 
@@ -22,7 +21,8 @@ const answerSchema = new Schema({
   },
   amount: {
     type: Number,
-    //  TODO: Range is 0(general), 1(single claimable), 2(multiple claimable)
+    min: 0,
+    max: 2,
     default: 0
   },
   claimed: {

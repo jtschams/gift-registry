@@ -1,9 +1,10 @@
+require('dotenv').config();
 const express = require ('express');
 const { ApolloServer } = require('@apollo/server');
-const { expressMiddlware } = require('@apollo/server/express4');
+const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
 
-// TODO: Import Auth when implemented
+const { authMiddleware } = require('./utils/auth');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 const PORT = process.env.PORT || 3001;
@@ -16,7 +17,9 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
-  app.use('/graphql', expressMiddlware(server)); //  TODO: add Auth Middleware when implemented
+  app.use('/graphql', expressMiddleware(server, {
+    context: authMiddleware
+  }));
 
   
   if (process.env.NODE_ENV === 'production') {

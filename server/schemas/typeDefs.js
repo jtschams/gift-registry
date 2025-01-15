@@ -5,28 +5,15 @@ type Member {
 }
 
 type Answer {
-  _id: Int!
   answerText: String
   amount: Int
   claimed: Boolean
 }
 
 type Claimed {
-  user: User
+  user: User!
   question: Question
-  answer: Int
-}
-
-type User {
-  _id: ID
-  name: String
-  birthday: String
-  likesSurprises: Boolean
-  email: String
-  groups: [Family]!
-  # // TODO: Answers?
-  answers: 
-  claims: [Claimed]!
+  answer: Answer!
 }
 
 type Question {
@@ -35,12 +22,48 @@ type Question {
   claimable: Boolean
 }
 
+type AnswerSet {
+  question: Question!
+  answers: [Answer]!
+}
+
+type User {
+  _id: ID
+  name: String
+  birthday: String
+  likesSurprises: Boolean
+  email: String!
+  groups: [Family]!
+  answers: [AnswerSet]!
+  claims: [Claimed]!
+}
+
 type Family {
   familyName: String!
   members: [Member]!
   questions: [Question]!
   lastQuestionAdded: String
 }
-`; // TODO: Confirm typeDefs
+
+type Auth {
+  token: ID!
+  user: User
+}
+
+type Query {
+  me: User
+  user(userId: ID!): User
+  family(familyName: String!): Family
+}
+
+type Mutation {
+  addUser(name: String!, birthday: String!, likesSurprises: Boolean, email: String!, familyName: String, nickname: String): Auth
+  login(email: String!, password: String!): Auth
+  addFamily(familyName: String!): Family
+  joinFamily(familyName: String!): User
+  addQuestion(question: String!, category: String!, claimable: Boolean!, familyName: String!): Question
+  answerQuestion(questionId: ID!, answer: String!, amount: Int!): AnswerSet
+}
+`;
 
 module.exports = typeDefs;

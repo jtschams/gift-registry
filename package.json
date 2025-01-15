@@ -17,12 +17,10 @@
   ],
   "author": "jtschams",
   "license": "ISC",
-  "devDependencies": {
-    "concurrently": "^8.2.0"
-  },
   "dependencies": {
-    "bootstrap": "^5.3.3",
-    "react-bootstrap": "^2.10.2",
-    "express": "^4.19.2"
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
   }
 }
