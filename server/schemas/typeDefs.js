@@ -40,6 +40,7 @@ type User {
 
 type Family {
   familyName: String!
+  admins: [User]
   members: [Member]!
   questions: [Question]!
   lastQuestionAdded: String
@@ -57,10 +58,10 @@ type Query {
 }
 
 type Mutation {
-  addUser(name: String!, birthday: String!, likesSurprises: Boolean, email: String!, familyName: String, nickname: String): Auth
+  addUser(name: String!, birthday: String!, likesSurprises: Boolean, email: String!, password: String!): Auth
   login(email: String!, password: String!): Auth
-  addFamily(familyName: String!): Family
-  joinFamily(familyName: String!): User
+  addFamily(familyName: String!, nickname: String): Family
+  joinFamily(familyName: String!, nickname: String): User
   addQuestion(question: String!, category: String!, claimable: Boolean!, familyName: String!): Question
   answerQuestion(questionId: ID!, answer: String!, amount: Int!): AnswerSet
 }
