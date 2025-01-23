@@ -14,6 +14,27 @@ const resolvers = {
 
     family: async (parent, { familyName }) => {
       return await Family.findOne({ familyName }).populate({ path: 'members', populate: { path: 'user', populate: 'groups' } }).populate('questions').populate('admins');
+    },
+
+    // TODO: Add queries
+    relatedUsers: async(parent, args, context) => {
+
+    },
+
+    myQuestions: async (parent, args, context) => {
+
+    },
+
+    myAnswers: async (parent, args, context) => {
+
+    },
+    
+    userAnswers: async (parent, { userId }) => {
+
+    },
+
+    myClaims: async (parent, args, context) => {
+
     }
   },
 
@@ -76,12 +97,12 @@ const resolvers = {
         // Tracks changes and prevents duplicates
         const changes = { user: false, family: false};
         if (!user.groups.some((fam) => fam.familyName === familyName)) {
-          user.groups = [ ...user.groups, family ];
+          user.groups.push(family);
           await user.save();
           changes.user = true;
         }
         if (!family.members.some((mem) => mem.user.name === user.name)) {
-          family.members = [ ...family.members, { user, nickname } ];
+          family.members.push({ user, nickname });
           await family.save();
           changes.family = true;
         }

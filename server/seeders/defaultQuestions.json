@@ -1,0 +1,67 @@
+[
+  {
+    "question": "What are your favorite colors?",
+    "category": "sizes",
+    "claimable": false
+  },
+  {
+    "question": "What colors do you NOT like?",
+    "category": "negative",
+    "claimable": false
+  },
+  {
+    "question": "What snacks would you like to receive?",
+    "category": "general",
+    "claimable": false
+  },
+  {
+    "question": "What candies would you like to receive?",
+    "category": "general",
+    "claimable": false
+  },
+  {
+    "question": "What restaurants would you like gift cards for?",
+    "category": "general",
+    "claimable": false
+  },
+  {
+    "question": "What are some of your hobbies or pastimes?",
+    "category": "general",
+    "claimable": false
+  },
+  {
+    "question": "What are your favorite authors or genres of books?",
+    "category": "general",
+    "claimable": false
+  },
+  {
+    "question": "What movies or shows would you like to own?",
+    "category": "specific",
+    "claimable": true
+  },
+  {
+    "question": "What is your shirt size?",
+    "category": "sizes",
+    "claimable": false
+  },
+  {
+    "question": "What is your pants size?",
+    "category": "sizes",
+    "claimable": false
+  },
+  {
+    "question": "What specific items would you like?",
+    "category": "specific",
+    "claimable": true
+  },
+  {
+    "question": "What would you prefer NOT to receive?",
+    "category": "negative",
+    "claimable": false
+  },
+  {
+    "question": "Is there anything else you want everyone to know?",
+    "category": "general",
+    "claimable": false
+  }
+]

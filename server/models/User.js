@@ -1,4 +1,4 @@
-const { answerSchema, claimedSchema } = require('./schemas');
+const { claimedSchema } = require('./schemas');
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 
@@ -35,7 +35,10 @@ const userSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Question'
     },
-    answers: [answerSchema]
+    answers: {
+      type: Schema.Types.ObjectId,
+      ref: 'Answer'
+    }
   }],
   claims: [claimedSchema],
   lastAnswer: { type: Date, default: Date.now }

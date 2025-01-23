@@ -12,25 +12,6 @@ const memberSchema = new Schema({
   }
 });
 
-const answerSchema = new Schema({
-  answerId: Number,
-  answerText: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  amount: {
-    type: Number,
-    min: 0,
-    max: 2,
-    default: 0
-  },
-  claimed: {
-    type: Boolean,
-    default: false
-  }
-});
-
 const claimedSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
@@ -40,7 +21,10 @@ const claimedSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Question'
   },
-  answer: Number
+  answer: {
+    type: Schema.Types.ObjectId,
+    ref: 'Answer'
+  }
 });
 
-module.exports = { memberSchema, answerSchema, claimedSchema };
+module.exports = { memberSchema, claimedSchema };

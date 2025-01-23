@@ -5,7 +5,7 @@ const questionSchema = new Schema ({
     type: String,
     required: true
   },
-  //  Categories are Interests/Sizes/Gifts
+  //  Categories are general/specific/negative/sizes
   category: String,
   claimable: Boolean
 });

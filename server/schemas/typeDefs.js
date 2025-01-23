@@ -6,6 +6,7 @@ type Member {
 
 type Answer {
   answerText: String
+  answerLink: String
   amount: Int
   claimed: Boolean
 }
@@ -55,6 +56,11 @@ type Query {
   me: User
   user(userId: ID!): User
   family(familyName: String!): Family
+  relatedUsers: [User]
+  myQuestions: [Question]
+  myAnswers: [AnswerSet]
+  userAnswers(userId: ID!): [AnswerSet]
+  myClaims: [Claimed]
 }
 
 type Mutation {
@@ -63,7 +69,7 @@ type Mutation {
   addFamily(familyName: String!, nickname: String): Family
   joinFamily(familyName: String!, nickname: String): User
   addQuestion(question: String!, category: String!, claimable: Boolean!, familyName: String!): Question
-  answerQuestion(questionId: ID!, answer: String!, amount: Int!): AnswerSet
+  answerQuestion(questionId: ID!, answerText: String!, answerLink: String, amount: Int!): AnswerSet
 }
 `;
 
