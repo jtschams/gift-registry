@@ -17,6 +17,7 @@ const claimedSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref:'User'
   },
+  nickname: String,
   question: {
     type: Schema.Types.ObjectId,
     ref: 'Question'

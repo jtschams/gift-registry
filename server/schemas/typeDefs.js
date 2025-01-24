@@ -13,6 +13,7 @@ type Answer {
 
 type Claimed {
   user: User!
+  relations: [Relation]
   question: Question
   answer: Answer!
 }
@@ -47,6 +48,16 @@ type Family {
   lastQuestionAdded: String
 }
 
+type Relation {
+  familyName: String
+  nickname: String
+}
+
+type RelatedUser {
+  user: User
+  relations: [Relation]
+}
+
 type Auth {
   token: ID!
   user: User
@@ -56,7 +67,7 @@ type Query {
   me: User
   user(userId: ID!): User
   family(familyName: String!): Family
-  relatedUsers: [User]
+  relatedUsers: [RelatedUser]
   myQuestions: [Question]
   myAnswers: [AnswerSet]
   userAnswers(userId: ID!): [AnswerSet]

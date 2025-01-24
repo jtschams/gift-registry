@@ -35,10 +35,10 @@ const userSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Question'
     },
-    answers: {
+    answers: [{
       type: Schema.Types.ObjectId,
       ref: 'Answer'
-    }
+    }]
   }],
   claims: [claimedSchema],
   lastAnswer: { type: Date, default: Date.now }
