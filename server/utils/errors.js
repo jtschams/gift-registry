@@ -6,9 +6,14 @@ module.exports = {
       code: 'UNAUTHENTICATED',
     },
   }),
-  InvalidDataError: (type, name) => new GraphQLError(`Could not find data of name "${name}" in type "${type}".`,{
+  InvalidDataError: (type, name) => new GraphQLError(`Could not find data for "${name}" in type "${type}".`,{
     extensions: {
       code: 'INVALIDDATA'
+    }
+  }),
+  IncompleteDataError: (type) => new GraphQLError(`Insufficient data to find of create object of type "${type}".`,{
+    extensions: {
+      code: 'INCOMPLETEDATA'
     }
   })
 }

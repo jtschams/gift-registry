@@ -66,7 +66,7 @@ type Auth {
 type Query {
   me: User
   user(userId: ID!): User
-  family(familyName: String!): Family
+  family(familyId: ID!): Family
   relatedUsers: [RelatedUser]
   myQuestions: [Question]
   myAnswers: [AnswerSet]
@@ -78,9 +78,10 @@ type Mutation {
   addUser(name: String!, birthday: String!, likesSurprises: Boolean, email: String!, password: String!): Auth
   login(email: String!, password: String!): Auth
   addFamily(familyName: String!, nickname: String): Family
-  joinFamily(familyName: String!, nickname: String): User
-  addQuestion(question: String!, category: String!, claimable: Boolean!, familyName: String!): Question
+  joinFamily(familyID: ID!, nickname: String): User
+  addQuestion(question: String, category: String, claimable: Boolean, familyID: ID!, questionId: ID): Question
   answerQuestion(questionId: ID!, answerText: String!, answerLink: String, amount: Int!): AnswerSet
+  claimAnswer(userId: ID!, questionId: ID!, answerId: ID!, familyName: String!, nickname: String!): Claimed
 }
 `;
 

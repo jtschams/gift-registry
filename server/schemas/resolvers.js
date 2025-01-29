@@ -1,6 +1,6 @@
 const { User, Family, Question, Answer } = require('../models');
-const { signToken, AuthenticationError } = require('../utils/auth');
-const { InvalidDataError } = require('../utils/errors')
+const { signToken } = require('../utils/auth');
+const { AuthenticationError, InvalidDataError, IncompleteDataError } = require('../utils/errors')
 
 const resolvers = {
   Query: {
@@ -18,8 +18,8 @@ const resolvers = {
         .populate({ path: 'answers', populate: ['question', 'answers'] });
     },
     
-    family: async (parent, { familyName }) => {
-      return await Family.findOne({ familyName })
+    family: async (parent, { familyId }) => {
+      return await Family.findById(familyId)
         .populate([
           'questions',
           'admins',
@@ -55,12 +55,25 @@ const resolvers = {
       return relatedUsers;
     },
     
-    // TODO: Add queries
     myQuestions: async (parent, args, context) => {
       const user = await User.findById(context.user._id)
-      
+        .populate({ path: 'groups', populate: 'questions'});
+      const standard = await Family.findById("def000000000000000000000").populate('questions');
+      const questions = [];
+
+      for (const group of user.groups) {
+        for (const question of group.questions) {
+          if (!questions.some((element) => element === question)) {
+            questions.push(question);
+          }
+        }
+      }
+      questions.unshift(...standard.questions);
+
+      return questions;
     },
     
+    // TODO: Add queries
     myAnswers: async (parent, args, context) => {
       const user = await User.findById(context.user._id).populate({ path: 'answers', populate: 'answers' });
       
@@ -77,6 +90,7 @@ const resolvers = {
         .populate({ path: 'claims', populate: 'question' })
         .populate({ path: 'claims', populate: 'answer' });
 
+      return user.claims;
     }
   },
 
@@ -120,9 +134,9 @@ const resolvers = {
       throw AuthenticationError;
     },
     
-    joinFamily: async (parent, { familyName, nickname }, context) => {
+    joinFamily: async (parent, { familyId, nickname }, context) => {
       if (context.user) {
-        const family = await Family.findOne({ familyName })
+        const family = await Family.findById(familyId)
           .populate({ path: 'members', populate: 'user' });
         const user = await User.findById(context.user._id).populate('groups');
         nickname = nickname ? nickname : context.user.name;
@@ -132,12 +146,12 @@ const resolvers = {
           throw InvalidDataError('user', user);
         }
         if (!family) {
-          throw InvalidDataError('family', familyName);
+          throw InvalidDataError('family', `ID: ${familyId}`);
         }
         
         // Tracks changes and prevents duplicates
         const changes = { user: false, family: false};
-        if (!user.groups.some((fam) => fam.familyName === familyName)) {
+        if (!user.groups.some((fam) => fam._id === familyId)) {
           user.groups.push(family);
           await user.save();
           changes.user = true;
@@ -153,10 +167,22 @@ const resolvers = {
       throw AuthenticationError;
     },
     
-    // TODO: Implement addQuestion Mutation
-    addQuestion: async (parent, { question, category, claimable, familyName}, context) => {
-      if (context.user) {
-        
+    addQuestion: async (parent, { question, category, claimable, familyId, questionId }, context) => {
+      const family = await Family.findById(familyId).populate(['admins', 'questions']);
+      if (family?.admins.some((admin) => admin._id = context.user?._id)) {
+        if (questionId) {
+          const newQuestion = Question.findById(questionId);
+          family.questions.push(newQuestion);
+          await family.save();
+          return newQuestion;
+        } else if (question) {
+          const newQuestion = Question.create({ question, category, claimable });
+          family.questions.push(newQuestion);
+          await family.save();
+          return newQuestion;
+        } else {
+          throw IncompleteDataError('question')
+        }
       }
       throw AuthenticationError;
     },
@@ -179,6 +205,13 @@ const resolvers = {
         user.save();
     
         return answerSet;
+      }
+      throw AuthenticationError;
+    },
+
+    claimAnswer: async (parent, { userId, questionId, answerId, familyName, nickname }, context) => {
+      if (context.user) {
+        
       }
       throw AuthenticationError;
     }

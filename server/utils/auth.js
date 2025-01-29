@@ -6,11 +6,6 @@ const secret = process.env.JWT_SECRET || 'Backup secret for JWT don\'t tell anyo
 const expiration = '90d';
 
 module.exports = {
-  AuthenticationError: new GraphQLError('Could not authenticate user.', {
-    extensions: {
-      code: 'UNAUTHENTICATED',
-    },
-  }),
   authMiddleware: function ({ req }) {
     let token = req.body.token || req.query.token || req.headers.authorization;
 

@@ -6,8 +6,14 @@ const questionSchema = new Schema ({
     required: true
   },
   //  Categories are general/specific/negative/sizes
-  category: String,
-  claimable: Boolean
+  category: {
+    type: String,
+    default: 'general'
+  },
+  claimable: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const Question = model('Question', questionSchema);
