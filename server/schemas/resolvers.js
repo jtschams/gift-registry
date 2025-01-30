@@ -1,6 +1,6 @@
 const { User, Family, Question, Answer } = require('../models');
 const { signToken } = require('../utils/auth');
-const { AuthenticationError, InvalidDataError, IncompleteDataError } = require('../utils/errors')
+const { AuthenticationError, InvalidDataError, InvalidActionError, IncompleteDataError } = require('../utils/errors')
 
 const resolvers = {
   Query: {
@@ -73,22 +73,23 @@ const resolvers = {
       return questions;
     },
     
-    // TODO: Add queries
     myAnswers: async (parent, args, context) => {
-      const user = await User.findById(context.user._id).populate({ path: 'answers', populate: 'answers' });
+      const user = await User.findById(context.user._id)
+        .populate({ path: 'answers', populate: ['question', 'answers'] });
       
+      return user.answers;
     },
     
     userAnswers: async (parent, { userId }) => {
-      const user = await User.findById(userId).populate({ path: 'answers', populate: 'answers' });
+      const user = await User.findById(userId)
+        .populate({ path: 'answers', populate: ['question', 'answers'] });
       
+      return user.answers;
     },
     
     myClaims: async (parent, args, context) => {
       const user = await User.findById(context.user._id)
-        .populate({ path: 'claims', populate: 'user' })
-        .populate({ path: 'claims', populate: 'question' })
-        .populate({ path: 'claims', populate: 'answer' });
+        .populate({ path: 'claims', populate: [ 'user', 'question', 'answer'] });
 
       return user.claims;
     }
@@ -169,14 +170,14 @@ const resolvers = {
     
     addQuestion: async (parent, { question, category, claimable, familyId, questionId }, context) => {
       const family = await Family.findById(familyId).populate(['admins', 'questions']);
-      if (family?.admins.some((admin) => admin._id = context.user?._id)) {
+      if (family?.admins.some((admin) => admin._id == context.user?._id)) {
         if (questionId) {
-          const newQuestion = Question.findById(questionId);
+          const newQuestion = await Question.findById(questionId);
           family.questions.push(newQuestion);
           await family.save();
           return newQuestion;
         } else if (question) {
-          const newQuestion = Question.create({ question, category, claimable });
+          const newQuestion = await Question.create({ question, category, claimable });
           family.questions.push(newQuestion);
           await family.save();
           return newQuestion;
@@ -202,16 +203,37 @@ const resolvers = {
           user.answers[questIndex].answers.push(answer);
           answerSet = user.answers[questIndex];
         }
-        user.save();
+        await user.save();
     
         return answerSet;
       }
       throw AuthenticationError;
     },
 
-    claimAnswer: async (parent, { userId, questionId, answerId, familyName, nickname }, context) => {
+    claimAnswer: async (parent, { userId, questionId, answerId, nickname }, context) => {
       if (context.user) {
-        
+        const me = await User.findById(context.user._id)
+          .populate({ path: 'claims', populate: ['user', 'question', 'answer'] });
+        const user = await User.findById(userId);
+        const question = await Question.findById(questionId);
+        const answer = await Answer.findById(answerId);
+
+        if (!user) {throw InvalidDataError('user', userId)}
+        else if (!question) {throw InvalidDataError('question', questionId)}
+        else if (!answer) {throw InvalidDataError('answer', answerId)}
+        else if (!nickname) {throw IncompleteDataError('nickname')}
+
+        const claimable = await answer.claimable(context.user._id);
+        if (!claimable.claimable) {throw InvalidActionError('Claim',  claimable.message)};
+
+        const claim = { user, nickname, question, answer };
+        me.claims.push(claim);
+        answer.claims.push(me);
+
+        await answer.save();
+        await me.save();
+
+        return claim;
       }
       throw AuthenticationError;
     }

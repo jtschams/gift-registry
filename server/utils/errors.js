@@ -11,7 +11,12 @@ module.exports = {
       code: 'INVALIDDATA'
     }
   }),
-  IncompleteDataError: (type) => new GraphQLError(`Insufficient data to find of create object of type "${type}".`,{
+  InvalidActionError: (action, reason) => new GraphQLError(`Action "${action}" could not be completed due to error: ${reason}`, {
+    extensions: {
+      code: 'INVALIDACTION'
+    }
+  }),
+  IncompleteDataError: (type) => new GraphQLError(`Insufficient data to find or create object of type "${type}".`,{
     extensions: {
       code: 'INCOMPLETEDATA'
     }

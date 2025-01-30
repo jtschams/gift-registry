@@ -13,7 +13,7 @@ const familySchema = new Schema ({
   }],
   questions: [{
     type: Schema.Types.ObjectId,
-    ref: "Question"
+    ref: 'Question'
   }],
   lastQuestionAdded: { type: Date, default: Date.now }
 });

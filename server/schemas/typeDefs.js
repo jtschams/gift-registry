@@ -5,20 +5,22 @@ type Member {
 }
 
 type Answer {
+  _id: ID
   answerText: String
   answerLink: String
   amount: Int
-  claimed: Boolean
+  claims: [User]!
 }
 
 type Claimed {
   user: User!
-  relations: [Relation]
+  nickname: String
   question: Question
   answer: Answer!
 }
 
 type Question {
+  _id: ID
   question: String
   category: String
   claimable: Boolean
@@ -41,6 +43,7 @@ type User {
 }
 
 type Family {
+  _id: ID
   familyName: String!
   admins: [User]
   members: [Member]!
@@ -79,9 +82,9 @@ type Mutation {
   login(email: String!, password: String!): Auth
   addFamily(familyName: String!, nickname: String): Family
   joinFamily(familyID: ID!, nickname: String): User
-  addQuestion(question: String, category: String, claimable: Boolean, familyID: ID!, questionId: ID): Question
+  addQuestion(question: String, category: String, claimable: Boolean, familyId: ID!, questionId: ID): Question
   answerQuestion(questionId: ID!, answerText: String!, answerLink: String, amount: Int!): AnswerSet
-  claimAnswer(userId: ID!, questionId: ID!, answerId: ID!, familyName: String!, nickname: String!): Claimed
+  claimAnswer(userId: ID!, questionId: ID!, answerId: ID!, nickname: String!): Claimed
 }
 `;
 
