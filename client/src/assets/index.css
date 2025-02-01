@@ -11,8 +11,13 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --main-bg: #F0F0FB;
-  --menu-bg: #E1E1F6;
-  --dark-accent: #38383D;
+  --main-gray: #FEFEFE;
+  --menu-gray: #E1E1E1;
+  --accent-gray: #383838;
+  --mark-gray: #38383880;
+  --main-lav: #F0F0FB;
+  --menu-lav: #E1E1F6;
+  --accent-lav: #38383D;
+  --mark-lav: #38383D80;
   --button-size: 70px;
 }
