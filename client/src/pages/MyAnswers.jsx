@@ -3,3 +3,7 @@
 // Calls "myAnswers" Query resolver
 //// Links to nothing
 // Contains component Answer via myAnswers
+
+export default function MyAnswers() {
+  return
+}

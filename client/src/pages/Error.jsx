@@ -3,3 +3,7 @@
 //// Calls nothing
 // Links to TBD // ? Navbar in middle
 //// Contains no components
+
+export default function Error() {
+  return
+}

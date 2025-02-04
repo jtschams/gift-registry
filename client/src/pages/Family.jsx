@@ -7,3 +7,7 @@
 //// Links to nothing
 // Contains component Question via family.questions
 // Contains component RelatedUser via family.members (modified to fit)
+
+export default function Family() {
+  return
+}

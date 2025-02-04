@@ -3,3 +3,7 @@
 // Calls "myClaims" Query resolver
 //// Links to nothing
 // Contains component Claim via myClaims
+
+export default function MyClaims() {
+  return
+}

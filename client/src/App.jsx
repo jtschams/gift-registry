@@ -5,9 +5,10 @@ import {
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { Outlet, BrowserRouter } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
-import Navbar from './components/Navbar'
+import Navbar from './components/Navbar';
+import Auth from './utils/auth';
 
 const httpLink = createHttpLink({
   uri: '/graphql'
@@ -28,23 +29,24 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-const App = () => {
+export default function App() {
 
-  // TODO: create logic to check if logged in
-  const loggedIn = false;
+  const loggedIn = Auth.loggedIn();
+  const location = useLocation().pathname.slice(1);
 
-  if (!loggedIn) {
+  if (location !== "login-signup" && !loggedIn) {
+    console.log(loggedIn)
     window.location.assign('/login-signup')
   }
 
   return (
     <>
     <ApolloProvider client={client}>
-      {loggedIn ? <Navbar /> : null}
-      <Outlet />
+      {location === "login-signup" ? null : <Navbar />}
+      <main id={location}>
+        <Outlet />
+      </main>
     </ApolloProvider>
     </>
   )
 }
-
-export default App

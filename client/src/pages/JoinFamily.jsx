@@ -5,3 +5,7 @@
 //// Links to nothing
 // Contains component Family via family
 // Contains component RelatedUser via family.admins and family.members
+
+export default function JoinFamily() {
+  return
+}

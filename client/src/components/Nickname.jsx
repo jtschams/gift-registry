@@ -3,3 +3,7 @@
 //// Calls nothing
 //// Links to nothing
 //// Contains no components
+
+export default function Nickname() {
+  return
+}

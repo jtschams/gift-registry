@@ -3,3 +3,7 @@
 //// Calls nothing
 // Links to Family
 //// Contains no components
+
+export default function Family() {
+  return
+}

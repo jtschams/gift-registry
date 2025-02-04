@@ -3,3 +3,7 @@
 //// Calls nothing
 // Links to UserAnswers[MyFriends]
 // Contains component Nickname via Input Information
+
+export default function RelatedUser() {
+  return
+}
