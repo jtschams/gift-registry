@@ -43,7 +43,7 @@ const router = createBrowserRouter([
         element: <CreateGroup />
       },
       {
-        path: '/family',
+        path: '/family/:familyId',
         element: <Family />
       },
       {
