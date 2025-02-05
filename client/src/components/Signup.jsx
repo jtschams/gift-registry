@@ -46,7 +46,7 @@ export default function Signup(familyId) {
           type="text"
           value={signupState.name}
           onChange={handleSignupChange}
-          />
+        />
       </div>
       <div className="form-group">
         <label htmlFor="signup-email"></label>
@@ -58,7 +58,7 @@ export default function Signup(familyId) {
           type="text"
           value={signupState.email}
           onChange={handleSignupChange}
-          />
+        />
       </div>
       <div className="form-group">
         <label htmlFor="signup-birthday"></label>
@@ -70,7 +70,7 @@ export default function Signup(familyId) {
           type="text"
           value={signupState.birthday}
           onChange={handleSignupChange}
-          />
+        />
       </div>
       <div className="form-group">
         <label htmlFor="signup-password"></label>
@@ -82,7 +82,7 @@ export default function Signup(familyId) {
           type="password"
           value={signupState.password}
           onChange={handleSignupChange}
-          />
+        />
       </div>
       <button type='submit'>Sign Up</button>
     </form>

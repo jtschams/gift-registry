@@ -44,7 +44,7 @@ const Login = (familyId) => {
           type="text"
           value={loginState.email}
           onChange={handleLoginChange}
-          />
+        />
       </div>
       <div className="form-group">
         <label htmlFor="login-password">Password</label>
@@ -56,7 +56,7 @@ const Login = (familyId) => {
           type="password"
           value={loginState.password}
           onChange={handleLoginChange}
-          />
+        />
       </div>
       <button type='submit'>Log In</button>
     </form>
