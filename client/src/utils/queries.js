@@ -15,4 +15,15 @@ export const MY_PROFILE = gql`
   }
 `
 
+export const MY_QUESTIONS = gql`
+  query MyQuestions {
+    myQuestions {
+      _id
+      question
+      category
+      claimable
+    }
+  }
+`
+
 // TODO: Client side queries

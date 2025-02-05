@@ -22,4 +22,20 @@ export const ADD_USER = gql`
   }
 `
 
+export const ANSWER_QUESTION = gql`
+  mutation AnswerQuestion($questionId: ID!, $answerText: String!, $answerLink: String, $amount: Int!) {
+    answerQuestion(questionId: $questionId, answerText: $answerText, answerLink: $answerLink, amount: $amount) {
+      question {
+        _id
+      }
+      answers {
+        _id
+        answerText
+        answerLink
+        amount
+      }  
+    }
+  }
+`
+
 // TODO: Client side mutations
