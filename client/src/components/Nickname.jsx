@@ -1,9 +1,8 @@
-// TODO: Nickname Component
-// Enter from RelatedUser
-//// Calls nothing
-//// Links to nothing
-//// Contains no components
+import React from 'react';
 
-export default function Nickname() {
-  return
+export default function Nickname(member, familyName) {
+
+  return (
+    <div className="nickname"><p>{member.nickname}</p><p>{familyName || member.user?.name}</p></div>
+  )
 }
