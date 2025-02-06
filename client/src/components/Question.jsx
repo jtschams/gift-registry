@@ -20,7 +20,7 @@ export default function Question({ question }) {
   const handleAnswerQuestion = async (event) => {
     event.preventDefault();
     const {data} = await answerQuestion({
-      variables: { ...answerState }
+      variables: { ...answerState, questionId: questionState }
     });
     //  TODO: change alert to dialog
     alert("Answer added to your account.");
@@ -30,8 +30,8 @@ export default function Question({ question }) {
   }
 
   const handleAnswerChange = (event) => {
-    const { name, value } = event.target;
-
+    let { name, value } = event.target;
+    value = name === "amount" ? parseInt(value, 10) : value;
     setAnswerState({
       ...answerState,
       [name]: value
@@ -47,7 +47,7 @@ export default function Question({ question }) {
   return (
     <article id={question._id} onClick={activateQuestion}>
       <h3>{question.question}</h3>
-      <form className="question-form">
+      <form className="question-form" onSubmit={handleAnswerQuestion}>
         <div className="form-group">
           <label htmlFor="answer-text">Answer</label>
           <input
@@ -84,12 +84,13 @@ export default function Question({ question }) {
             onChange={handleAnswerChange}
           >
             {/*// TODO: Confirm select functions properly */}
-            <option value="0">(General Question)</option>
-            <option value="1">Only One</option>
-            <option value="2">More than one</option>
+            <option value={0}>(General Question)</option>
+            <option value={1}>Only One</option>
+            <option value={2}>More than one</option>
           </select>
         </div>
         )}
+        <button type="submit">Submit Answer</button>
       </form>
     </article>
   )

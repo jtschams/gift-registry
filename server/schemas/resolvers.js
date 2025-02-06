@@ -76,7 +76,6 @@ const resolvers = {
     myAnswers: async (parent, args, context) => {
       const user = await User.findById(context.user._id)
         .populate({ path: 'answers', populate: ['question', 'answers'] });
-      
       return user.answers;
     },
     
@@ -192,7 +191,7 @@ const resolvers = {
       if (context.user) {
         const question = await Question.findById(questionId);
         const answer = await Answer.create({ answerText, answerLink, amount });
-        const answerSet = { question, answers: [ answer ] };
+        let answerSet = { question, answers: [ answer ] };
 
         const user = await User.findById(context.user._id).populate({ path: 'answers', populate: 'question' });
         const questIndex = user.answers.findIndex((quest) => quest.question._id == questionId);

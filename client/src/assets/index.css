@@ -21,3 +21,11 @@
   --mark-lav: #38383D80;
   --button-size: 70px;
 }
+
+.question-form {
+  display: none
+}
+
+.active-question > form.question-form {
+  display: flex
+}
