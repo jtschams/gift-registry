@@ -83,7 +83,6 @@ export default function Question({ question }) {
             value={answerState.amount}
             onChange={handleAnswerChange}
           >
-            {/*// TODO: Confirm select functions properly */}
             <option value={0}>(General Question)</option>
             <option value={1}>Only One</option>
             <option value={2}>More than one</option>

@@ -38,4 +38,21 @@ export const ANSWER_QUESTION = gql`
   }
 `
 
+export const CLAIM_ANSWER = gql`
+  mutation ClaimAnswer($userId: ID!, $questionId: ID!, $answerId: ID!, $nickname: String!) {
+    claimAnswer(userId: $userId, questionId: $questionId, answerId: $answerId, nickname: $nickname) {
+      user {
+       _id
+      }
+      nickname
+      question {
+        _id
+      }
+      answer {
+        _id
+      }
+    }
+  }
+`
+
 // TODO: Client side mutations

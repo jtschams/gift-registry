@@ -1,9 +1,10 @@
 // TODO: Answer component 
 // Enter from AnswerSet
 // Calls "claimAnswer" Mutation resolver[UserAnswers] {MyClaims on submit}
-//// Links to nothing
-//// Contains no components
+import React from 'react';
+import { useMutation } from '@apollo/client';
+import { CLAIM_ANSWER } from '../utils/mutations';
 
-export default function Answer(answer) {
+export default function Answer({ answer }, { relations }) {
   return
 }

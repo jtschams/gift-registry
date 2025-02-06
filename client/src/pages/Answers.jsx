@@ -5,7 +5,6 @@ import { useQuery } from '@apollo/client';
 import { MY_ANSWERS, USER_ANSWERS } from '../utils/queries';
 import AnswerSet from '../components/AnswerSet';
 
-
 export default function MyAnswers() {
   const { userId } = useParams();
   const answerQuery = userId ? USER_ANSWERS : MY_ANSWERS;
@@ -18,8 +17,12 @@ export default function MyAnswers() {
     "Specific Gifts": [],
     "Dislikes": []
   };
-  if (!loading) for (const answerSet of data[queryName]) {
-    sortedAnswers[answerSet.question.category].push(answerSet)
+  if (!loading) {
+    for (const answerSet of data[queryName]) sortedAnswers[answerSet.question.category].push(answerSet);
+    if (data.relatedUser) {
+      const relations = data.relatedUser.find((member) => member.user._id = userId).relations;
+      relations.push({ familyName: 'default', nickname: data.relatedUser.find((member) => member.user._id = userId).user.name });
+    }
   };
 
   return (
@@ -28,7 +31,7 @@ export default function MyAnswers() {
         <section key={category}>
           <h2 className="question-category">{category}</h2>
           {sortedAnswers[category].map((answerSet) => (
-            <AnswerSet key={answerSet.question._id} answerSet={answerSet}/>
+            <AnswerSet key={answerSet.question._id} answerSet={answerSet} relations={relations}/>
           ))}
         </section>
       )))}

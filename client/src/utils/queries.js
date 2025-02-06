@@ -62,6 +62,16 @@ export const USER_ANSWERS = gql`
         }
       }
     }
+    # // TODO: Consider making nicknames resolver
+    relatedUsers {
+      user {
+        name
+      }
+      relations {
+        familyName
+        nickname
+      }
+    }
   }
 `
 

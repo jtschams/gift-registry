@@ -1,9 +1,13 @@
-// TODO: AnswerSet component 
-// Enter from MyAnswers and UserAnswers
 import React from 'react';
+import Answer from './Answer';
 
-export default function AnswerSet(answerset) {
+export default function AnswerSet({ answerSet }, { relations }) {
   return (
-    <></>
+    <article className="answer-set">
+      <h3>{answerSet.question.question}</h3>
+      {answerSet.answers.map((answer) => (
+        <Answer key={answer._id} answer={answer} relations={relations}/>
+      ))}
+    </article>
   )
 }
