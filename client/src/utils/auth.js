@@ -1,10 +1,13 @@
 import { jwtDecode } from 'jwt-decode';
 
 class AuthService {
-
   getToken() {
     return localStorage.getItem('id_token');
   };
+  
+  getProfile() {
+    return jwtDecode(this.getToken());
+  }
 
   login(idToken, familyId) {
     localStorage.setItem('id_token', idToken);

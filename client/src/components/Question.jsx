@@ -45,7 +45,7 @@ export default function Question({ question }) {
   }
 
   return (
-    <article id={question._id} onClick={activateQuestion}>
+    <article id={question._id} className="question-component" onClick={activateQuestion}>
       <h3>{question.question}</h3>
       <form className="question-form" onSubmit={handleAnswerQuestion}>
         <div className="form-group">
@@ -65,7 +65,7 @@ export default function Question({ question }) {
           <input
             id="answer-link"
             className="answer-input"
-            placeholder="Answer"
+            placeholder="Answer Link"
             name="answerLink"
             type="text"
             value={answerState.answerLink}
@@ -78,7 +78,6 @@ export default function Question({ question }) {
           <select
             id="answer-amount"
             className="answer-input"
-            placeholder="Answer"
             name="amount"
             value={answerState.amount}
             onChange={handleAnswerChange}

@@ -17,10 +17,11 @@ export default function MyAnswers() {
     "Specific Gifts": [],
     "Dislikes": []
   };
+  let relations = null;
   if (!loading) {
     for (const answerSet of data[queryName]) sortedAnswers[answerSet.question.category].push(answerSet);
     if (data.relatedUser) {
-      const relations = data.relatedUser.find((member) => member.user._id = userId).relations;
+      relations = data.relatedUser.find((member) => member.user._id = userId).relations;
       relations.push({ familyName: 'default', nickname: data.relatedUser.find((member) => member.user._id = userId).user.name });
     }
   };

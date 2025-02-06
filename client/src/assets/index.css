@@ -27,5 +27,9 @@
 }
 
 .active-question > form.question-form {
-  display: flex
+  display: flex;
+}
+
+.family-component, .question-component > h3 {
+  cursor: pointer;
 }
