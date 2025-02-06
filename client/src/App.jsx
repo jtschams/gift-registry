@@ -43,7 +43,7 @@ export default function App() {
     <>
     <ApolloProvider client={client}>
       {location === "login-signup" ? null : <Navbar />}
-      <main id={location}>
+      <main id={location || "my-profile"}>
         <Outlet />
       </main>
     </ApolloProvider>

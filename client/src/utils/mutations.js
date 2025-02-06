@@ -55,4 +55,12 @@ export const CLAIM_ANSWER = gql`
   }
 `
 
+export const CREATE_GROUP = gql`
+  mutation CreateGroup($familyName: String!, $nickname: String) {
+    addFamily(familyName: $familyName, nickname: $nickname) {
+      _id
+    }
+  }
+`
+
 // TODO: Client side mutations
