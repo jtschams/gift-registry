@@ -82,7 +82,7 @@ const resolvers = {
     
     userAnswers: async (parent, { userId }) => {
       const user = await User.findById(userId)
-        .populate({ path: 'answers', populate: ['question', 'answers'] });
+        .populate({ path: 'answers', populate: ['question', { path: 'answers', populate: 'claims' }] });
       
       return user.answers;
     },

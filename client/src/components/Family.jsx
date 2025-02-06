@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Nickname from './Nickname';
 
-export default function Family(family) {
+export default function Family({ family }) {
   const location = useLocation().pathname.slice(1);
 
   const findAdmin = (family) => {
@@ -11,9 +11,12 @@ export default function Family(family) {
   }
 
   const member = findAdmin(family);
+  const chooseFamily = (event) => {
+    window.location.assign(`/family/${family._id}`)
+  }
 
   return (
-    <li key={family._id} className="family-component" onClick={window.location.assign(`/family/${family._id}`)}>
+    <li className="family-component" onClick={chooseFamily}>
       <h3>{family.familyName}</h3>
       {member ? <Nickname member /> : null}
     </li>

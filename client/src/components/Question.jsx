@@ -1,14 +1,14 @@
-// TODO: Question Component
-// Enter from Questions
-// Calls "answerQuestion" Mutation resolver {Questions on submit}
-//use <details>?
 import React from 'react';
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
+// TODO: add useEffect? Activity 20/24
 
 import { ANSWER_QUESTION } from '../utils/mutations'
+import { useQuestionContext } from '../pages/Questions';
 
-export default function Question(question, questionState, setQuestionState) {
+export default function Question({ question }) {
+
+  const [ questionState, setQuestionState ] = useQuestionContext();
   const [ answerState, setAnswerState ] = useState({
     answerText: '',
     answerLink: '',
@@ -38,16 +38,16 @@ export default function Question(question, questionState, setQuestionState) {
     });
   };
 
-  const activateQuestion = (event) => {
-    document.getElementById(questionState).classList.toggle("active-question");
-    setQuestionState();
+  const activateQuestion = async (event) => {
+    document.getElementById(questionState)?.classList.toggle("active-question");
+    setQuestionState(question._id);
     document.getElementById(question._id).classList.toggle("active-question");
   }
 
   return (
-    <article id={question._id} key={question._id} onClick={activateQuestion}>
+    <article id={question._id} onClick={activateQuestion}>
       <h3>{question.question}</h3>
-      <form className='question-form'>
+      <form className="question-form">
         <div className="form-group">
           <label htmlFor="answer-text">Answer</label>
           <input

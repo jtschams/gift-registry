@@ -26,4 +26,43 @@ export const MY_QUESTIONS = gql`
   }
 `
 
+export const MY_ANSWERS = gql`
+  query MyAnswers {
+    myAnswers {
+      question {
+        _id
+        question
+        category
+      }
+      answers {
+        _id
+        answerText
+        answerLink
+        amount
+      }
+    }
+  }
+`
+
+export const USER_ANSWERS = gql`
+  query UserAnswers {
+    userAnswers {
+      question {
+        _id
+        question
+        category
+      }
+      answers {
+        _id
+        answerText
+        answerLink
+        amount
+        claims {
+          _id
+        }
+      }
+    }
+  }
+`
+
 // TODO: Client side queries

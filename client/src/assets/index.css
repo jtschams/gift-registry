@@ -4,8 +4,8 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: var(--dark-accent);
-  background-color: var(--main-bg);
+  color: var(--accent-gray);
+  background-color: var(--main-gray);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
