@@ -49,7 +49,7 @@ export default function Question({ question }) {
       <h4>{question.question}</h4>
       <form className="question-form invisible" onSubmit={handleAnswerQuestion}>
         <div className="form-group">
-          <label htmlFor="answer-text">Answer</label>
+          <label htmlFor="answer-text">Answer:</label>
           <input
             id="answer-text"
             className="answer-input"
@@ -61,7 +61,7 @@ export default function Question({ question }) {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="answer-link">Link to your Answer (Optional)</label>
+          <label htmlFor="answer-link">Link to your Answer (Optional):</label>
           <input
             id="answer-link"
             className="answer-input"
@@ -82,7 +82,7 @@ export default function Question({ question }) {
             value={answerState.amount}
             onChange={handleAnswerChange}
           >
-            <option value={0}>(General Question)</option>
+            <option value={0} hidden>(General Question)</option>
             <option value={1}>Only One</option>
             <option value={2}>More than one</option>
           </select>

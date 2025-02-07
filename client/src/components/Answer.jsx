@@ -1,5 +1,4 @@
-// TODO: Answer component 
-// Enter from AnswerSet
+// TODO: Answer component claimAnswer call
 // Calls "claimAnswer" Mutation resolver[UserAnswers] {MyClaims on submit}
 import React from 'react';
 import { useState } from 'react';
@@ -62,7 +61,8 @@ export default function Answer({ answer }, { claimInfo }) {
 
   return (
     <div id={answer._id} className="single-answer">
-      <p>{answer.answerText} {answer.answerLink ? (<a href={answer.answerLink}>Link</a>) : null}</p>
+      <p>{answer.answerText}</p>
+      {answer.answerLink ? (<a href={answer.answerLink}>Link</a>) : null}
       {claimForm}
     </div>
   )
