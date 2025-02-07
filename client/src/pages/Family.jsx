@@ -23,14 +23,14 @@ export default function Family() {
   // ? // TODO: Call invite() to send email invite
   const generateInvite = (event) => {
     event.preventDefault();
-    const linkDiv = document.getElementById('invite-div');
-    linkDiv.classList.remove('invisible');
+    document.getElementById('invite-div').classList.remove('invisible');
+    document.getElementById('add-question-form').classList.add('invisible');
   }
   
   const showAddQuestion = (event) => {
     event.preventDefault();
-    const linkDiv = document.getElementById('invite-div');
-    linkDiv.classList.add('invisible');
+    document.getElementById('invite-div').classList.add('invisible');
+    document.getElementById('add-question-form').classList.remove('invisible');
   }
 
   const handleQuestionAdd = async (event) => {
@@ -66,7 +66,7 @@ export default function Family() {
             <label htmlFor="invite-link">Invite Link for this Group</label>
             <input id="invite-link" name="invite-link" value={linkState} readOnly/>
           </div>
-          <form id="add-question-form" className="" onSubmit={handleQuestionAdd}>
+          <form id="add-question-form" className="invisible" onSubmit={handleQuestionAdd}>
             <div className="form-group">
               <label htmlFor="question">Question</label>
               <input
