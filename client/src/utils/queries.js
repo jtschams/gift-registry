@@ -75,4 +75,41 @@ export const USER_ANSWERS = gql`
   }
 `
 
-// TODO: Client side queries
+export const FAMILY = gql`
+  query Family($familyId: ID!) {
+    family(familyId: $familyId) {
+      familyName
+      questions {
+        _id
+        question
+        category
+        claimable
+      }
+      members {
+        nickname
+        user {
+          _id
+          name
+        }
+      }
+      admins {
+        _id
+      }
+    }
+  }
+`
+
+export const RELATED_USERS = gql`
+  query RelatedUsers {
+    relatedUsers {
+      user {
+        name
+        _id
+      }
+      relations {
+        familyName
+        nickname
+      }
+    }
+  }
+`

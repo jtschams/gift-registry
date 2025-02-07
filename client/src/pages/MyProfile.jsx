@@ -16,7 +16,7 @@ export default function MyProfile() {
       <article><Link to="/my-answers">My Answers</Link></article>
       <article><Link to="/my-claims">My Claims</Link></article>
       <article>
-        <h2>My Groups</h2>
+        <h3>My Groups</h3>
         <ul id="family-list">
           {loading? "Loading..." : me.groups?.map((family) => (
             <Family key={family._id} family={family}/>

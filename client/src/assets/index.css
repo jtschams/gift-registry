@@ -22,12 +22,8 @@
   --button-size: 70px;
 }
 
-.question-form {
+.invisible {
   display: none
-}
-
-.active-question > form.question-form {
-  display: flex;
 }
 
 .family-component, .question-component > h3 {

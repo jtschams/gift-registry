@@ -26,7 +26,7 @@ export default function Question({ question }) {
     alert("Answer added to your account.");
     setAnswerState({answerText: '', answerLink: ''});
     setQuestionState(null);
-    document.getElementById(question._id).classList.toggle("active-question");
+    document.getElementById(question._id).querySelector("form").classList.add("invisible");
   }
 
   const handleAnswerChange = (event) => {
@@ -39,15 +39,15 @@ export default function Question({ question }) {
   };
 
   const activateQuestion = async (event) => {
-    document.getElementById(questionState)?.classList.toggle("active-question");
+    document.getElementById(questionState)?.querySelector("form").classList.add("invisible");
     setQuestionState(question._id);
-    document.getElementById(question._id).classList.toggle("active-question");
+    document.getElementById(question._id).querySelector("form").classList.remove("invisible");
   }
 
   return (
     <article id={question._id} className="question-component" onClick={activateQuestion}>
       <h3>{question.question}</h3>
-      <form className="question-form" onSubmit={handleAnswerQuestion}>
+      <form className="question-form invisible" onSubmit={handleAnswerQuestion}>
         <div className="form-group">
           <label htmlFor="answer-text">Answer</label>
           <input

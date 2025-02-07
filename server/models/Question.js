@@ -8,7 +8,7 @@ const questionSchema = new Schema ({
   //  Categories are general/specific/negative/sizes
   category: {
     type: String,
-    default: 'general'
+    default: 'General Questions'
   },
   claimable: {
     type: Boolean,

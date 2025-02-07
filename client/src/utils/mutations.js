@@ -63,4 +63,23 @@ export const CREATE_GROUP = gql`
   }
 `
 
-// TODO: Client side mutations
+export const ADD_QUESTION = gql`
+  mutation AddQuestion($familyId: ID!, $question: String, $category: String, $claimable: Boolean) {
+    addQuestion(familyId: $familyId, question: $question, category: $category, claimable: $claimable) {
+      _id
+    }
+  }
+`
+
+export const JOIN_FAMILY = gql`
+  mutation JoinFamily($familyId: ID!, $nickname: String) {
+    joinFamily(familyId: $familyId, nickname: $nickname) {
+      name
+      groups {
+        familyName
+      }
+    }
+  }
+`
+
+// TODO: Client side mutations (Need resolvers first)
