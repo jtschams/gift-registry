@@ -17,7 +17,7 @@ export default function Family({ family }) {
 
   return (
     <li className="family-component" onClick={chooseFamily}>
-      <h3>{family.familyName}</h3>
+      <h4>{family.familyName}</h4>
       {member ? <Nickname member /> : null}
     </li>
   )

@@ -25,14 +25,14 @@ export default function Questions() {
 
   return (
     <QuestionContext.Provider value={[ questionState, setQuestionState ]}>
-      {loading ? "Loading..." : (Object.keys(sortedQuestions).map((category) => (
+      {loading ? "Loading..." : (Object.keys(sortedQuestions).map((category) => (<>
+        <h2 className="category-header">{category}</h2>
         <section key={category}>
-          <h2 className="question-category">{category}</h2>
           {sortedQuestions[category].map((question) => (
             <Question question={question} key={question._id}/>
           ))}
         </section>
-      )))}
+      </>)))}
     </QuestionContext.Provider>
   )
 }

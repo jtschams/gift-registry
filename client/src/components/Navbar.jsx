@@ -6,14 +6,24 @@ const handleLogout = () => {
   window.location.href = '/login-signup';
 };
 
+const burgerButton = function(event) {
+  document.getElementById('burger').classList.toggle('open')
+  document.getElementById('site-nav').classList.toggle('open')
+};
+
 export default function Navbar() {
-  return (
+  return (<>
+    <figure id="burger" className='burger' onClick={burgerButton}>
+      <div className='bar1'></div>
+      <div className='bar2'></div>
+      <div className='bar3'></div>
+    </figure>
     <nav id="site-nav">
       <ul>
-        <li key="my-profile"><Link to="/">My Profile</Link></li>
-        <li key="my-friends"><Link to="/my-friends">My Friends</Link></li>
-        <li key="logout"><a href="/login-signup" onClick={handleLogout}>Logout</a></li>
+        <li key="my-profile" onClick={burgerButton}><Link to="/">My Profile</Link></li>
+        <li key="my-friends" onClick={burgerButton}><Link to="/my-friends">My Friends</Link></li>
+        <li key="logout" onClick={burgerButton}><a href="/login-signup" onClick={handleLogout}>Logout</a></li>
       </ul>
     </nav>
-  )
+  </>)
 }

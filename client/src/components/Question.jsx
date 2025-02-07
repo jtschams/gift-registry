@@ -46,7 +46,7 @@ export default function Question({ question }) {
 
   return (
     <article id={question._id} className="question-component" onClick={activateQuestion}>
-      <h3>{question.question}</h3>
+      <h4>{question.question}</h4>
       <form className="question-form invisible" onSubmit={handleAnswerQuestion}>
         <div className="form-group">
           <label htmlFor="answer-text">Answer</label>

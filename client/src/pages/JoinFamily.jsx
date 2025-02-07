@@ -1,4 +1,3 @@
-// Calls "joinFamily" Mutation resolver {MyProfile on submit}
 import React from 'react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';

@@ -28,14 +28,14 @@ export default function MyAnswers() {
 
   return (
     <>
-      {loading ? "Loading..." : (Object.keys(sortedAnswers).map((category) => (
+      {loading ? "Loading..." : (Object.keys(sortedAnswers).map((category) => (<>
+        <h2 className="category-header">{category}</h2>
         <section key={category}>
-          <h2 className="question-category">{category}</h2>
           {sortedAnswers[category].map((answerSet) => (
             <AnswerSet key={answerSet.question._id} answerSet={answerSet} relations={relations}/>
           ))}
         </section>
-      )))}
+      </>)))}
     </>
   )
 }
