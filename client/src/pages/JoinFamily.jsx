@@ -10,16 +10,12 @@ import Nickname from '../components/Nickname';
 export default function JoinFamily() {
   const [ nicknameState, setNicknameState ] = useState();
   const {familyId} = useParams();
-  const [ data, loading ] = useQuery(FAMILY, { variables: { familyId } });
+  const { loading, data } = useQuery(FAMILY, { variables: { familyId } });
   const family = data?.family;
   const [joinFamily] = useMutation(JOIN_FAMILY)
 
-  const findAdmin = (family) => {
-    if (!family.admins) { return false }
-    return family.members?.find((member) => member.user._id === family.admins[0]._id)
-  }
-  const member = findAdmin(family);
-
+  const members = family?.members.filter((member) => member.user._id === family.admins[0]._id);
+  
   const handleJoinFamily = async () => {
     const {data} = await joinFamily({ variables: {
       familyId,
@@ -52,10 +48,15 @@ export default function JoinFamily() {
         </div>
         <button id="join-button" onClick={handleJoinFamily}>Join Group</button>
       </article>
-      <article className="family-info">
-        <h3>{family.familyName}</h3>
-        {member ? <Nickname member /> : null}
-      </article>
+      {loading ? <h3 className="loading">Loading...</h3> :
+        <article className="family-info">
+          <h3>Group: {family.familyName}</h3>
+            <div id="admins">
+              <h4>Admins:</h4>
+              {!members ? null : members.map((member) => (<Nickname key={member.user._id} member={member} />))}
+            </div>
+        </article>
+      }
     </>
   )
 }
