@@ -212,9 +212,13 @@ label {
 input {
   padding: 5px 15px;
   background-color: var(--menu);
-  color: var(--mark);
+  color: var(--accent);
   border: 1px solid var(--accent);
   border-radius: 10px;
+}
+
+input::placeholder {
+  color: var(--mark);
 }
 
 select {
@@ -231,6 +235,31 @@ input:focus-visible {
 }
 
 /*    /* Specific pages and components*/
+
+/* Login Signup Page */
+
+#login-signup-switch {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#login-signup-switch > button {
+  width: 100px;
+}
+
+#signup-form small {
+  margin-left: 10px;
+}
+
+#form-section {
+  display: flex;
+  justify-content: space-around;
+}
+
+#form-section > article {
+  width: 310px;
+  border-bottom: 0px;
+}
 
 /* Family Component */
 
@@ -306,4 +335,44 @@ input:focus-visible {
 .question-component {
   padding: 15px 0;
   margin: 5px 25px;
+}
+
+/* Answer Component */
+
+.single-answer {
+  display: flex;
+}
+
+.single-answer > * {
+  margin: 7px 10px
+}
+
+.answer-link {
+  text-decoration: underline;
+}
+
+/* Error Page */
+
+main#error {
+  margin-top: 25px;
+}
+
+#error > p {
+  padding: 5px 10px;
+  text-align: center;
+}
+
+#error > #burger {
+  display: none
+}
+
+#error > #site-nav {
+  position: static;
+  width: 70%;
+  margin:  25px auto;
+  border: 1px solid var(--accent);
+}
+
+#error > #site-nav > ul {
+  width: 100%;
 }

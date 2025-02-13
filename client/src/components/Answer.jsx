@@ -62,7 +62,7 @@ export default function Answer({ answer }, { claimInfo }) {
   return (
     <div id={answer._id} className="single-answer">
       <p>{answer.answerText}</p>
-      {answer.answerLink ? (<a href={answer.answerLink}>Link</a>) : null}
+      {answer.answerLink ? (<a href={answer.answerLink} className="answer-link">Link</a>) : null}
       {claimForm}
     </div>
   )

@@ -1,9 +1,13 @@
-// TODO: Error page
-// Enter from mistake
-//// Calls nothing
-// Links to TBD // ? Navbar in middle
-//// Contains no components
+import Navbar from '../components/Navbar';
 
 export default function Error() {
-  return
+  
+  return (
+    <main id="error">
+      <h2>Page Not Found</h2>
+      <p>It looks like there was a problem with the link that brought you here.</p>
+      <p>The links below will take you back to the site:</p>
+      <Navbar />
+    </main>
+  )
 }

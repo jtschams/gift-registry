@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations'
 import Auth from '../utils/auth';
 
-export default function Signup(familyId) {
+export default function Signup({familyId}) {
   const [ signupState, setSignupState ] = useState({
     name: '',
     email: '',
@@ -33,58 +33,59 @@ export default function Signup(familyId) {
   };
 
   return (
-    <form id="signup-form" onSubmit={handleSignup}>
+    <article>
       <h1>Signup</h1>
-      <div className="form-group">
-        <label htmlFor="signup-name">Name</label>
-        <small>A separate nickname can be entered each time you join a family or group.</small>
-        <input
-          id="signup-name"
-          className="login-input"
-          placeholder="Enter Your Name"
-          name="name"
-          type="text"
-          value={signupState.name}
-          onChange={handleSignupChange}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="signup-email"></label>
-        <input
-          id="signup-email"
-          className="login-input"
-          placeholder="Email"
-          name="email"
-          type="text"
-          value={signupState.email}
-          onChange={handleSignupChange}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="signup-birthday"></label>
-        <input
-          id="signup-birthday"
-          className="login-input"
-          placeholder="birthday"
-          name="birthday"
-          type="text"
-          value={signupState.birthday}
-          onChange={handleSignupChange}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="signup-password"></label>
-        <input
-          id="signup-password"
-          className="login-input"
-          placeholder="Password"
-          name="password"
-          type="password"
-          value={signupState.password}
-          onChange={handleSignupChange}
-        />
-      </div>
-      <button type='submit'>Sign Up</button>
-    </form>
+      <form id="signup-form" onSubmit={handleSignup}>
+        <div className="form-group">
+          <label htmlFor="signup-name">Name<small>(Nicknames will be entered later.)</small></label>
+          <input
+            id="signup-name"
+            className="login-input"
+            placeholder="Enter Your Name"
+            name="name"
+            type="text"
+            value={signupState.name}
+            onChange={handleSignupChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="signup-email">Email</label>
+          <input
+            id="signup-email"
+            className="login-input"
+            placeholder="Email"
+            name="email"
+            type="text"
+            value={signupState.email}
+            onChange={handleSignupChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="signup-birthday">Birthday</label>
+          <input
+            id="signup-birthday"
+            className="login-input"
+            placeholder="Birthday"
+            name="birthday"
+            type="text"
+            value={signupState.birthday}
+            onChange={handleSignupChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="signup-password">Password</label>
+          <input
+            id="signup-password"
+            className="login-input"
+            placeholder="Password"
+            name="password"
+            type="password"
+            value={signupState.password}
+            onChange={handleSignupChange}
+          />
+        </div>
+        <button type='submit'>Sign Up</button>
+      </form>
+    </article>
   )
 }

@@ -5,7 +5,7 @@ import {
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
 import Auth from './utils/auth';
@@ -32,11 +32,11 @@ const client = new ApolloClient({
 export default function App() {
 
   const loggedIn = Auth.loggedIn();
-  const location = useLocation().pathname.slice(1);
+  const location = useLocation().pathname.split('/')[1];
+  let {familyId} = useParams();
 
   if (location !== "login-signup" && !loggedIn) {
-    console.log(loggedIn)
-    window.location.assign('/login-signup')
+    window.location.assign(`/login-signup/${location === "join-family" ? familyId : ""}`);
   }
 
   return (

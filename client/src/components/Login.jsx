@@ -5,7 +5,7 @@ import { useMutation } from '@apollo/client';
 import { LOGIN } from '../utils/mutations'
 import Auth from '../utils/auth';
 
-const Login = (familyId) => {
+const Login = ({familyId}) => {
   const [ loginState, setLoginState ] = useState({
     email: '',
     password: ''
@@ -32,34 +32,36 @@ const Login = (familyId) => {
   };
 
   return (
-    <form id="login-form" onSubmit={handleLogin}>
+    <article>
       <h1>Login</h1>
-      <div className="form-group">
-        <label htmlFor="login-email">Email</label>
-        <input
-          id="login-email"
-          className="login-input"
-          placeholder="Email"
-          name="email"
-          type="text"
-          value={loginState.email}
-          onChange={handleLoginChange}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="login-password">Password</label>
-        <input
-          id="login-password"
-          className="login-input"
-          placeholder="Password"
-          name="password"
-          type="password"
-          value={loginState.password}
-          onChange={handleLoginChange}
-        />
-      </div>
-      <button type='submit'>Log In</button>
-    </form>
+      <form id="login-form" onSubmit={handleLogin}>
+        <div className="form-group">
+          <label htmlFor="login-email">Email</label>
+          <input
+            id="login-email"
+            className="login-input"
+            placeholder="Email"
+            name="email"
+            type="text"
+            value={loginState.email}
+            onChange={handleLoginChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="login-password">Password</label>
+          <input
+            id="login-password"
+            className="login-input"
+            placeholder="Password"
+            name="password"
+            type="password"
+            value={loginState.password}
+            onChange={handleLoginChange}
+          />
+        </div>
+        <button type='submit'>Log In</button>
+      </form>
+    </article>
   )
 }
 
