@@ -1,4 +1,6 @@
 :root {
+  color-scheme: only light;
+
   --main: #FEFEFE;
   --menu: #E1E1E1;
   --accent: #383838;

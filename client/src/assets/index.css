@@ -3,7 +3,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light;
+  color-scheme: only light;
   color: var(--accent);
   background-color: var(--main);
 
@@ -11,6 +11,14 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  --main: #FEFEFE;
+  --menu: #E1E1E1;
+  --accent: #383838;
+  --mark: #38383880;
+  --left-ribbon: #99999980;
+  --right-ribbon: #999999;
+  
   --button-size: 70px;
   --link-size: calc((var(--button-size) - 30px) * .8)
 }
@@ -29,7 +37,7 @@ body, ul {
 
 article {
   margin: 5px calc(var(--button-size) * .6);
-  border-bottom: 1px solid var(--gray-mark);
+  border-bottom: 1px solid var(--mark);
 }
 
 article:last-of-type {
@@ -44,6 +52,7 @@ main {
 button {
   height: calc(var(--button-size) / 2);
   margin: 10px;
+  color: var(--accent);
   background-color: var(--menu);
   border: 1px solid var(--accent);
   border-radius: 12px;
@@ -189,12 +198,16 @@ label {
 
 input {
   padding: 5px 15px;
+  background-color: var(--menu);
+  color: var(--mark);
   border: 1px solid var(--accent);
   border-radius: 10px;
 }
 
 select {
   padding: 3px;
+  background-color: var(--menu);
+  color: var(--accent);
   border: 3px solid var(--mark);
   border-radius: 10px;
   text-align: center;

@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import './assets/gray-theme.css'
 import './assets/index.css';
+import iconTheme from './utils/favicon.js'
 
 import App from './App.jsx';
 import Error from './pages/Error.jsx';
@@ -15,6 +15,11 @@ import Family from './pages/Family.jsx';
 import MyFriends from './pages/MyFriends.jsx';
 import LoginSignup from './pages/LoginSignup.jsx';
 import JoinFamily from './pages/JoinFamily.jsx';
+
+const activeTheme = localStorage.getItem('color-theme');
+const isDarkTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark').matches
+import(`./assets/${activeTheme || isDarkTheme ? "lav" : "light"}-theme.css`);
+iconTheme(activeTheme || isDarkTheme ? "lav" : "light");
 
 const router = createBrowserRouter([
   {
