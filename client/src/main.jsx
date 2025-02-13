@@ -15,11 +15,12 @@ import Family from './pages/Family.jsx';
 import MyFriends from './pages/MyFriends.jsx';
 import LoginSignup from './pages/LoginSignup.jsx';
 import JoinFamily from './pages/JoinFamily.jsx';
+import ChangeTheme from './pages/ChangeTheme.jsx'
 
 const activeTheme = localStorage.getItem('color-theme');
 const isDarkTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark').matches
-import(`./assets/${activeTheme || isDarkTheme ? "lav" : "light"}-theme.css`);
-iconTheme(activeTheme || isDarkTheme ? "lav" : "light");
+import(`./assets/${activeTheme ? activeTheme : isDarkTheme ? "lavender" : "light"}-theme.css`);
+iconTheme(activeTheme ? activeTheme : isDarkTheme ? "lavender" : "light");
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: '/join-family/:familyId',
         element: <JoinFamily />
+      },
+      {
+        path: '/change-theme',
+        element: <ChangeTheme />
       }
     ]
   }

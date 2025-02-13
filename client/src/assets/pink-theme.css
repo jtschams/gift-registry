@@ -1,0 +1,10 @@
+:root {
+  color-scheme: only light;
+
+  --main: #FFF8FA;
+  --menu: #FBE5EA;
+  --accent: #3D3336;
+  --mark: #3D333680;
+  --left-ribbon: #F2C0CC80;
+  --right-ribbon: #EEC4CE;
+}

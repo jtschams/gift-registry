@@ -1,7 +1,10 @@
 export const styles = {
-  light: `--left-ribbon: #99999980; --right-ribbon: #999999;`,
-  dark: `--left-ribbon: #99999980; --right-ribbon: #999999;`,
-  lav: `--left-ribbon: #D3D3E9C0; --right-ribbon: #C3C3ED;`
+  light:      `--left-ribbon: #99999980; --right-ribbon: #999999;`,
+  dark:       `--left-ribbon: #99999980; --right-ribbon: #999999;`,
+  lavender:   `--left-ribbon: #C0C0F280; --right-ribbon: #C3C3ED;`,
+  sky:        `--left-ribbon: #C0D9F280; --right-ribbon: #C4D9EE;`,
+  mint:       `--left-ribbon: #C0F2C080; --right-ribbon: #C4EEC4;`,
+  pink:       `--left-ribbon: #F2C0CC80; --right-ribbon: #EEC4CE;`,
 };
 export default function(theme) {
   

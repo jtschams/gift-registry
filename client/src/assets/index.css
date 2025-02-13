@@ -351,6 +351,33 @@ input:focus-visible {
   text-decoration: underline;
 }
 
+/* Theme Sample Component */
+
+#change-theme > section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.theme-sample {
+  border: 1px solid var(--accent);
+  border-radius: 20px;
+  height: 150px;
+  width: 200px;
+  margin: 20px;
+  text-align: center;
+  background-color: var(--main);
+}
+
+.theme-sample > p {
+  padding-top: 15px;
+  border-top: 1px solid var(--mark);
+}
+
+.theme-sample:last-of-type {
+  border-bottom: 1px solid var(--accent);
+}
+
 /* Error Page */
 
 main#error {
