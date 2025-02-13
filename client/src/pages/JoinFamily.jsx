@@ -33,30 +33,32 @@ export default function JoinFamily() {
 
   return (
     <>
-      <article id="join-container">
-        <h1>Do you want to join this group?</h1>
-        <div className="form-group">
-          <label htmlFor="nickname">Enter your nickname for this group(Optional):</label>
-          <input
-            id="nickname"
-            placeholder="Nickname(Optional)"
-            name="nickname"
-            type="text"
-            value={nicknameState}
-            onChange={handleNicknameChange}
-          />
-        </div>
-        <button id="join-button" onClick={handleJoinFamily}>Join Group</button>
-      </article>
+      <h2>Do you want to join this group?</h2>
       {loading ? <h3 className="loading">Loading...</h3> :
         <article className="family-info">
-          <h3>Group: {family.familyName}</h3>
+          <h1>Group: {family.familyName}</h1>
             <div id="admins">
-              <h4>Admins:</h4>
+              <h3>Admins:</h3>
               {!members ? null : members.map((member) => (<Nickname key={member.user._id} member={member} />))}
             </div>
         </article>
       }
+      <article id="join-container">
+        <form>
+          <div className="form-group">
+            <label htmlFor="nickname">Enter your nickname for this group:</label>
+            <input
+              id="nickname"
+              placeholder="Nickname(Optional)"
+              name="nickname"
+              type="text"
+              value={nicknameState}
+              onChange={handleNicknameChange}
+            />
+          </div>
+          <button id="join-button" onClick={handleJoinFamily}>Join Group</button>
+        </form>
+      </article>
     </>
   )
 }

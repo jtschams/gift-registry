@@ -25,8 +25,21 @@
 
 /* Defaults */
 
+h1 {
+  text-align: center;
+}
+
+p {
+  margin: 15px 10px 0;
+}
+
 .invisible {
   display: none !important;
+}
+
+::selection {
+  background-color: var(--accent);
+  color: var(--menu);
 }
 
 body, ul {
@@ -233,6 +246,59 @@ input:focus-visible {
 
 .family-component h4 {
   margin: 0 15px;
+}
+
+/* Family Page */
+
+#invite-div {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#invite-div > button {
+  height: 27px;
+}
+
+#invite-div > label {
+  margin: auto 0;
+}
+
+#invite-link {
+  width: 360px;
+  height: 16px;
+  color: var(--accent);
+  margin: auto 0;
+}
+
+.details {
+  display: flex;
+  width: 200px;
+  justify-content: space-between;
+  margin: 0 25px 7px;
+}
+
+/* Nickname Component */
+
+.nickname {
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid var(--mark);
+}
+
+.nickname > p {
+  margin: 0 10px 10px;
+}
+
+/* Join Family Page */
+
+#join-container {
+  padding: 5px 0;
+}
+
+/* New Group Page */
+
+#new-group-form > div {
+  margin: 20px 0;
 }
 
 /* Question Component */

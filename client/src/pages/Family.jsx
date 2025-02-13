@@ -25,6 +25,8 @@ export default function Family() {
     event.preventDefault();
     document.getElementById('invite-div').classList.remove('invisible');
     document.getElementById('add-question-form').classList.add('invisible');
+    document.getElementById('invite-link').select();
+    
   }
   
   const showAddQuestion = (event) => {
@@ -52,59 +54,66 @@ export default function Family() {
     })
   }
 
+  const copyLink = (event) => {
+    event.preventDefault();
+    navigator.clipboard.writeText(linkState);
+    event.target.textContent = "Copied!"
+  }
+
   return (
     <>
       {loading ? (<h1 id="family-header">Loading...</h1>) : (<>
         <h1 id="family-header">{family.familyName}</h1>
         <section id="family-actions">
-          <h3>Group Actions</h3>
+          <h2>Group Actions</h2>
           <article id="family-action-list">
             <button onClick={generateInvite}>Generate Invite Link</button>
             <button onClick={showAddQuestion}>Add New Question</button>
+            <div id="invite-div" className="form-group invisible">
+              <label htmlFor="invite-link">Invite Link for this Group:</label>
+              <button id="copy-button" onClick={copyLink}>Copy Link</button>
+              <input id="invite-link" name="invite-link" value={linkState} readOnly/>
+            </div>
+            <form id="add-question-form" className="invisible" onSubmit={handleQuestionAdd}>
+              <div className="form-group">
+                <label htmlFor="question">Question</label>
+                <input
+                  id="question"
+                  className="question-input"
+                  placeholder="Question"
+                  name="question"
+                  type="text"
+                  value={newQuestionState.question}
+                  onChange={handleFormChange}    
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="category">Category</label>
+                <select
+                  id="category"
+                  className="question-input"
+                  name="category"
+                  value={newQuestionState.category}
+                  onChange={handleFormChange}
+                >
+                  <option>General Questions</option>
+                  <option>Sizes and Qualities</option>
+                  <option>Specific Gifts</option>
+                  <option>Dislikes</option>
+                </select>
+              </div>
+              <button type="submit">Add Question</button>
+            </form>
           </article>
-          <div id="invite-div" className="form-group invisible">
-            <label htmlFor="invite-link">Invite Link for this Group</label>
-            <input id="invite-link" name="invite-link" value={linkState} readOnly/>
-          </div>
-          <form id="add-question-form" className="invisible" onSubmit={handleQuestionAdd}>
-            <div className="form-group">
-              <label htmlFor="question">Question</label>
-              <input
-                id="question"
-                className="question-input"
-                placeholder="Question"
-                name="question"
-                type="text"
-                value={newQuestionState.question}
-                onChange={handleFormChange}    
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="category">Category</label>
-              <select
-                id="category"
-                className="question-input"
-                name="category"
-                value={newQuestionState.category}
-                onChange={handleFormChange}
-              >
-                <option>General Questions</option>
-                <option>Sizes and Qualities</option>
-                <option>Specific Gifts</option>
-                <option>Dislikes</option>
-              </select>
-            </div>
-            <button type="submit">Add Question</button>
-          </form>
         </section>
         <section id="family-questions">
-          <h3>Group Questions</h3>
+          <h2>Group Questions</h2>
           {family.questions.map((question) => (
             <article key={question._id} className="family-question">
               <p>{question.question}</p>
               <div className="details">
                 <small>({question.category})</small>
-                {question.claimable ? (<small>Claimable</small>) : null}
+                {question.claimable ? (<small>(Claimable)</small>) : null}
               </div>
             </article>
           ))}

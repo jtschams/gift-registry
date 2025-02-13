@@ -28,33 +28,36 @@ export default function CreateGroup() {
     })
   }
 
-  return (
-    <form onSubmit={handleCreateGroup}>
-      <div className="form-group">
-        <label htmlFor="family-name">What is the name of this Group?</label>
-        <input
-          id="family-name"
-          className="family-input"
-          placeholder="Group Name"
-          name="familyName"
-          type="text"
-          value={groupFormState.familyName}
-          onChange={handleGroupFormChange}
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="nickname">What name are you known by in this group?</label>
-        <input
-          id="nickname"
-          className="family-input"
-          placeholder="Nickname"
-          name="nickname"
-          type="text"
-          value={groupFormState.nickname}
-          onChange={handleGroupFormChange}
-        />
-      </div>
-      <button type="submit">Create New Group</button>
-    </form>
-  )
+  return (<>
+    <h1>Create New Group</h1>
+    <article>
+      <form id="new-group-form" onSubmit={handleCreateGroup}>
+        <div className="form-group">
+          <label htmlFor="family-name">Enter a name for this group:</label>
+          <input
+            id="family-name"
+            className="family-input"
+            placeholder="Group Name"
+            name="familyName"
+            type="text"
+            value={groupFormState.familyName}
+            onChange={handleGroupFormChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="nickname">Enter your nickname in this group:</label>
+          <input
+            id="nickname"
+            className="family-input"
+            placeholder="Nickname(Optional)"
+            name="nickname"
+            type="text"
+            value={groupFormState.nickname}
+            onChange={handleGroupFormChange}
+          />
+        </div>
+        <button type="submit">Create New Group</button>
+      </form>
+    </article>
+  </>)
 }
