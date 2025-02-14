@@ -351,6 +351,36 @@ input:focus-visible {
   text-decoration: underline;
 }
 
+/* Claim Component */
+
+#my-claims > section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.single-claim {
+  border: 1px solid var(--mark);
+  border-radius: 20px;
+  padding: 10px 5px;
+  margin: 25px 10px 0;
+  width: 300px;
+}
+
+.unclaim-button {
+  width: 95%;
+}
+
+.single-claim:last-of-type {
+  border-bottom: 1px solid var(--mark);
+}
+
+.claim-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
 /* Theme Sample Component */
 
 #change-theme > section {

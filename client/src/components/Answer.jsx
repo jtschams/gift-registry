@@ -14,7 +14,7 @@ export default function Answer({ answer }, { claimInfo }) {
 
   let claimForm = null;
 
-  if (isClaimable) {
+  if (claimInfo && isClaimable) {
     const [ nicknameState, setNicknameState ] = useState(claimInfo.relations[0].nickname);
   
     const [claimAnswer] = useMutation(claimAnswer);

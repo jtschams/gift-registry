@@ -1,9 +1,22 @@
-// TODO: Claim component
-// Enter from MyClaims
-//// Calls nothing
-//// Links to nothing
-//// Contains no components
+import React from 'react';
 
-export default function Claim() {
-  return
+import Answer from '../components/Answer'
+
+export default function Claim({claim}) {
+
+  const handleUnclaim = (event) => {
+    event.preventDefault();
+    // TODO: Write function once resolver present
+  }
+
+  return (
+    <article className="single-claim">
+      <Answer answer={claim.answer}/>
+      <button className="unclaim-button" onClick={handleUnclaim}>Unclaim Answer</button>
+      <div className="claim-details">
+        <small>{claim.question.question}</small>
+        <small>For User: {claim.nickname || claim.user.name}</small>
+      </div>
+    </article>
+  )
 }

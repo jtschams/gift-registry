@@ -113,3 +113,24 @@ export const RELATED_USERS = gql`
     }
   }
 `
+
+export const MY_CLAIMS = gql`
+  query MyClaims {
+    myClaims {
+      answer {
+        _id
+        answerText
+        answerLink
+      }
+      nickname
+      question {
+        _id
+        question
+        }
+      user {
+        _id
+        name
+      }
+    }
+  }
+`

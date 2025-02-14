@@ -7,7 +7,6 @@ export default function ThemeSample({ theme, styleInfo }) {
     localStorage.setItem('color-theme', theme.toLowerCase())
     window.location.reload();
   }
-  console.log(theme, styleInfo)
 
   return (
     <article style={styleInfo} className="theme-sample">
