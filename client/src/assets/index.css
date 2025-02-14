@@ -311,7 +311,6 @@ input:focus-visible {
 .nickname {
   display: flex;
   gap: 10px;
-  border-bottom: 1px solid var(--mark);
 }
 
 .nickname > p {

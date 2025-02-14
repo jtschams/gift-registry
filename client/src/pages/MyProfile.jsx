@@ -19,7 +19,7 @@ export default function MyProfile() {
       <article className="profile-selection">
         <h3>My Groups</h3>
         <ul id="family-list">
-          {loading? "Loading..." : me.groups?.map((family) => (
+          {loading? <h3 className="loading">Loading...</h3> : me.groups?.map((family) => (
             <Family key={family._id} family={family}/>
           ))}
           <li key="add-group" className="family-component"><Link to="/create-group"><h4>+ Create Group</h4></Link></li>

@@ -45,8 +45,8 @@ export const MY_ANSWERS = gql`
 `
 
 export const USER_ANSWERS = gql`
-  query UserAnswers {
-    userAnswers {
+  query UserAnswers($userId: ID!) {
+    userAnswers(userId: $userId) {
       question {
         _id
         question
@@ -62,9 +62,9 @@ export const USER_ANSWERS = gql`
         }
       }
     }
-    # // TODO: Consider making nicknames resolver
     relatedUsers {
       user {
+        _id
         name
       }
       relations {
