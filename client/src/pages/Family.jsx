@@ -20,7 +20,6 @@ export default function Family() {
   const family = data?.family;
   const [addQuestion] = useMutation(ADD_QUESTION);
   
-  // ? // TODO: Call invite() to send email invite
   const generateInvite = (event) => {
     event.preventDefault();
     document.getElementById('invite-div').classList.remove('invisible');

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-// TODO: add useEffect? Activity 20/24
 
 import { ANSWER_QUESTION } from '../utils/mutations'
 import { useQuestionContext } from '../pages/Questions';

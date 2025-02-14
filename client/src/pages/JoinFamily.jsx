@@ -8,7 +8,7 @@ import { JOIN_FAMILY } from '../utils/mutations';
 import Nickname from '../components/Nickname';
 
 export default function JoinFamily() {
-  const [ nicknameState, setNicknameState ] = useState();
+  const [ nicknameState, setNicknameState ] = useState("");
   const {familyId} = useParams();
   const { loading, data } = useQuery(FAMILY, { variables: { familyId } });
   const family = data?.family;
@@ -46,7 +46,7 @@ export default function JoinFamily() {
       <article id="join-container">
         <form>
           <div className="form-group">
-            <label htmlFor="nickname">Enter your nickname for this group:</label>
+            <label htmlFor="nickname">Enter your nickname in this group:</label>
             <input
               id="nickname"
               placeholder="Nickname(Optional)"

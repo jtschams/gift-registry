@@ -432,3 +432,44 @@ main#error {
 #error > #site-nav > ul {
   width: 100%;
 }
+
+/* Navbar change */
+
+@media screen and (min-width: 800px) {
+  
+  .burger {
+    display: none;
+  }
+
+  #site-nav {
+    left: auto;
+    margin: 15px calc((100vw - 80vw ) / 2);
+    max-width: 80vw;
+    border: 1px solid var(--accent);
+  }
+  
+  #site-nav > ul {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    padding: 15px 0;
+  }
+  
+  #site-nav li {
+    width: 33%;
+    height: 40px;
+    text-align: center;
+    height: fit-content;
+    padding: 0 15px;
+  }
+  
+  #site-nav li:nth-child(2) {
+    border: 1px solid var(--mark);
+    border-width: 0 1px ;
+  }
+
+  main {
+    margin-top: 120px;
+  }
+
+}

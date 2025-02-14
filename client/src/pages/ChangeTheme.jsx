@@ -1,5 +1,3 @@
-// TODO: Theme Change
-// Contains component ThemeSample
 import React from 'react';
 import ThemeSample from '../components/ThemeSample';
 import themes from '../utils/themes.js';
