@@ -10,6 +10,7 @@ export default function RelatedUser({user}) {
 
   return (
     <article className="single-friend">
+      <h4>{user.user.name}</h4>
       {user.relations.map((relation) => {
         return <Nickname 
           key={user.user._id + relation.familyName} 

@@ -182,7 +182,7 @@ h3 {
 /* Repeated elements */
 
 h4 {
-  margin: 0;
+  margin: 10px 0 0;
 }
 
 h2 {
@@ -328,15 +328,20 @@ input:focus-visible {
   margin: 0 25px 7px;
 }
 
-/* Nickname Component */
+/* Nickname */
 
 .nickname {
   display: flex;
   gap: 10px;
+  justify-content: center;
+}
+
+.nickname:last-of-type {
+  margin-bottom: 15px;
 }
 
 .nickname > p {
-  margin: 0 10px 10px;
+  margin: 0 10px;
 }
 
 /* Join Family Page */
@@ -345,20 +350,24 @@ input:focus-visible {
   padding: 5px 0;
 }
 
-/* New Group Page */
+#admins > .nickname {
+  justify-content: flex-start;
+}
+
+/* New Group */
 
 #new-group-form > div {
   margin: 20px 0;
 }
 
-/* Question Component */
+/* Questions */
 
 .question-component {
   padding: 15px 0;
   margin: 5px 25px;
 }
 
-/* Answer Component */
+/* Answers */
 
 .single-answer {
   display: flex;
@@ -394,13 +403,17 @@ input:focus-visible {
   justify-content: left;
 }
 
+#answers-user {
+  margin-bottom: 0;
+}
+
 .confirm-claim {
   min-width: 115px;
   width: 50%;
   border: 1.8px solid var(--accent);
 }
 
-/* Claim Component */
+/* Claim */
 
 .single-claim {
   padding: 10px 5px;
@@ -417,7 +430,7 @@ input:focus-visible {
   justify-content: space-evenly;
 }
 
-/* Theme Sample Component */
+/* Theme Sample */
 
 #change-theme > section {
   display: flex;

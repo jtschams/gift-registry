@@ -37,7 +37,7 @@ export default function MyAnswers() {
     <AnswerContext.Provider value={[ answerState, setAnswerState ]}>
       {!userId ? null : loading ? <h1>Loading...</h1> : <>
         <h1 id="answers-user">{user.user.name}</h1>
-        {user.relations.map((relation) => <div key={relation.familyName} className="user-nickname">
+        {user.relations.map((relation) => <div key={relation.familyName} className="nickname">
           <small>{relation.nickname}</small><small>({relation.familyName})</small>
         </div>)}
       </>}
