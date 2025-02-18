@@ -12,8 +12,10 @@ export default function MyFriends() {
 
   return (<>
     <h2>Related Users</h2>
-    {loading ? <h3 className="loading">Loading...</h3> : friends.map((user) =>
-      <RelatedUser key={user.user._id} user={user} />
-    )}
+    <section className="card-container">
+      {loading ? <h3 className="loading">Loading...</h3> : friends.map((user) =>
+        <RelatedUser key={user.user._id} user={user} />
+      )}
+    </section>
   </>)
 }

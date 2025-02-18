@@ -1,11 +1,16 @@
 import React from 'react';
+import { useState, createContext, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 import { MY_ANSWERS, USER_ANSWERS } from '../utils/queries';
 import AnswerSet from '../components/AnswerSet';
 
+const AnswerContext = createContext();
+export const useAnswerContext = () => useContext(AnswerContext);
+
 export default function MyAnswers() {
+  const [ answerState, setAnswerState ] = useState('');
   const { userId } = useParams();
   const answerQuery = userId ? USER_ANSWERS : MY_ANSWERS;
   const queryName = userId ? "userAnswers" : "myAnswers";
@@ -29,7 +34,7 @@ export default function MyAnswers() {
   };
 
   return (
-    <>
+    <AnswerContext.Provider value={[ answerState, setAnswerState ]}>
       {!userId ? null : loading ? <h1>Loading...</h1> : <>
         <h1 id="answers-user">{user.user.name}</h1>
         {user.relations.map((relation) => <div key={relation.familyName} className="user-nickname">
@@ -44,6 +49,6 @@ export default function MyAnswers() {
           ))}
         </section>
       )))}
-    </>
+    </AnswerContext.Provider>
   )
 }

@@ -6,7 +6,7 @@ export default function ThemeChange() {
 
   return (<>
     <h1>Select a Theme</h1>
-    <section>
+    <section className="card-container">
       {Object.keys(themes).map((theme) => (<ThemeSample key={theme} theme={theme} styleInfo={themes[theme]}/>))}
     </section>
   </>)

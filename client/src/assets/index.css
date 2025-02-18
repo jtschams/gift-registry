@@ -234,6 +234,28 @@ input:focus-visible {
   border: 2px solid var(--mark) ;
 }
 
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.card-container > article {
+  border: 1px solid var(--accent);
+  border-radius: 20px;
+  margin: 20px;
+  text-align: center;
+}
+
+.card-container > article > p {
+  padding-top: 15px;
+  border-top: 1px solid var(--mark);
+}
+
+.card-container > article:last-of-type {
+  border-bottom: 1px solid var(--accent);
+}
+
 /*    /* Specific pages and components*/
 
 /* Login Signup Page */
@@ -340,9 +362,23 @@ input:focus-visible {
 
 .single-answer {
   display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  width: calc(300px + ((100vw - 300px) / 3));
+  margin: 0;
 }
 
-.single-answer > * {
+.single-answer button, .unclaim-button {
+  height: 26px;
+  padding: 3px;
+}
+
+.answer-details {
+  display: flex;
+  justify-content: center;
+}
+
+.answer-details > * {
   margin: 7px 10px
 }
 
@@ -350,28 +386,29 @@ input:focus-visible {
   text-decoration: underline;
 }
 
-/* Claim Component */
-
-#my-claims > section {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
+#my-answers .answer-details {
+  justify-content: flex-start;
 }
 
+#user-answers .card-container {
+  justify-content: left;
+}
+
+.confirm-claim {
+  min-width: 115px;
+  width: 50%;
+  border: 1.8px solid var(--accent);
+}
+
+/* Claim Component */
+
 .single-claim {
-  border: 1px solid var(--mark);
-  border-radius: 20px;
   padding: 10px 5px;
-  margin: 25px 10px 0;
   width: 300px;
 }
 
 .unclaim-button {
   width: 95%;
-}
-
-.single-claim:last-of-type {
-  border-bottom: 1px solid var(--mark);
 }
 
 .claim-details {
@@ -389,22 +426,9 @@ input:focus-visible {
 }
 
 .theme-sample {
-  border: 1px solid var(--accent);
-  border-radius: 20px;
   height: 150px;
   width: 200px;
-  margin: 20px;
-  text-align: center;
   background-color: var(--main);
-}
-
-.theme-sample > p {
-  padding-top: 15px;
-  border-top: 1px solid var(--mark);
-}
-
-.theme-sample:last-of-type {
-  border-bottom: 1px solid var(--accent);
 }
 
 /* Error Page */

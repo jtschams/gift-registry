@@ -10,7 +10,7 @@ export default function MyClaims() {
 
   return (<>
     <h2>Claimed Answers</h2>
-    <section>
+    <section className="card-container">
       {loading ? <h1>Loading...</h1> : claims.map((claim) => (
         <Claim key={claim.answer._id} claim={claim} />
       ))}

@@ -1,23 +1,24 @@
-// TODO: Answer component claimAnswer call
-// Calls "claimAnswer" Mutation resolver[UserAnswers] {MyClaims on submit}
 import React from 'react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
+import { useAnswerContext } from '../pages/Answers';
 import { CLAIM_ANSWER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
-export default function Answer({ answer }, { claimInfo }) {
+export default function Answer({ answer, claimInfo }) {
   const { userId } = useParams();
   const isClaimable = userId && answer.amount - (answer.claims > 0) && !(answer.claims.some((user) => user._id == Auth.getProfile().data._id));
 
-  let claimForm = null;
+  const generateClaimForm = () => {
 
-  if (claimInfo && isClaimable) {
+    if (!claimInfo || !isClaimable) return;
+    
+    const [ answerState, setAnswerState ] = useAnswerContext();
     const [ nicknameState, setNicknameState ] = useState(claimInfo.relations[0].nickname);
   
-    const [claimAnswer] = useMutation(claimAnswer);
+    const [claimAnswer] = useMutation(CLAIM_ANSWER);
 
     const handleClaimAnswer = async (event) => {
       event.preventDefault();
@@ -28,7 +29,7 @@ export default function Answer({ answer }, { claimInfo }) {
         nickname: nicknameState
       }});
       alert("Answer Claimed.");
-      document.querySelector(`#${answer._id} > form`).remove();
+      window.location.replace('/my-claims');
     }
 
     const handleNicknameChange = (event) => {
@@ -36,34 +37,45 @@ export default function Answer({ answer }, { claimInfo }) {
       setNicknameState(value);
     }
 
-    const generateClaimForm = () => {
-      return (<form className="claim-answer-form" onSubmit={handleClaimAnswer}>
-        <button type="submit">Claim Answer</button>
-        <div class="form-group">
-          <label htmlFor="claim-nickname">Nickname</label>
-          <select
-            id="claim-nickname"
-            className="claim-input"
-            value={nicknameState}
-            onChange={handleNicknameChange}
-          >
-            {claimInfo.relations.map((relation) => (
-              <option key={relation.familyName}>{relation.nickname}</option>
-            ))}
-          </select>
-        </div>
-      </form>
-      )
-    }
-
-    claimForm = generateClaimForm();
+    const activateClaim = async (event) => {
+      const formerClaim = document.getElementById(answerState);
+      formerClaim?.classList.remove("invisible");
+      formerClaim?.nextElementSibling.classList.add("invisible");
+      setAnswerState(`claim-${answer._id}`);
+      event.target.classList.add("invisible");
+      event.target.nextElementSibling.classList.remove("invisible");
+    }  
+  
+    return (
+      <>
+        <button id={`claim-${answer._id}`} onClick={activateClaim}>Claim Answer</button>
+        <form className="claim-answer-form invisible" onSubmit={handleClaimAnswer}>
+          <div className="form-group">
+            <label htmlFor="claim-nickname">Select Nickname for Claim</label>
+            <select
+              id="claim-nickname"
+              className="claim-input"
+              value={nicknameState}
+              onChange={handleNicknameChange}
+            >
+              {claimInfo.relations.map((relation) => (
+                <option key={relation.familyName}>{relation.nickname}</option>
+              ))}
+            </select>
+          </div>
+          <button className="confirm-claim" type="submit">Confirm Claim</button>
+        </form>
+      </>
+    )
   }
 
   return (
-    <div id={answer._id} className="single-answer">
-      <p>{answer.answerText}</p>
-      {answer.answerLink ? (<a href={answer.answerLink} className="answer-link">Link</a>) : null}
-      {claimForm}
-    </div>
+    <article id={answer._id} className="single-answer">
+      <div className="answer-details">  
+        <p>{answer.answerText}</p>
+        {answer.answerLink ? (<a href={answer.answerLink} className="answer-link">(Link)</a>) : null}
+      </div>
+      {generateClaimForm()}
+    </article>
   )
 }
