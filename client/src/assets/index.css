@@ -6,7 +6,7 @@
   color-scheme: only light;
   color: var(--accent);
   background-color: var(--main);
-
+  
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -65,7 +65,7 @@ main {
 button {
   height: calc(var(--button-size) / 2);
   margin: 10px;
-  color: var(--accent);
+  color: inherit;
   background-color: var(--menu);
   border: 1px solid var(--accent);
   border-radius: 12px;
@@ -163,7 +163,6 @@ button:active {
 #site-nav a {
   height: 100%;
   color: var(--accent);
-  text-decoration: none;
 }
 
 /* Clickable Text */
@@ -171,7 +170,7 @@ button:active {
 .family-component, .question-component > h3, a {
   cursor: pointer;
   text-decoration: none;
-  color: var(--accent);
+  color: inherit;
 }
 
 h3 {
@@ -212,7 +211,7 @@ label {
 input {
   padding: 5px 15px;
   background-color: var(--menu);
-  color: var(--accent);
+  color: inherit;
   border: 1px solid var(--accent);
   border-radius: 10px;
 }
@@ -224,7 +223,7 @@ input::placeholder {
 select {
   padding: 3px;
   background-color: var(--menu);
-  color: var(--accent);
+  color: inherit;
   border: 3px solid var(--mark);
   border-radius: 10px;
   text-align: center;
@@ -317,7 +316,6 @@ input:focus-visible {
 #invite-link {
   width: 360px;
   height: 16px;
-  color: var(--accent);
   margin: auto 0;
 }
 

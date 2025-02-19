@@ -13,7 +13,8 @@ export default function Answer({ answer, claimInfo }) {
 
   const generateClaimForm = () => {
 
-    if (!claimInfo || !isClaimable) return;
+    if (!claimInfo?.relations || answer.amount === 0) return;
+    if (!isClaimable) return (<button className="already-claimed">Claimed by Someone Else</button>);
     
     const [ answerState, setAnswerState ] = useAnswerContext();
     const [ nicknameState, setNicknameState ] = useState(claimInfo.relations[0].nickname);
