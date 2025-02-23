@@ -19,8 +19,8 @@ import ChangeTheme from './pages/ChangeTheme.jsx'
 
 const activeTheme = localStorage.getItem('color-theme');
 const isDarkTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark').matches
-import(`./assets/${activeTheme ? activeTheme : isDarkTheme ? "lavender" : "light"}-theme.css`);
-iconTheme(activeTheme ? activeTheme : isDarkTheme ? "lavender" : "light");
+import(`./assets/${activeTheme ? activeTheme : isDarkTheme ? "dark" : "light"}-theme.css`);
+iconTheme(activeTheme ? activeTheme : isDarkTheme ? "dark" : "light");
 
 const router = createBrowserRouter([
   {
