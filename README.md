@@ -21,9 +21,9 @@ From the root of the repo, run "npm run install" and then "npm run set-default".
 
 HTML 5, CSS 3, Javascript ES6+, node.js, express, React, Mongoose, Bcrypt, JWT
 
-## Links <!-- TODO: Links in README -->
+## Links
 
-[Page Link]()
+[Page Link](http://3.137.161.101)
 
 [Repository link (Github)](https://github.com/jtschams/gift-registry)
 
