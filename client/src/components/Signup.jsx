@@ -18,7 +18,7 @@ export default function Signup({familyId}) {
   const handleSignup = async (event) => {
     event.preventDefault();
     const {data} = await addUser({
-      variables: { ...signupState }
+      variables: { ...signupState, birthday: signupState.birthday.split('\\').join('/') }
     });
     const token = data.addUser.token;
     Auth.login(token, familyId);
