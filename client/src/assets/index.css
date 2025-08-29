@@ -268,10 +268,6 @@ input:focus-visible {
   width: 100px;
 }
 
-#signup-form small {
-  margin-left: 10px;
-}
-
 #form-section {
   display: flex;
   justify-content: space-around;
@@ -280,6 +276,11 @@ input:focus-visible {
 #form-section > article {
   width: 310px;
   border-bottom: 0px;
+}
+
+.password-container > small {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 /* Family Component */

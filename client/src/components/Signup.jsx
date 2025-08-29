@@ -7,7 +7,8 @@ import Auth from '../utils/auth';
 
 export default function Signup({familyId}) {
   const [ signupState, setSignupState ] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     birthday: ''
@@ -22,7 +23,7 @@ export default function Signup({familyId}) {
     });
     const token = data.addUser.token;
     Auth.login(token, familyId);
-  }
+  };
 
   const handleSignupChange = (event) => {
     const { name, value } = event.target;
@@ -33,19 +34,43 @@ export default function Signup({familyId}) {
     });
   };
 
+  function toggleSignupPassword() {
+    const toggleEl = document.getElementById("toggle-signup-password");
+    const pwEl = document.getElementById("signup-password");
+    if (pwEl.type === "password") {
+      toggleEl.textContent = "Hide Password";
+      pwEl.type = "text";
+    } else if (pwEl.type === "text") {
+      toggleEl.textContent = "Show Password";
+      pwEl.type = "password";
+    }
+  };
+
   return (
     <article>
       <h1>Signup</h1>
       <form id="signup-form" onSubmit={handleSignup}>
         <div className="form-group">
-          <label htmlFor="signup-name">Name<small>(Nicknames will be entered later.)</small></label>
+          <label htmlFor="signup-first-name">First Name</label>
           <input
-            id="signup-name"
+            id="signup-first-name"
             className="login-input"
             placeholder="Enter Your Name"
-            name="name"
+            name="firstName"
             type="text"
-            value={signupState.name}
+            value={signupState.firstName}
+            onChange={handleSignupChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="signup-last-name">Last Name</label>
+          <input
+            id="signup-last-name"
+            className="login-input"
+            placeholder="Enter Your Name"
+            name="lastName"
+            type="text"
+            value={signupState.lastName}
             onChange={handleSignupChange}
           />
         </div>
@@ -73,7 +98,7 @@ export default function Signup({familyId}) {
             onChange={handleSignupChange}
           />
         </div>
-        <div className="form-group">
+        <div className="form-group password-container">
           <label htmlFor="signup-password">Password</label>
           <input
             id="signup-password"
@@ -84,6 +109,7 @@ export default function Signup({familyId}) {
             value={signupState.password}
             onChange={handleSignupChange}
           />
+          <small id="toggle-signup-password" onClick={toggleSignupPassword}>Show Password</small>
         </div>
         <button type='submit'>Sign Up</button>
       </form>

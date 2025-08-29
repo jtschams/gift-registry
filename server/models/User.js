@@ -3,7 +3,11 @@ const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const userSchema = new Schema({
-  name: {
+  firstName: {
+    type: String,
+    required: true
+  },
+  lastName: {
     type: String,
     required: true
   },
@@ -40,6 +44,10 @@ const userSchema = new Schema({
       ref: 'Answer'
     }]
   }],
+  wishlist: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Answer'
+  }],
   claims: [claimedSchema],
   lastAnswer: { type: Date, default: Date.now }
 });
@@ -52,6 +60,10 @@ userSchema.pre('save', async function (next) {
 
   next();
 });
+
+userSchema.methods.name = async function() {
+  return this.firstName + " " + this.lastName;
+};
 
 userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);

@@ -160,6 +160,9 @@ const resolvers = {
           family.members.push({ user, nickname });
           await family.save();
           changes.family = true;
+        } else {
+          // TODO: Handle duplicate names
+
         }
 
         return user;

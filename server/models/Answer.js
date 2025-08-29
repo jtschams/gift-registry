@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const answerSchema = new Schema({
+  rank: Number,
   answerText: {
     type: String,
     required: true,

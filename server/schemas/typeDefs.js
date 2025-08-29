@@ -78,7 +78,7 @@ type Query {
 }
 
 type Mutation {
-  addUser(name: String!, birthday: String!, likesSurprises: Boolean, email: String!, password: String!): Auth
+  addUser(firstName: String!, lastName: String!, birthday: String!, likesSurprises: Boolean, email: String!, password: String!): Auth
   login(email: String!, password: String!): Auth
   addFamily(familyName: String!, nickname: String): Family
   joinFamily(familyId: ID!, nickname: String): User

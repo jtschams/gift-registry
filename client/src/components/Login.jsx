@@ -20,7 +20,7 @@ const Login = ({familyId}) => {
     });
     const token = data.login.token;
     Auth.login(token, familyId);
-  }
+  };
 
   const handleLoginChange = (event) => {
     const { name, value } = event.target;
@@ -29,6 +29,18 @@ const Login = ({familyId}) => {
       ...loginState,
       [name]: value
     });
+  };
+
+  function toggleLoginPassword() {
+    const toggleEl = document.getElementById("toggle-login-password");
+    const pwEl = document.getElementById("login-password");
+    if (pwEl.type === "password") {
+      toggleEl.textContent = "Hide Password";
+      pwEl.type = "text";
+    } else if (pwEl.type === "text") {
+      toggleEl.textContent = "Show Password";
+      pwEl.type = "password";
+    }
   };
 
   return (
@@ -47,7 +59,7 @@ const Login = ({familyId}) => {
             onChange={handleLoginChange}
           />
         </div>
-        <div className="form-group">
+        <div className="form-group password-container">
           <label htmlFor="login-password">Password</label>
           <input
             id="login-password"
@@ -58,6 +70,7 @@ const Login = ({familyId}) => {
             value={loginState.password}
             onChange={handleLoginChange}
           />
+          <small id="toggle-login-password" onClick={toggleLoginPassword}>Show Password</small>
         </div>
         <button type='submit'>Log In</button>
       </form>
