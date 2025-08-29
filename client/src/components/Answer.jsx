@@ -30,7 +30,7 @@ export default function Answer({ answer, claimInfo }) {
         nickname: nicknameState
       }});
       alert("Answer Claimed.");
-      window.location.replace('/my-claims');
+      window.location.replace('/shopping-list');
     }
 
     const handleNicknameChange = (event) => {

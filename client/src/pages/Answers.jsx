@@ -43,7 +43,6 @@ export default function MyAnswers() {
       </>}
       {loading ? <h3 className="loading">Loading...</h3> : (Object.keys(sortedAnswers).map((category) => (
         <section key={category}>
-          <h2 className="category-header">{category}</h2>
           {sortedAnswers[category].map((answerSet) => (
             <AnswerSet key={answerSet.question._id} answerSet={answerSet} relations={relations}/>
           ))}

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 
 import { ANSWER_QUESTION } from '../utils/mutations'
-import { useQuestionContext } from '../pages/Questions';
+import { useQuestionContext } from '../pages/Questionnaire';
 
 export default function Question({ question }) {
 

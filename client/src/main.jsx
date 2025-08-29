@@ -7,9 +7,9 @@ import iconTheme from './utils/favicon.js'
 import App from './App.jsx';
 import Error from './pages/Error.jsx';
 import MyProfile from './pages/MyProfile.jsx';
-import Questions from './pages/Questions.jsx';
+import Questionnaire from './pages/Questionnaire.jsx';
 import Answers from './pages/Answers.jsx';
-import MyClaims from './pages/MyClaims.jsx';
+import ShoppingList from './pages/ShoppingList.jsx';
 import CreateGroup from './pages/CreateGroup.jsx';
 import Family from './pages/Family.jsx';
 import MyFriends from './pages/MyFriends.jsx';
@@ -33,16 +33,16 @@ const router = createBrowserRouter([
         element: <MyProfile />
       },
       {
-        path: '/questions',
-        element: <Questions />
+        path: '/questionnaire',
+        element: <Questionnaire />
       },
       {
-        path: '/my-answers',
+        path: '/wishlist/:userId?',
         element: <Answers />
       },
       {
-        path: '/my-claims',
-        element: <MyClaims />
+        path: '/shopping-list',
+        element: <ShoppingList />
       },
       {
         path: '/create-group',
@@ -57,7 +57,7 @@ const router = createBrowserRouter([
         element: <MyFriends />
       },
       {
-        path: '/user-answers/:userId',
+        path: '/user-answers/:userId?',
         element: <Answers />
       },
       {
