@@ -20,7 +20,8 @@ export default function MyAnswers() {
     "Likes": [],
     "Sizes Etc": [],
     "Dislikes": [],
-    "Miscellaneous": []
+    "Miscellaneous": [],
+    "Final": []
   };
   let user = null;
   let relations = null;

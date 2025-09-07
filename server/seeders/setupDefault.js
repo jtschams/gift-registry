@@ -11,7 +11,7 @@ db.once('open', async () => {
   for (let i = 0; i < family.questions.length; i++) {
     let removeDefault = true;
     for (let j = 0; j < defaultQuestions.length; j++) {
-      if (family.questions[i].question === defaultQuestions[j].question) {
+      if (family.questions[i].question === defaultQuestions[j].question && family.questions[i].category === defaultQuestions[j].category) {
         defaultQuestions.splice(j, 1);
         removeDefault = false;
         break;

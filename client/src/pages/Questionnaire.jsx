@@ -16,7 +16,8 @@ export default function Questionnaire() {
     "Likes": [],
     "Sizes Etc": [],
     "Dislikes": [],
-    "Miscellaneous": []
+    "Miscellaneous": [],
+    "Final": []
   };
   if (!loading) {
     const questions = data?.myQuestions;
