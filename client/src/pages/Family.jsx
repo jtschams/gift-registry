@@ -12,7 +12,7 @@ export default function Family() {
   const [ linkState ] = useState(`${location.origin}/join-family/${familyId}`);
   const [ newQuestionState, setNewQuestionState ] = useState({
     question: '',
-    category: 'General Questions',
+    category: 'Likes',
     familyId
   });
   
@@ -38,7 +38,9 @@ export default function Family() {
     event.preventDefault();
     const {data} = await addQuestion({ variables: {
       ...newQuestionState,
-      claimable: newQuestionState.category === "Specific Gifts"
+      // TODO: Add option to make claimable?
+      claimable: false
+      // claimable: newQuestionState.category === "Specific Gifts"
     }});
     alert("Question added.");
     window.location.reload();
@@ -95,10 +97,10 @@ export default function Family() {
                   value={newQuestionState.category}
                   onChange={handleFormChange}
                 >
-                  <option>General Questions</option>
-                  <option>Sizes and Qualities</option>
-                  <option>Specific Gifts</option>
+                  <option>Likes</option>
+                  <option>Sizes Etc</option>
                   <option>Dislikes</option>
+                  <option>Miscellaneous</option>
                 </select>
               </div>
               <button type="submit">Add Question</button>

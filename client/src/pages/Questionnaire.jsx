@@ -13,10 +13,10 @@ export default function Questionnaire() {
 
   const { loading, data } = useQuery(MY_QUESTIONS);
   const sortedQuestions = {
-    "General Questions": [],
-    "Sizes and Qualities": [],
-    "Specific Gifts": [],
-    "Dislikes": []
+    "Likes": [],
+    "Sizes Etc": [],
+    "Dislikes": [],
+    "Miscellaneous": []
   };
   if (!loading) {
     const questions = data?.myQuestions;

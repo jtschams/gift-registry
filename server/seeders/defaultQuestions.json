@@ -1,67 +1,67 @@
 [
   {
-    "question": "What are your favorite colors?",
-    "category": "Sizes and Qualities",
+    "question": "Favorite colors?",
+    "category": "Likes",
     "claimable": false
   },
   {
-    "question": "What colors do you NOT like?",
+    "question": "Least favorite colors?",
     "category": "Dislikes",
     "claimable": false
   },
   {
-    "question": "What snacks would you like to receive?",
-    "category": "General Questions",
+    "question": "Favorite snacks?",
+    "category": "Likes",
     "claimable": false
   },
   {
-    "question": "What candies would you like to receive?",
-    "category": "General Questions",
+    "question": "Favorite candies?",
+    "category": "Likes",
     "claimable": false
   },
   {
-    "question": "What restaurants would you like gift cards for?",
-    "category": "General Questions",
+    "question": "Favorite restaurants?",
+    "category": "Likes",
     "claimable": false
   },
   {
-    "question": "What are some of your hobbies or pastimes?",
-    "category": "General Questions",
+    "question": "Hobbies or Pastimes?",
+    "category": "Likes",
     "claimable": false
   },
   {
-    "question": "What are your favorite authors or genres of books?",
-    "category": "General Questions",
+    "question": "Favorite authors or directors?",
+    "category": "Likes",
     "claimable": false
   },
   {
-    "question": "What movies or shows would you like to own?",
-    "category": "Specific Gifts",
+    "question": "Favorite genres?",
+    "category": "Likes",
+    "claimable": false
+  },
+  {
+    "question": "Movies or shows you would like to own?",
+    "category": "Likes",
     "claimable": true
   },
   {
-    "question": "What is your shirt size?",
-    "category": "Sizes and Qualities",
+    "question": "Shirt Size:",
+    "category": "Sizes Etc",
     "claimable": false
   },
   {
-    "question": "What is your pants size?",
-    "category": "Sizes and Qualities",
+    "question": "Pants Size:",
+    "category": "Sizes Etc",
     "claimable": false
   },
   {
-    "question": "What specific items would you like?",
-    "category": "Specific Gifts",
-    "claimable": true
-  },
-  {
-    "question": "What would you prefer NOT to receive?",
+    "question": "Anything you prefer NOT to receive?",
     "category": "Dislikes",
     "claimable": false
   },
   {
     "question": "Is there anything else you want everyone to know?",
-    "category": "General Questions",
+    "category": "Miscellaneous",
     "claimable": false
   }
 ]

@@ -17,10 +17,10 @@ export default function MyAnswers() {
   
   const { loading, data } = useQuery(answerQuery, { variables: { userId } });
   const sortedAnswers = {
-    "General Questions": [],
-    "Sizes and Qualities": [],
-    "Specific Gifts": [],
-    "Dislikes": []
+    "Likes": [],
+    "Sizes Etc": [],
+    "Dislikes": [],
+    "Miscellaneous": []
   };
   let user = null;
   let relations = null;

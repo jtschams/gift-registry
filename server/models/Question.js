@@ -5,10 +5,10 @@ const questionSchema = new Schema ({
     type: String,
     required: true
   },
-  //  Categories are general/specific/negative/sizes
+  //  Categories are [ "Likes", "Sizes Etc", "Dislikes", "Miscellaneous" ]
   category: {
     type: String,
-    default: 'General Questions'
+    default: 'Likes'
   },
   claimable: {
     type: Boolean,
