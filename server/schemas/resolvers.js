@@ -196,7 +196,7 @@ const resolvers = {
         const answer = await Answer.create({ answerText, answerLink, amount });
         let answerSet = { question, answers: [ answer ] };
 
-        const user = await User.findById(context.user._id).populate({ path: 'answers', populate: 'question' });
+        const user = await User.findById(context.user._id).populate({ path: 'answers', populate: [ 'question', 'answers' ] });
         const questIndex = user.answers.findIndex((quest) => quest.question._id == questionId);
 
         if (questIndex === -1) {

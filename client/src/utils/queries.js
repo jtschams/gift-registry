@@ -23,6 +23,17 @@ export const MY_QUESTIONS = gql`
       category
       claimable
     }
+    myAnswers {
+      question {
+        _id
+      }
+      answers {
+        _id
+        answerText
+        answerLink
+        amount
+      }
+    }
   }
 `
 

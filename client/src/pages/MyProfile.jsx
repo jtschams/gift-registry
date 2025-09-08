@@ -12,6 +12,7 @@ export default function MyProfile() {
 
   return (
     <>
+      <h2>My Profile</h2>
       <article className="profile-selection"><Link to="/questionnaire"><h3>Tastes & Preferences Questionnaire</h3></Link></article>
       <article className="profile-selection"><Link to="/wishlist"><h3>My Wishlist</h3></Link></article>
       <article className="profile-selection"><Link to="/shopping-list"><h3>Gifts I Plan to Give</h3></Link></article>

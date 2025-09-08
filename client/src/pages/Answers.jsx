@@ -36,11 +36,12 @@ export default function MyAnswers() {
 
   return (
     <AnswerContext.Provider value={[ answerState, setAnswerState ]}>
-      {!userId ? null : loading ? <h1>Loading...</h1> : <>
+      {!userId ? <h2>My Tastes & Preferences</h2> : loading ? <h1>Loading...</h1> : <>
         <h1 id="answers-user">{user.user.name}</h1>
         {user.relations.map((relation) => <div key={relation.familyName} className="nickname">
           <small>{relation.nickname}</small><small>({relation.familyName})</small>
         </div>)}
+        <h2>Tastes & Preferences</h2>
       </>}
       {loading ? <h3 className="loading">Loading...</h3> : (Object.keys(sortedAnswers).map((category) => (
         <section key={category}>

@@ -32,8 +32,13 @@ const startApolloServer = async () => {
 
   db.once('open', () => {
     app.listen(PORT, () => {
-      console.log(`API server running on port ${PORT}!`);
-      console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+      if (process.env.NODE_ENV === 'production') {
+        console.log(`Site live locally on port ${PORT}`);
+        console.log(`View current build at http://localhost:${PORT}`)
+      } else {
+        console.log(`API server running on port ${PORT}!`);
+        console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+      }
     });
   });
 };

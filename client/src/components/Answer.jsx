@@ -71,12 +71,12 @@ export default function Answer({ answer, claimInfo }) {
   }
 
   return (
-    <article id={answer._id} className="single-answer">
+    <li id={answer._id} className="single-answer">
       <div className="answer-details">  
-        <p>{answer.answerText}</p>
+        <h4>{answer.answerText}</h4>
         {answer.answerLink ? (<a href={answer.answerLink} className="answer-link">(Link)</a>) : null}
       </div>
       {generateClaimForm()}
-    </article>
+    </li>
   )
 }

@@ -10,9 +10,11 @@
     "build": "cd client && npm run build",
     "set-default": "cd server && npm run set-def",
     "update-build": "npm run set-default && npm run build",
+    "build-open": "npm run update-build && npm run start",
     "init-build": "npm install && npm run set-default && npm run build",
     "seed": "cd server && npm run seed",
-    "test": "SET \"NODE_ENV=dev\" && node server/server.js"
+    "test": "SET \"NODE_ENV=dev\" && node server/server.js",
+    "build-test": "npm run update-build && npm run test"
   },
   "keywords": [
     "gift",

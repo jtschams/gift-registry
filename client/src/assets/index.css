@@ -236,7 +236,8 @@ input:focus-visible {
 .card-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: left;
+  padding: 0 calc(var(--button-size) * .25);
 }
 
 .card-container > article {
@@ -285,7 +286,7 @@ input:focus-visible {
 
 /* Family Component */
 
-.family-component {
+.family-component, .single-answer {
   background-color: var(--menu);
   padding: 1px 1px;
   min-height: calc(var(--link-size) * .8);
@@ -363,17 +364,35 @@ input:focus-visible {
 
 .question-component {
   padding: 15px 0;
-  margin: 5px 25px;
+  margin: 5px calc(var(--button-size) * .6);
+  border-bottom: 1px solid var(--mark);
+}
+
+.question-component:last-child {
+  border-bottom: none;
+}
+
+.question-component > article {
+  margin: 5px 0;
+}
+
+.single-answer.add-answer {
+  margin-left: calc(var(--button-size) * .35);
 }
 
 /* Answers */
+
+.answer-set {
+  border-bottom: none;
+}
 
 .single-answer {
   display: flex;
   flex-direction: column;
   max-width: 100%;
-  width: calc(300px + ((100vw - 300px) / 3));
-  margin: 0;
+  width: calc(450px + ((100vw - 450px) / 15));
+  margin: calc(var(--button-size) * .1);
+  border-radius: 20px;
 }
 
 .single-answer button, .unclaim-button {
@@ -383,11 +402,12 @@ input:focus-visible {
 
 .answer-details {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
 }
 
 .answer-details > * {
-  margin: 7px 10px
+  margin: 0 10px
 }
 
 .answer-link {
@@ -396,10 +416,6 @@ input:focus-visible {
 
 #my-answers .answer-details {
   justify-content: flex-start;
-}
-
-#user-answers .card-container {
-  justify-content: left;
 }
 
 #answers-user {
@@ -419,6 +435,11 @@ input:focus-visible {
   width: 300px;
 }
 
+.single-claim .single-answer {
+  background-color: inherit;
+  border: none;
+}
+
 .unclaim-button {
   width: 95%;
 }
@@ -434,6 +455,11 @@ input:focus-visible {
 #change-theme > section {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 0;
+}
+
+#change-theme .card-container {
   justify-content: space-around;
 }
 
