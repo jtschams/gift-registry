@@ -38,6 +38,20 @@ export const ANSWER_QUESTION = gql`
   }
 `
 
+export const MAKE_WISH = gql`
+  mutation MakeWish($rank: Int!, $answerText: String!, $answerLink: String, $amount: Int!) {
+    makeWish(rank: $rank, answerText: $answerText, answerLink: $answerLink, amount: $amount) {
+      answers {
+        _id
+        rank
+        answerText
+        answerLink
+        amount
+      }  
+    }
+  }
+`
+
 export const CLAIM_ANSWER = gql`
   mutation ClaimAnswer($userId: ID!, $questionId: ID!, $answerId: ID!, $nickname: String!) {
     claimAnswer(userId: $userId, questionId: $questionId, answerId: $answerId, nickname: $nickname) {

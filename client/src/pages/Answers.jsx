@@ -9,7 +9,7 @@ import AnswerSet from '../components/AnswerSet';
 const AnswerContext = createContext();
 export const useAnswerContext = () => useContext(AnswerContext);
 
-export default function MyAnswers() {
+export default function Answers() {
   const [ answerState, setAnswerState ] = useState('');
   const { userId } = useParams();
   const answerQuery = userId ? USER_ANSWERS : MY_ANSWERS;

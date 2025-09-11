@@ -86,6 +86,43 @@ export const USER_ANSWERS = gql`
   }
 `
 
+export const MY_WISHLIST = gql`
+  query MyWishlist {
+    myWishlist {
+      _id
+      rank
+      answerText
+      answerLink
+      amount
+    }
+  }
+`
+
+export const USER_WISHLIST = gql`
+  query UserWishlist($userId: ID!) {
+    userWishlist(userId: $userId) {
+      _id
+      rank
+      answerText
+      answerLink
+      amount
+      claims {
+        _id
+      }
+    }
+    relatedUsers {
+      user {
+        _id
+        name
+      }
+      relations {
+        familyName
+        nickname
+      }
+    }
+  }
+`
+
 export const FAMILY = gql`
   query Family($familyId: ID!) {
     family(familyId: $familyId) {

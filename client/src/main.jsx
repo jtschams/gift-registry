@@ -9,6 +9,7 @@ import Error from './pages/Error.jsx';
 import MyProfile from './pages/MyProfile.jsx';
 import Questionnaire from './pages/Questionnaire.jsx';
 import Answers from './pages/Answers.jsx';
+import Wishlist from './pages/Wishlist.jsx';
 import ShoppingList from './pages/ShoppingList.jsx';
 import CreateGroup from './pages/CreateGroup.jsx';
 import Family from './pages/Family.jsx';
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/wishlist/:userId?',
-        element: <Answers />
+        element: <Wishlist />
       },
       {
         path: '/shopping-list',

@@ -86,6 +86,19 @@ const resolvers = {
       return user.answers;
     },
     
+    myWishlist: async (parent, args, context) => {
+      const user = await User.findById(context.user._id)
+        .populate({ path: 'wishlist', populate: 'claims' });
+      return user.wishlist;
+    },
+    
+    userWishlist: async (parent, { userId }) => {
+      const user = await User.findById(userId)
+        .populate({ path: 'wishlist', populate: 'claims' });
+      
+      return user.wishlist;
+    },
+    
     myClaims: async (parent, args, context) => {
       const user = await User.findById(context.user._id)
         .populate({ path: 'claims', populate: [ 'user', 'question', 'answer'] });
@@ -208,6 +221,20 @@ const resolvers = {
         await user.save();
     
         return answerSet;
+      }
+      throw AuthenticationError;
+    },
+
+    makeWish: async (parent, { rank, answerText, answerLink, amount }, context) => {
+      if (context.user) {
+        const answer = await Answer.create({ rank, answerText, answerLink, amount });
+
+        const user = await User.findById(context.user._id).populate('wishlist');
+
+        user.wishlist.push(answer)
+        await user.save();
+    
+        return answer;
       }
       throw AuthenticationError;
     },

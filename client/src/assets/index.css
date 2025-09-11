@@ -378,6 +378,7 @@ input:focus-visible {
 
 .single-answer.add-answer {
   margin-left: calc(var(--button-size) * .35);
+  cursor: pointer;
 }
 
 /* Answers */
@@ -398,6 +399,7 @@ input:focus-visible {
 .single-answer button, .unclaim-button {
   height: 26px;
   padding: 3px;
+  background-color: var(--main);
 }
 
 .answer-details {

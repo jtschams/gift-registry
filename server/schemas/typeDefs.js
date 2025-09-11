@@ -6,6 +6,7 @@ type Member {
 
 type Answer {
   _id: ID
+  rank: Int
   answerText: String
   answerLink: String
   amount: Int
@@ -74,6 +75,8 @@ type Query {
   myQuestions: [Question]
   myAnswers: [AnswerSet]
   userAnswers(userId: ID!): [AnswerSet]
+  myWishlist: [Answer]
+  userWishlist(userId: ID!): [Answer]
   myClaims: [Claimed]
 }
 
@@ -84,6 +87,7 @@ type Mutation {
   joinFamily(familyId: ID!, nickname: String): User
   addQuestion(question: String, category: String, claimable: Boolean, familyId: ID!, questionId: ID): Question
   answerQuestion(questionId: ID!, answerText: String!, answerLink: String, amount: Int!): AnswerSet
+  makeWish(rank: Int!, answerText: String!, answerLink: String, amount: Int!): Answer
   claimAnswer(userId: ID!, questionId: ID!, answerId: ID!, nickname: String!): Claimed
 }
 `;
