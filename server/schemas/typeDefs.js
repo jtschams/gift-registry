@@ -88,7 +88,7 @@ type Mutation {
   addQuestion(question: String, category: String, claimable: Boolean, familyId: ID!, questionId: ID): Question
   answerQuestion(questionId: ID!, answerText: String!, answerLink: String, amount: Int!): AnswerSet
   makeWish(rank: Int!, answerText: String!, answerLink: String, amount: Int!): Answer
-  claimAnswer(userId: ID!, questionId: ID!, answerId: ID!, nickname: String!): Claimed
+  claimAnswer(userId: ID!, questionId: ID, answerId: ID!, nickname: String!): Claimed
 }
 `;
 

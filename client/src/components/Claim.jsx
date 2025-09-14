@@ -19,7 +19,7 @@ export default function Claim({claim}) {
       </article>
       <button className="unclaim-button" onClick={handleUnclaim}>Unclaim Answer</button>
       <div className="claim-details">
-        <small>{claim.question.question}</small>
+        <small>{claim.question?.question || "Wishlist Item"}</small>
         <small>For User: {claim.nickname || claim.user.name}</small>
       </div>
     </article>

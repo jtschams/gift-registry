@@ -9,7 +9,7 @@ import AnswerSet from '../components/AnswerSet';
 export default function Question({ answerSet }) {
   const question = answerSet.question;
 
-  const [ questionState, setQuestionState ] = useQuestionContext();
+  const [ questionState, setQuestionState, allAnswerState, setAllAnswerState ] = useQuestionContext();
   const [ answerState, setAnswerState ] = useState({
     answerText: '',
     answerLink: '',
@@ -26,9 +26,15 @@ export default function Question({ answerSet }) {
     //  TODO: change alert to dialog
     alert("Answer added to your account.");
     setAnswerState({answerText: '', answerLink: '', amount: question.claimable ? 1 : 0 });
+
+    const currentAnswers = allAnswerState;
+    currentAnswers[currentAnswers.findIndex((question) => question.question._id == questionState )].answers = data.answerQuestion.answers;
+    setAllAnswerState(currentAnswers);
+    
     setQuestionState(null);
     document.getElementById(question._id).querySelector(".question-form").classList.add("invisible");
     document.getElementById(question._id).querySelector(".add-answer").classList.remove("invisible");
+
   }
 
   const handleAnswerChange = (event) => {

@@ -244,7 +244,7 @@ const resolvers = {
         const me = await User.findById(context.user._id)
           .populate({ path: 'claims', populate: ['user', 'question', 'answer'] });
         const user = await User.findById(userId);
-        const question = await Question.findById(questionId);
+        const question = questionId ? await Question.findById(questionId) : { _id: null };
         const answer = await Answer.findById(answerId);
 
         if (!user) {throw InvalidDataError('user', userId)}
