@@ -5,19 +5,12 @@ import { useQuery } from '@apollo/client';
 
 import { MY_WISHLIST, USER_WISHLIST } from '../utils/queries';
 import Wish from '../components/Wish';
+import { ranks } from '../utils/enums';
 
 const WishlistContext = createContext();
 export const useWishlistContext = () => useContext(WishlistContext);
 
 export default function Wishlist() {
-  const ranks = [
-    "Rank 1",
-    "Rank 2",
-    "Rank 3",
-    "Rank 4",
-    "Rank 5"
-  ];
-
   const [ wishlistState, setWishlistState ] = useState('');
   const { userId } = useParams();
   const wishlistQuery = userId ? USER_WISHLIST : MY_WISHLIST;

@@ -330,6 +330,10 @@ input:focus-visible {
 
 /* Nickname */
 
+.single-friend > button {
+  min-width: 130px;
+}
+
 .nickname {
   display: flex;
   gap: 10px;
@@ -430,6 +434,30 @@ input:focus-visible {
   border: 1.8px solid var(--accent);
 }
 
+/* Wish Form */
+
+.wish-form {
+  display:flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 10px;
+  border: 1px solid var(--mark);
+  border-radius: 20px;
+  margin: 5px;
+}
+
+.form-wish-details {
+  width: calc(95% - 300px);
+}
+
+.form-wish-numbers {
+  width: 300px;
+}
+
+.wide-button {
+  width: 40%;
+}
+
 /* Wishlist Row */
 
 .wishlist-details h4 {
@@ -449,12 +477,12 @@ article.wishlist-row {
 }
 
 .wishlist-rank {
-  width: 100px;
+  width: 200px;
 }
 
 .wishlist-item {
-  min-width: 500px;
-  width: calc(100% - 300px - var(--button-size) * 1.2);
+  min-width: 400px;
+  width: calc(100% - 400px - var(--button-size) * 1.2);
 }
 
 .wishlist-amount {
@@ -540,8 +568,8 @@ main#error {
     border-bottom: 1px solid var(--accent);
   }
 
-  .wishlist-rank {
-    width: calc((100% - 40px) / 3);
+  .wishlist-rank, .wishlist-amount {
+    width: 48%;
   }
 
   .wishlist-item {
@@ -549,10 +577,13 @@ main#error {
     width: 100%;
   }
 
-  .wishlist-amount {
-    width: calc((200% - 80px) / 3);
+  .form-wish-details, .form-wish-numbers {
+    width: 95%;
   }
 
+  .wide-button {
+    width: 60%;
+  }
 }
 
 /* Navbar change */

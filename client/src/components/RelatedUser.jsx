@@ -4,8 +4,12 @@ import Nickname from './Nickname';
 
 export default function RelatedUser({user}) {
 
-  const handleSelectUser = () => {
+  const handleSelectAnswers = () => {
     window.location.assign(`/user-answers/${user.user._id}`)
+  }
+
+  const handleSelectWishlist = () => {
+    window.location.assign(`/wishlist/${user.user._id}`)
   }
 
   return (
@@ -17,7 +21,8 @@ export default function RelatedUser({user}) {
           member={relation}
         />}
       )}
-      <button className="select-user" onClick={handleSelectUser}>View User Answers</button>
+      <button className="select-user" onClick={handleSelectAnswers}>View Preferences</button>
+      <button className="select-user" onClick={handleSelectWishlist}>View Wishlist</button>
     </article>
   )
 }

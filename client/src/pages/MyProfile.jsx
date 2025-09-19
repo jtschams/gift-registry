@@ -14,6 +14,7 @@ export default function MyProfile() {
     <>
       <h2>My Profile</h2>
       <article className="profile-selection"><Link to="/questionnaire"><h3>Tastes & Preferences Questionnaire</h3></Link></article>
+      <article className="profile-selection"><Link to="/manage-wishlist"><h3>Manage Wishlist</h3></Link></article>
       <article className="profile-selection"><Link to="/wishlist"><h3>My Wishlist</h3></Link></article>
       <article className="profile-selection"><Link to="/shopping-list"><h3>Gifts I Plan to Give</h3></Link></article>
       <article className="profile-selection"><Link to="/change-theme"><h3>Change Theme</h3></Link></article>

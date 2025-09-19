@@ -3,22 +3,9 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 
 import { useWishlistContext } from '../pages/ManageWishlist';
+import { ranks, amounts } from '../utils/enums';
 
 export default function Wish({ answer }) {
-
-  const ranks = [
-    "Rank 1",
-    "Rank 2",
-    "Rank 3",
-    "Rank 4",
-    "Rank 5"
-  ];
-
-  const amounts = [
-    "General Request",
-    "Only One",
-    "More Than One"
-  ];
 
   return (
     <article id={answer._id} className="wishlist-row">

@@ -39,7 +39,7 @@ export default function Question({ answerSet }) {
 
   const handleAnswerChange = (event) => {
     let { name, value } = event.target;
-    value = name === "amount" ? parseInt(value, 10) : value;
+    value = name === "amount" ? parseInt(value) : value;
     setAnswerState({
       ...answerState,
       [name]: value
