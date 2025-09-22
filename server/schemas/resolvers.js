@@ -108,6 +108,7 @@ const resolvers = {
   },
 
   Mutation: {
+    /* =-=-=-=-=-=-=-=-=-=-=-=- Create Mutations -=-=-=-=-=-=-=-=-=-=-=-= */
     addUser: async (parent, args) => {
       const user = await User.create({ ...args });
       const token = signToken(user);
@@ -265,6 +266,132 @@ const resolvers = {
         return claim;
       }
       throw AuthenticationError;
+    },
+
+    /* =-=-=-=-=-=-=-=-=-=-=-=- Edit Mutations -=-=-=-=-=-=-=-=-=-=-=-= */
+    editUser: async (parent, { firstName, lastName, birthday, likesSurprises, email }, context) => {
+
+    },
+
+    editAnswer: async (parent, { questionId, answerId, answerText, answerLink, rank, amount }, context) => {
+
+    },
+
+    editQuestion: async (parent, { familyId, questionId, category, claimable }, context) => {
+
+    },
+
+    editFamily: async (parent, { familyId, familyName }, context) => {
+
+    },
+
+    editNickname: async (parent, { familyId, nickname }, context) => {
+
+    },
+
+    leaveFamily: async (parent, { familyId }, context) => {
+
+    },
+
+    /* =-=-=-=-=-=-=-=-=-=-=-=- Remove Mutations -=-=-=-=-=-=-=-=-=-=-=-= */
+    removeAnswer: async (parent, { questionId, answerId }, context) => {
+      if (context.user) {
+        const me = await User.findById(context.user._id)
+          .populate({ path: 'answers', populate: ['question', { path: 'answers', populate: 'claims' }] });
+
+        const answerSet = me.answers.find(as => as.question._id == questionId);
+        if (answerSet) {
+          const index = answerSet.answers.findIndex(a => a._id == answerId);
+          if (index != -1) answerSet.answers.splice(index, 1);
+        }
+        if (answerSet.answers.length == 0) {
+          const index = me.answers.findIndex(as => as.question._id == questionId);
+          if (index != -1) me.answers.splice(index, 1);
+        }
+
+        await me.save();
+
+        return me;
+      }
+    },
+
+    removeQuestion: async (parent, { familyId, questionId }, context) => {
+      const family = await Family.findById(familyId)
+        .populate(["questions", "admins"]);
+      if (family?.admins.some((admin) => admin._id == context.user?._id)) {
+        const index = family.questions.findIndex(q => q._id == questionId);
+        if (index != -1) family.questions.splice(index, 1);
+      }
+
+      await family.save();
+
+      return family;
+    },
+
+    removeFamilyMember: async (parent, { familyId, userId }, context) => {
+      const family = Family.findById(familyId)
+        .populate(["admins", { path: "members", populate: "user" }]);
+      if (family?.admins.some((admin) => admin._id == context.user?._id)) {
+        const index = family.members.findIndex(m => m.user._id == userId);
+        if (index != -1) family.members.splice(index, 1);
+      }
+
+      await family.save();
+
+      return family;
+    },
+
+    unclaimAnswer: async (parent, { answerId }, context) => {
+      if (context.user) {
+        const me = await User.findById(context.user._id)
+          .populate({ path: "claims", populate: "answer" });
+        const answer = await Answer.findById(answerId)
+          .populate("claims");
+
+        const answerIndex = me.claims.findIndex(a => a.answer._id == answerId);
+        if (answerIndex != -1) me.claims.splice(index, 1);
+
+        const userIndex = answer.claims.findIndex(u => u._id == context.user._id);
+        if (userIndex != -1) answer.claims.splice(index, 1);
+
+        await Promise.all([ me.save(), answer.save() ]);
+
+        return me;
+      }
+    },
+
+    /* =-=-=-=-=-=-=-=-=-=-=-=- Delete Mutations -=-=-=-=-=-=-=-=-=-=-=-= */
+    deleteUser: async (parent, args, context) => {
+      if (context.user) {
+        const user = await User.findByIdAndDelete(context.user._id)
+          .populate([
+            "groups",
+            { path: "answers", populate: { path: "answers", populate: "claims" } },
+            { path: "wishlist", populate: "claims" }
+          ]);
+        // POPULATE DEEPER FOR NEXT STEP
+        // create arrays for family, answer claims, wishlist claims, and claimed answers
+        // Promise.all for all of those
+        // const saveArray = [];
+        // foreach edit all documents and saveArray.push(document.save());
+        // await Promise.all(saveArray);
+        // return user;
+      }
+    },
+
+    deleteFamily: async (parent, { familyId }, context) => {
+      let family = await Family.findById(familyId);
+      if (family?.admins.some((admin) => admin._id == context.user?._id)) {
+        family = await Family.findByIdAndDelete(familyId)
+          .populate({ path: "members", populate: "user" });
+        // POPULATE DEEPER FOR NEXT STEP
+        // create arrays for members
+        // Promise.all for all of those
+        // const saveArray = [];
+        // foreach edit all documents and saveArray.push(document.save());
+        // await Promise.all(saveArray);
+        // return family;
+      }
     }
   }
 };

@@ -40,6 +40,7 @@ type User {
   email: String!
   groups: [Family]!
   answers: [AnswerSet]!
+  wishlist: [Answer]!
   claims: [Claimed]!
 }
 
@@ -89,6 +90,18 @@ type Mutation {
   answerQuestion(questionId: ID!, answerText: String!, answerLink: String, amount: Int!): AnswerSet
   makeWish(rank: Int!, answerText: String!, answerLink: String, amount: Int!): Answer
   claimAnswer(userId: ID!, questionId: ID, answerId: ID!, nickname: String!): Claimed
+  editUser(firstName: String, lastName: String, birthday: String, likesSurprises: Boolean, email: String): User
+  editAnswer(questionId: ID!, answerId: ID!, answerText: String, answerLink: String, rank: Int, amount: Int): Answer
+  editQuestion(familyId: ID!, questionId: ID!, category: String, claimable: Boolean): Question
+  editFamily(familyId: ID!, familyName: String): Family
+  editNickname(familyId: ID!, nickname: String): Relation
+  leaveFamily(familyId: ID!): User
+  removeAnswer(questionId: ID!, answerId: ID!): User
+  removeQuestion(familyId: ID!, questionId: ID!): Family
+  removeFamilyMember(familyId: ID!, userId: ID!): Family
+  unclaimAnswer(answerId: ID!): User
+  deleteUser: User
+  deleteFamily(familyId: ID!): Family
 }
 `;
 
