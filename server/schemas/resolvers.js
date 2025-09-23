@@ -34,7 +34,7 @@ const resolvers = {
             populate: { path: 'user',
               populate: { path: 'answers',
                 populate: [ 'question', 'answers' ]
-        }}}});
+        } } } });
       const relatedUsers = [];
 
       for (const family of user.groups) {
@@ -361,21 +361,82 @@ const resolvers = {
     },
 
     /* =-=-=-=-=-=-=-=-=-=-=-=- Delete Mutations -=-=-=-=-=-=-=-=-=-=-=-= */
-    deleteUser: async (parent, args, context) => {
+    deleteUser: async (parent, { removeAnswers }, context) => {
       if (context.user) {
         const user = await User.findByIdAndDelete(context.user._id)
           .populate([
-            "groups",
-            { path: "answers", populate: { path: "answers", populate: "claims" } },
-            { path: "wishlist", populate: "claims" }
+            { path: "groups", populate: [
+                { path: "members", populate: "user" },
+                { path: "admins", populate: "user" }
+              ]
+            },
+            { path: "answers",
+              populate: { path: "answers",
+                populate: { path: "claims",
+                  populate: { path: "claims",
+                    populate: "answer"
+            } } } },
+            { path: "wishlist",
+              populate: { path: "claims",
+                populate: { path: "claims",
+                  populate: "answer"
+            } } },
+            { path: "claims", populate: { path: "answer", populate: "claims" } }
           ]);
-        // POPULATE DEEPER FOR NEXT STEP
-        // create arrays for family, answer claims, wishlist claims, and claimed answers
-        // Promise.all for all of those
-        // const saveArray = [];
-        // foreach edit all documents and saveArray.push(document.save());
-        // await Promise.all(saveArray);
-        // return user;
+        // Populated necessary paths for next step
+        const saveArray = [];
+
+        // Remove users from all family member and admin lists
+        user.groups.forEach((family) => {
+          // Remove from family member list
+          const memIndex = family.members.findIndex(mem => mem.user._id == context.user._id);
+          family.members.splice(memIndex, 1);
+          // Delete family and end loop if no members left
+          if (family.members.length == 0) {
+            saveArray.push(Family.findOneAndDelete(family._id));
+            return;
+          }
+          // Remove from family admin list if present
+          const adIndex = family.admins.findIndex(adm => adm._id == context.user._id);
+          if (adIndex != -1) family.admins.splice(adIndex, 1);
+          // Add oldest user into admin group if no admins left
+          if (family.admins.length == 0) family.admins.push(family.members[0]);
+          saveArray.push(family.save());
+        });
+
+        // Remove answers from other user claims if remove answers selected
+        if (removeAnswers) {
+          const userArray = [];
+          // Gather answers and wishes into single array
+          [ ...user.answers.answers, ...user.wishlist ].forEach((answer) => {
+            // Each claim of each answer
+            answer.claims.forEach((u) => {
+              // Find or insert user in user array
+              let index = userArray.findIndex(ua => ua._id == u._id);
+              if (index == -1) {
+                index = userArray.length;
+                userArray.push(u);
+              }
+              // Remove answer from user claim list
+              const ansIndex = userArray[index].claims.findIndex(ans => ans._id == answer._id);
+              userArray[index].claims.splice(ansIndex, 1);
+            });
+          });
+
+          userArray.forEach(u => {
+            saveArray.push(u.save());
+          });
+        }
+
+        // Unclaim answers
+        user.claims.forEach((claim) => {
+          const index = claim.claims.findIndex(u => u._id = user._id);
+          claim.claims.splice(index, 1);
+          saveArray.push(claim.save());
+        })
+
+        await Promise.all(saveArray);
+        return user;
       }
     },
 
@@ -383,14 +444,18 @@ const resolvers = {
       let family = await Family.findById(familyId);
       if (family?.admins.some((admin) => admin._id == context.user?._id)) {
         family = await Family.findByIdAndDelete(familyId)
-          .populate({ path: "members", populate: "user" });
-        // POPULATE DEEPER FOR NEXT STEP
-        // create arrays for members
-        // Promise.all for all of those
-        // const saveArray = [];
-        // foreach edit all documents and saveArray.push(document.save());
-        // await Promise.all(saveArray);
-        // return family;
+          .populate({ path: "members", populate: { path: "user", populate: "groups" } });
+        // Populated necessary paths for next step
+        const saveArray = [];
+        family.members.forEach((member) => {
+          // Remove references to deleted family in member group arrays
+          const index = member.user.groups.findIndex(fam => fam._id == familyId);
+          member.user.groups.splice(index, 1);
+          // Push into array for Promise.all()
+          saveArray.push(member.user.save());
+        });
+        await Promise.all(saveArray);
+        return family;
       }
     }
   }
