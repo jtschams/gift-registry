@@ -270,27 +270,118 @@ const resolvers = {
 
     /* =-=-=-=-=-=-=-=-=-=-=-=- Edit Mutations -=-=-=-=-=-=-=-=-=-=-=-= */
     editUser: async (parent, { firstName, lastName, birthday, likesSurprises, email }, context) => {
+      if (context.user) {
+        const me = await User.findById(context.user._id);
+        
+        me.firstName = firstName || me.firstName;
+        me.lastName = lastName || me.lastName;
+        me.birthday = birthday || me.birthday;
+        me.email = email || me.email;
+        me.likesSurprises = likesSurprises;
 
+        await me.save();
+
+        return me;
+      }
+      throw AuthenticationError;
     },
 
     editAnswer: async (parent, { questionId, answerId, answerText, answerLink, rank, amount }, context) => {
+      if (context.user) {
+        const me = await User.findById(context.user._id)
+          .populate({ path: "answers", populate: "answers" });
 
+        const answer = me.answers.find(as => as.question._id == questionId).answers.find(a => a._id == answerId);
+        if (!answer) throw InvalidActionError("Edit Answer", "Unable to find answer in user answer list.");
+
+        answer.answerText = answerText || answer.answerText;
+        answer.amount = amount || answer.amount;
+        answer.rank = rank;
+        answer.answerLink = answerLink;
+
+        await answer.save();
+
+        return answer;
+      }
+      throw AuthenticationError;
     },
 
-    editQuestion: async (parent, { familyId, questionId, category, claimable }, context) => {
+    editQuestion: async (parent, { familyId, questionId, question, category, claimable }, context) => {
+      const family = await Family.findById(familyId)
+        .populate(["questions", "admins"]);
+      if (family?.admins.some((admin) => admin._id == context.user?._id)) {
+        const question = family.questions.find(q => q._id == questionId);
+        if (!question) throw InvalidActionError("Edit Question", "Could not locate question in group.");
 
+        question.quesiton = question || question.question;
+        question.category = category || question.category;
+        question.claimable = claimable;
+        
+        await question.save();
+
+        return question;
+      }
+      throw AuthenticationError;
     },
 
     editFamily: async (parent, { familyId, familyName }, context) => {
+      const family = await Family.findById(familyId)
+        .populate("admins");
+      if (family?.admins.some((admin) => admin._id == context.user?._id)) {
 
+        family.familyName = familyName;
+
+        await family.save();
+        
+        return family;
+      }
+      throw AuthenticationError;
     },
 
     editNickname: async (parent, { familyId, nickname }, context) => {
+      if (context.user) {
+        const family = await Family.findById(familyId)
+          .populate("members");
+        const member = family.members.find(m => m.user._id == context.user._id);
 
+        member.nickname = nickname;
+
+        await family.save();
+
+        return { familyName: family.familyName, nickname };
+      }
+      throw AuthenticationError;
     },
 
     leaveFamily: async (parent, { familyId }, context) => {
+      if (context.user) {
+        const family = Family.findById(familyId)
+          .populate([ "admins", { path: "members", populate: "user" } ])
+        const me = User.findById(context.user._id)
+          .populate("groups");
+        await Promise.all([family, me]);
 
+        const saveArray = [];
+        const familyIndex = me.groups.findIndex(f => f._id == familyId);
+        const memberIndex = family.members.findIndex(m => m.user._id == context.user._id);
+        const adminIndex = family.admins.findIndex(a => a._id == context.user._id);
+
+        if (familyIndex == -1 && memberIndex == -1) throw InvalidActionError("Leave Family", "User is not a member of this family.");
+        
+        if (familyIndex != -1) {
+          me.groups.splice(familyIndex, 1);
+          saveArray.push(me.save());
+        }
+        
+        if (memberIndex != -1) family.members.splice(memberIndex, 1);
+        if (adminIndex != -1) family.admins.splice(adminIndex, 1);
+        saveArray.push(family.save());
+
+        await Promise.all(saveArray);
+
+        return me;
+      }
+      throw AuthenticationError;
     },
 
     /* =-=-=-=-=-=-=-=-=-=-=-=- Remove Mutations -=-=-=-=-=-=-=-=-=-=-=-= */
@@ -313,6 +404,7 @@ const resolvers = {
 
         return me;
       }
+      throw AuthenticationError;
     },
 
     removeQuestion: async (parent, { familyId, questionId }, context) => {
@@ -321,24 +413,39 @@ const resolvers = {
       if (family?.admins.some((admin) => admin._id == context.user?._id)) {
         const index = family.questions.findIndex(q => q._id == questionId);
         if (index != -1) family.questions.splice(index, 1);
+        
+        await family.save();
+  
+        return family;
       }
-
-      await family.save();
-
-      return family;
+      throw AuthenticationError;
     },
 
     removeFamilyMember: async (parent, { familyId, userId }, context) => {
       const family = Family.findById(familyId)
-        .populate(["admins", { path: "members", populate: "user" }]);
+        .populate(["admins", { path: "members", populate: { path: "user", populate: "groups" } }]);
       if (family?.admins.some((admin) => admin._id == context.user?._id)) {
-        const index = family.members.findIndex(m => m.user._id == userId);
-        if (index != -1) family.members.splice(index, 1);
+        const saveArray = [];
+        const memberIndex = family.members.findIndex(m => m.user._id == userId);
+        const adminIndex = family.admins.findIndex(a => a._id);
+        const familyIndex = family.members[memberIndex]?.user.groups.findIndex(f => f._id == familyId) || -1;
+
+        if (memberIndex == -1) throw InvalidActionError("Remove Group Member", "User is not a member of this group.")
+        else family.members.splice(memberIndex, 1);
+        if (adminIndex != -1) family.admins.splice(adminIndex, 1);
+        saveArray.push(family.save());
+
+        if (familyIndex != -1) {
+          const user = family.members[memberIndex].user;
+          user.groups.splice(familyIndex, 1);
+          saveArray.push(user.save());
+        }
+        
+        await Promise.all(saveArray);
+        
+        return family;
       }
-
-      await family.save();
-
-      return family;
+      throw AuthenticationError;
     },
 
     unclaimAnswer: async (parent, { answerId }, context) => {
@@ -358,6 +465,7 @@ const resolvers = {
 
         return me;
       }
+      throw AuthenticationError;
     },
 
     /* =-=-=-=-=-=-=-=-=-=-=-=- Delete Mutations -=-=-=-=-=-=-=-=-=-=-=-= */
@@ -438,6 +546,7 @@ const resolvers = {
         await Promise.all(saveArray);
         return user;
       }
+      throw AuthenticationError;
     },
 
     deleteFamily: async (parent, { familyId }, context) => {
@@ -457,6 +566,7 @@ const resolvers = {
         await Promise.all(saveArray);
         return family;
       }
+      throw AuthenticationError;
     }
   }
 };
