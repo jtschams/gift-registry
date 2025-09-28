@@ -61,7 +61,7 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-userSchema.methods.name = async function() {
+userSchema.methods.name = function() {
   return this.firstName + " " + this.lastName;
 };
 

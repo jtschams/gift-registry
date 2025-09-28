@@ -23,7 +23,7 @@
   --link-size: calc((var(--button-size) - 30px) * .8)
 }
 
-/* Defaults */
+/* #region MARK: Defaults */
 
 h1 {
   text-align: center;
@@ -82,7 +82,9 @@ button:active {
   border: 3px solid var(--mark);
 }
 
-/* Burger Button */
+/* #endregion */
+
+/* #region MARK: Burger Button */
 
 .burger {
   height: calc(var(--button-size) - 30px);
@@ -124,7 +126,44 @@ button:active {
   transform: rotate(45deg) translateX(-20%) scaleX(.7) 
 }
 
-/* Navbar */
+/* #endregion */
+
+/* #region MARK: Mini Burger */
+
+.miniburger.burger {
+  height: calc(100% - 10px);
+  width: calc(100% - 10px);
+  position: static;
+  margin: 0;
+  padding: 5px;
+  border-radius: 10px;
+  border: solid var(--mark);
+  border-width: 1px;
+}
+
+.miniburger.bar1, .miniburger.bar2, .miniburger.bar3 {
+  width: 80%;
+  height: 12.5%;
+  margin: 15% auto;
+  background-color: var(--accent);
+  transition: all .4s;
+}
+
+.open .miniburger.bar1 {
+  transform: rotate(-45deg) translateX(-25%) translateY(150%) scaleX(1.3) 
+}
+
+.open .miniburger.bar2 {
+  transform: translateX(0%) scaleX(0);
+}
+
+.open .miniburger.bar3 {
+  transform: rotate(45deg) translateX(-25%) translateY(-150%) scaleX(1.3) 
+}
+
+/* #endregion */
+
+/* #region MARK: Navbar */
 
 #site-nav {
   background-color: var(--menu);
@@ -165,7 +204,9 @@ button:active {
   color: var(--accent);
 }
 
-/* Clickable Text */
+/* #endregion */
+
+/* #region MARK: Clickable Text */
 
 .family-component, .question-component > h3, a {
   cursor: pointer;
@@ -178,7 +219,9 @@ h3 {
   margin: 10px;
 }
 
-/* Repeated elements */
+/* #endregion */
+
+/* #region MARK: Repeated elements */
 
 h4 {
   margin: 10px 0 0;
@@ -266,9 +309,14 @@ input:focus-visible {
   border-radius: 10px;
 }
 
-/*    /* Specific pages and components*/
+/* #endregion */
 
-/* Login Signup Page */
+/*=-=-=-=-=-=-=-=-=-=- MARK: *Pages/Components* -=-=-=-=-=-=-=-=-=-=*/
+
+
+
+
+/* #region MARK: Login Signup Page */
 
 #login-signup-switch {
   display: flex;
@@ -294,13 +342,17 @@ input:focus-visible {
   cursor: pointer;
 }
 
-/* Family Component */
+/* #endregion */
+
+/* #region MARK: Family Component */
 
 .family-component h4 {
   margin: 0 15px;
 }
 
-/* Family Page */
+/* #endregion */
+
+/* #region MARK: Family Page */
 
 #invite-div {
   flex-direction: row;
@@ -328,7 +380,9 @@ input:focus-visible {
   margin: 0 25px 7px;
 }
 
-/* Nickname */
+/* #endregion */
+
+/* #region MARK: Nickname */
 
 .single-friend > button {
   min-width: 130px;
@@ -348,7 +402,9 @@ input:focus-visible {
   margin: 0 10px;
 }
 
-/* Join Family Page */
+/* #endregion */
+
+/* #region MARK: Join Family Page */
 
 #join-container {
   padding: 5px 0;
@@ -358,13 +414,17 @@ input:focus-visible {
   justify-content: flex-start;
 }
 
-/* New Group */
+/* #endregion */
+
+/* #region MARK: New Group */
 
 #new-group-form > div {
   margin: 20px 0;
 }
 
-/* Questions */
+/* #endregion */
+
+/* #region MARK: Questions */
 
 .question-component {
   padding: 15px 0;
@@ -385,7 +445,9 @@ input:focus-visible {
   cursor: pointer;
 }
 
-/* Answers */
+/* #endregion */
+
+/* #region MARK: Answers */
 
 .answer-set {
   border-bottom: none;
@@ -434,7 +496,9 @@ input:focus-visible {
   border: 1.8px solid var(--accent);
 }
 
-/* Wish Form */
+/* #endregion */
+
+/* #region MARK: Wish Form */
 
 .wish-form {
   display:flex;
@@ -458,7 +522,9 @@ input:focus-visible {
   width: 40%;
 }
 
-/* Wishlist Row */
+/* #endregion */
+
+/* #region MARK: Wishlist Row */
 
 .wishlist-details h4 {
   text-align: center;
@@ -489,7 +555,17 @@ article.wishlist-row {
   width: 200px;
 }
 
-/* Claim */
+.wishlist-button {
+  width: 100%;
+}
+
+.wishlist-button button {
+  width: calc(50% - 30px);
+}
+
+/* #endregion */
+
+/* #region MARK: Claim */
 
 .single-claim {
   padding: 10px 5px;
@@ -511,7 +587,9 @@ article.wishlist-row {
   justify-content: space-evenly;
 }
 
-/* Theme Sample */
+/* #endregion */
+
+/* #region MARK: Theme Sample */
 
 #change-theme > section {
   display: flex;
@@ -530,7 +608,9 @@ article.wishlist-row {
   background-color: var(--main);
 }
 
-/* Error Page */
+/* #endregion */
+
+/* #region MARK: Error Page */
 
 main#error {
   margin-top: 25px;
@@ -556,7 +636,9 @@ main#error {
   width: 100%;
 }
 
-/* Wishlist Row  */
+/* #endregion */
+
+/* #region MARK: Wishlist Row(930px)  */
 @media screen and (max-width: 930px) {
 
   .wishlist-details h4 {
@@ -586,7 +668,9 @@ main#error {
   }
 }
 
-/* Navbar change */
+/* #endregion */
+
+/* #region MARK: Navbar(800px) */
 
 @media screen and (min-width: 800px) {
   
@@ -626,3 +710,5 @@ main#error {
   }
 
 }
+
+/* #endregion */

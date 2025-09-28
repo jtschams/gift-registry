@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+//#region Create
 export const LOGIN = gql`
   mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -41,11 +42,11 @@ export const ANSWER_QUESTION = gql`
 export const MAKE_WISH = gql`
   mutation MakeWish($rank: Int!, $answerText: String!, $answerLink: String, $amount: Int!) {
     makeWish(rank: $rank, answerText: $answerText, answerLink: $answerLink, amount: $amount) {
-        _id
-        rank
-        answerText
-        answerLink
-        amount
+      _id
+      rank
+      answerText
+      answerLink
+      amount
     }
   }
 `
@@ -86,6 +87,7 @@ export const ADD_QUESTION = gql`
 export const JOIN_FAMILY = gql`
   mutation JoinFamily($familyId: ID!, $nickname: String) {
     joinFamily(familyId: $familyId, nickname: $nickname) {
+      _id
       name
       groups {
         familyName
@@ -93,5 +95,162 @@ export const JOIN_FAMILY = gql`
     }
   }
 `
+//#endregion
 
-// TODO: Client side mutations (Need resolvers first)
+//#region Edit
+export const EDIT_USER = gql`
+  mutation EditUser($firstName: String, $lastName: String, $birthday: String, $likesSurprises: Boolean, $email: String) {
+    editUser(firstName: $firstName, lastName: $lastName, birthday: $birthday, likesSurprises: $likesSurprises, email: $email) {
+      _id
+      name
+      birthday
+      email
+      likesSurprises
+    }
+  }
+`
+
+export const EDIT_ANSWER = gql`
+  mutation EditAnswer($questionId: ID!, $answerId: ID!, $answerText: String, $answerLink: String, $rank: Int, $amount: Int) {
+    editAnswer(questionId: $questionId, answerId: $answerId, answerText: $answerText, answerLink: $answerLink, rank: $rank, amount: $amount) {
+      _id
+      answerText
+      answerLink
+      amount
+      rank
+    }
+  }
+`
+
+export const EDIT_QUESTION = gql`
+  mutation EditQuestion($familyId: ID!, $questionId: ID!, $question: String, $category: String, $claimable: Boolean) {
+    editQuestion(familyId: $familyId, questionId: $questionId, question: $question, category: $category, claimable: $claimable) {
+      _id
+      category
+      claimable
+      question
+    }
+  }
+`
+
+export const EDIT_FAMILY = gql`
+  mutation EditFamily($familyId: ID!, $familyName: String) {
+    editFamily(familyId: $familyId, familyName: $familyName) {
+      _id
+      familyName
+    }
+  }
+`
+
+export const EDIT_NICKNAME = gql`
+  mutation EditNickname($familyId: ID!, $nickname: String) {
+    editNickname(familyId: $familyId, nickname: $nickname) {
+      familyName
+      nickname
+    }
+  }
+`
+
+export const LEAVE_FAMILY = gql`
+  mutation LeaveFamily($familyId: ID!) {
+    leaveFamily(familyId: $familyId) {
+      _id
+      name
+      groups {
+        familyName
+      }
+      birthday
+      email
+    }
+  }
+`
+//#endregion
+
+//#region Remove
+export const REMOVE_ANSWER = gql`
+  mutation RemoveAnswer($questionId: ID!, $answerId: ID!) {
+    removeAnswer(questionId: $questionId, answerId: $answerId) {
+      _id
+      answers {
+        answers {
+          answerText
+          _id
+        }
+        question {
+          _id
+          question
+        }
+      }
+    }
+  }
+`
+
+export const REMOVE_QUESTION = gql`
+  mutation RemoveQuestion($familyId: ID!, $questionId: ID!) {
+    removeQuestion(familyId: $familyId, questionId: $questionId) {
+      _id
+      familyName
+      questions {
+        question
+        category
+        claimable
+      }
+    }
+  }
+`
+
+export const REMOVE_MEMBER = gql`
+  mutation RemoveFamilyMember($familyId: ID!, $userId: ID!) {
+    removeFamilyMember(familyId: $familyId, userId: $userId) {
+      _id
+      familyName
+      members {
+        nickname
+        user {
+          _id
+          name
+        }
+      }
+      admins {
+        _id
+        name
+      }
+    }
+  }
+`
+
+export const UNCLAIM_ANSWER = gql`
+  mutation UnclaimAnswer($answerId: ID!) {
+    unclaimAnswer(answerId: $answerId) {
+      _id
+      name
+      claims {
+        nickname
+        answer {
+          _id
+          answerText
+          answerLink
+          amount
+          rank
+        }
+        user {
+          _id
+          name
+        }
+      }
+    }
+  }
+`
+//#endregion
+
+//#region Delete
+//export const DELETE_USER = gql`
+//mutation DeleteUser($removeAnswers: Boolean) {
+//}
+//`
+//
+//export const DELETE_FAMILY = gql`
+//mutation DeleteFamily($familyId: ID!) {
+//}
+//`
+//#endregion
