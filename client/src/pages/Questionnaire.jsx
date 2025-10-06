@@ -37,11 +37,11 @@ export default function Questionnaire() {
 
       setAllAnswerState(allQuestions)
     }
-  }, [ questionState, loading, setAllAnswerState ])
+  }, [ questionState, loading ])
 
   return (<>
     <h2>Tastes & Preferences Questionnaire</h2>
-    <QuestionContext.Provider value={[ questionState, setQuestionState, allAnswerState, setAllAnswerState ]}>
+    <QuestionContext.Provider value={[ questionState, setQuestionState  ]}>
       {loading ? <h3 className="loading">Loading...</h3> : (allAnswerState.map((answerSet) => (
         <Question answerSet={answerSet} key={answerSet.question._id}/>
       )))}

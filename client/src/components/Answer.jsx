@@ -7,7 +7,7 @@ import { useAnswerContext } from '../pages/Answers';
 import { CLAIM_ANSWER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
-export default function Answer({ answer, claimInfo }) {
+export default function Answer({ answer, claimInfo, activateQuestion }) {
   const { userId } = useParams();
   const isClaimable = userId && answer.amount - (answer.claims > 0) && !(answer.claims.some((user) => user._id == Auth.getProfile().data._id));
 
@@ -72,7 +72,14 @@ export default function Answer({ answer, claimInfo }) {
 
   return (
     <li id={answer._id} className="single-answer">
-      <div className="answer-details">  
+      <div className="answer-details">
+        {!activateQuestion ? null : <>
+          <figure className='burger miniburger' onClick={activateQuestion}>
+            <div className='bar1'></div>
+            <div className='bar2'></div>
+            <div className='bar3'></div>
+          </figure>
+        </>}
         <h4>{answer.answerText}</h4>
         {answer.answerLink ? (<a href={answer.answerLink} className="answer-link">(Link)</a>) : null}
       </div>

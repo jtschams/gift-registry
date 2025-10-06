@@ -98,7 +98,7 @@ type Mutation {
   editNickname(familyId: ID!, nickname: String!): Relation
   leaveFamily(familyId: ID!): User
 
-  removeAnswer(questionId: ID!, answerId: ID!): User
+  removeAnswer(questionId: ID, answerId: ID!): User
   removeQuestion(familyId: ID!, questionId: ID!): Family
   removeFamilyMember(familyId: ID!, userId: ID!): Family
   unclaimAnswer(answerId: ID!): User

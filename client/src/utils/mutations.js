@@ -168,18 +168,22 @@ export const LEAVE_FAMILY = gql`
 
 //#region Remove
 export const REMOVE_ANSWER = gql`
-  mutation RemoveAnswer($questionId: ID!, $answerId: ID!) {
+  mutation RemoveAnswer($questionId: ID, $answerId: ID!) {
     removeAnswer(questionId: $questionId, answerId: $answerId) {
       _id
       answers {
         answers {
-          answerText
           _id
+          answerText
         }
         question {
           _id
           question
         }
+      }
+      wishlist {
+        _id
+        answerText
       }
     }
   }
