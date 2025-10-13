@@ -7,8 +7,8 @@ export const ranks = Object.freeze([
 
 export const amounts = Object.freeze([
   "General Question",
-  "More than One",
-  "Only One"
+  "Only One",
+  "More than One"
 ]);
 
 export const sortedAnswers = {

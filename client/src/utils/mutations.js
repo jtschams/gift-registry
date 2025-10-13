@@ -111,7 +111,7 @@ export const EDIT_USER = gql`
 `
 
 export const EDIT_ANSWER = gql`
-  mutation EditAnswer($questionId: ID!, $answerId: ID!, $answerText: String, $answerLink: String, $rank: Int, $amount: Int) {
+  mutation EditAnswer($questionId: ID, $answerId: ID!, $answerText: String, $answerLink: String, $rank: Int, $amount: Int) {
     editAnswer(questionId: $questionId, answerId: $answerId, answerText: $answerText, answerLink: $answerLink, rank: $rank, amount: $amount) {
       _id
       answerText

@@ -81,7 +81,7 @@ export default function Answer({ answer, claimInfo, activateQuestion }) {
           </figure>
         </>}
         <h4>{answer.answerText}</h4>
-        {answer.answerLink ? (<a href={answer.answerLink} className="answer-link">(Link)</a>) : null}
+        {answer.answerLink ? (<a href={answer.answerLink} target="_blank" className="answer-link">(Link)</a>) : null}
       </div>
       {generateClaimForm()}
     </li>

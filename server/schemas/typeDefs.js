@@ -92,7 +92,7 @@ type Mutation {
   claimAnswer(userId: ID!, questionId: ID, answerId: ID!, nickname: String!): Claimed
 
   editUser(firstName: String, lastName: String, birthday: String, likesSurprises: Boolean, email: String): User
-  editAnswer(questionId: ID!, answerId: ID!, answerText: String, answerLink: String, rank: Int, amount: Int): Answer
+  editAnswer(questionId: ID, answerId: ID!, answerText: String, answerLink: String, rank: Int, amount: Int): Answer
   editQuestion(familyId: ID!, questionId: ID!, question: String, category: String, claimable: Boolean): Question
   editFamily(familyId: ID!, familyName: String!): Family
   editNickname(familyId: ID!, nickname: String!): Relation

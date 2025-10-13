@@ -284,9 +284,9 @@ const resolvers = {
     editAnswer: async (parent, { questionId, answerId, answerText, answerLink, rank, amount }, context) => {
       if (context.user) {
         const me = await User.findById(context.user._id)
-          .populate({ path: "answers", populate: "answers" });
+          .populate([ "wishlist", { path: "answers", populate: "answers" }]);
 
-        const answer = me.answers.find(as => as.question._id == questionId).answers.find(a => a._id == answerId);
+        let answer = questionId ? me.answers.find(as => as.question._id == questionId)?.answers.find(a => a._id == answerId) : false;
         if (!answer) answer = me.wishlist.find(a => a._id == answerId);
         if (!answer) throw InvalidActionError("Edit Answer", "Unable to find answer in user answer list.");
 
@@ -294,6 +294,7 @@ const resolvers = {
         if (amount !== null) answer.amount = amount;
         answer.rank = rank;
         answer.answerLink = answerLink;
+        console.log(answer)
 
         await answer.save();
 
@@ -398,7 +399,7 @@ const resolvers = {
           const index = answerSet.answers.findIndex(a => a._id == answerId);
           if (index != -1) answerSet.answers.splice(index, 1);
         } else if (me.wishlist.find(w => w._id == answerId)) {
-          const wishIndex = me.wishlist.find(w => w._id == answerId);
+          const wishIndex = me.wishlist.findIndex(w => w._id == answerId);
           me.wishlist.splice(wishIndex, 1);
         }
         if (answerSet?.answers.length === 0) {

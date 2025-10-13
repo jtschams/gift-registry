@@ -73,7 +73,7 @@ export default function Wish({ answer, relations }) {
     <li id={answer._id} className="single-answer">
       <div className="answer-details">  
         <h4>{answer.answerText}</h4>
-        {answer.answerLink ? (<a href={answer.answerLink} className="answer-link">(Link)</a>) : null}
+        {answer.answerLink ? (<a href={answer.answerLink} target="_blank" className="answer-link">(Link)</a>) : null}
       </div>
       {generateClaimForm()}
     </li>

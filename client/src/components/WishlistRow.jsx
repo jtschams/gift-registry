@@ -12,8 +12,12 @@ export default function Wish({ answer }) {
     answerId: answer._id,
     answerText: answer.answerText,
     answerLink: answer.answerLink + "",
-    rank: answer.rank
+    rank: answer.rank,
+    amount: answer.amount
   })
+
+  const [editWish] = useMutation(EDIT_ANSWER);
+  const [removeWish] = useMutation(REMOVE_ANSWER);
 
   const showButtons = (event) => {
     event.preventDefault();
@@ -30,12 +34,27 @@ export default function Wish({ answer }) {
     event.target.closest(".wish-actions").querySelector(".wish-form").classList.remove("invisible");
   }
 
-  const handleEditWish = (event) => {
+  const handleEditWish = async (event) => {
     event.preventDefault();
+    const {data} = await editWish({
+      variables: { ...wishState }
+    });
+    //  TODO: change alert to dialog
+    alert("Wish has been updated.");
+    
+    answer = wishState;
+        
+    event.target.closest(".wishlist-row.editing").classList.remove("editing");
+    event.target.classList.add("invisible");
   }
 
-  const handleRemoveWish = (event) => {
+  const handleRemoveWish = async (event) => {
     event.preventDefault();
+    const data = await removeWish({
+      variables: { answerId: wishState.answerId }
+    })
+    
+    event.target.closest("article.wishlist-row").remove();
   }
 
   const handleWishState = (event) => {
@@ -58,7 +77,7 @@ export default function Wish({ answer }) {
           </figure>
         </h4>
         <h4 className="wishlist-item">
-          {answer.answerLink ? (<a href={answer.answerLink} className="answer-link">{answer.answerText}</a>) : <>{answer.answerText}</>}
+          {answer.answerLink ? (<a href={answer.answerLink} target="_blank" className="answer-link">{answer.answerText}</a>) : <>{answer.answerText}</>}
         </h4>
         <h4 className="wishlist-rank">{ranks[answer.rank]}</h4>
         <h4 className="wishlist-amount">{amounts[answer.amount]}</h4>

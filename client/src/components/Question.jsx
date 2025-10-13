@@ -41,7 +41,8 @@ export default function Question({ answerSet }) {
     document.getElementById(question._id).querySelector(".single-answer.editing").classList.remove("editing");
   }
 
-  const handleEditAnswer = async () => {
+  const handleEditAnswer = async (event) => {
+    event.preventDefault();
     const {data} = await editAnswer({
       variables: { ...answerState, questionId: questionState }
     });
@@ -87,7 +88,7 @@ export default function Question({ answerSet }) {
   };
 
   const handleLoadAnswer = (answerId) => {
-    const answer = answerSet.answers.find(a => a._id == answerId);
+    const answer = answerSet?.answers?.find(a => a._id == answerId);
     if (answer) setAnswerState({ answerId: answer._id, answerText: answer.answerText, answerLink: answer.answerLink, amount: answer.amount });
     else setAnswerState({ answerId: '', answerText: '', answerLink: '', amount: question.claimable ? 1 : 0 });
   }

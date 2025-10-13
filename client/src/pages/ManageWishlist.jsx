@@ -8,6 +8,7 @@ import WishlistRow from '../components/WishlistRow';
 
 const WishlistContext = createContext();
 export const useWishlistContext = () => useContext(WishlistContext);
+let sortedAnswers;
 
 export default function Wishlist() {
   const [ wishlistState, setWishlistState ] = useState('');
@@ -27,6 +28,11 @@ export default function Wishlist() {
     });
     //  TODO: change alert to dialog
     alert("Answer added to your account.");
+
+    let newWishlist = [...sortedAnswers, answerState];
+
+    sortedAnswers = newWishlist.toSorted((a, b) => a.rank - b.rank);
+
     setAnswerState({rank: 0, answerText: '', answerLink: '', amount: 1 });
   }
 
@@ -40,7 +46,6 @@ export default function Wishlist() {
   };
 
   const { loading, data } = useQuery(MY_WISHLIST);
-  let sortedAnswers = [];
 
   if (!loading) {
     sortedAnswers = data.myWishlist.toSorted((a, b) => a.rank - b.rank);

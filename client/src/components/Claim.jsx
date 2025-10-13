@@ -22,7 +22,7 @@ export default function Claim({claim}) {
       <article className="single-answer">
         <div className="answer-details">  
           <p>{claim.answer.answerText}</p>
-          {claim.answer.answerLink ? (<a href={claim.answer.answerLink} className="answer-link">(Link)</a>) : null}
+          {claim.answer.answerLink ? (<a href={claim.answer.answerLink} target="_blank" className="answer-link">(Link)</a>) : null}
         </div>
       </article>
       <button className="unclaim-button" onClick={handleUnclaim}>Unclaim Answer</button>
