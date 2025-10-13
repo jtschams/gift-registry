@@ -564,28 +564,24 @@ input:focus-visible {
   width: 200px;
 }
 
-.wish-buttons {
-  max-height: 0;
-  margin-left: 8%;
-  margin-right: -8%;
+.wish-actions {
   overflow: hidden;
+}
+
+.wish-buttons {
+  display: flex;
+  justify-content: center;
+  max-height: 0;
   transition: max-height .4s ;
 }
 
 .editing .wish-buttons {
-  display: flex;
-  justify-content: center;
-  margin-left: 0;
-  margin-right: 0;
+  margin: 0;
   max-height: 50px;
 }
 
-.wishlist-button {
-  width: 100%;
-}
-
-.wishlist-button button {
-  width: calc(50% - 30px);
+.wish-buttons button {
+  border-color: var(--mark);
 }
 
 /* #endregion */
@@ -683,11 +679,6 @@ main#error {
   .wishlist-item {
     min-width: calc(100% - 8px - var(--link-size) * 8);
     width: calc(100% - 20px - var(--link-size));
-  }
-
-  .wish-buttons {
-  margin-left: 0;
-  margin-right: -4%;
   }
   
   .form-wish-details, .form-wish-numbers {
