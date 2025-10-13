@@ -181,6 +181,7 @@ button:active {
   left: -100vw;
   transition: left .6s;
   border-radius: 20px;
+  z-index: 1;
 }
 
 #site-nav.open {
