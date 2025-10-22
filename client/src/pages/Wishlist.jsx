@@ -43,7 +43,7 @@ export default function Wishlist() {
       {loading ? <h3 className="loading">Loading...</h3> : (sortedAnswers.map((rank, index) => (
         rank.length === 0 ? null :
         <div key={index}>
-          <h3>{ranks[index]}</h3>
+          <h3>{ranks[index][0]}</h3>
           <section className="card-container">
             {rank.map((answer) => (
               <Wish key={answer._id} answer={answer} relations={relations}/>

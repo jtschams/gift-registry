@@ -136,7 +136,7 @@ const resolvers = {
       if (context.user) {
         const family = await Family.create({ familyName });
         const user = await User.findById(context.user._id)
-        nickname = nickname? nickname : user.name;
+        nickname = nickname? nickname : user.name();
         
         family.admins = [ user ];
         family.members = [{ user, nickname }];

@@ -1,8 +1,7 @@
 export const ranks = Object.freeze([
-  "Really Want to Have",
-  "Great to Have",
-  "Seems Interesting",
-  "Could Always Use More"
+  ["I Really, Really Want This", "Really Want"],
+  ["It Would Be Nice To Have", "Nice to Have"],
+  ["This Just Seems Interesting", "Just Interesting"]
 ]);
 
 export const amounts = Object.freeze([

@@ -16,8 +16,16 @@ export default function Wish({ answer }) {
     amount: answer.amount
   })
 
-  const [editWish] = useMutation(EDIT_ANSWER);
-  const [removeWish] = useMutation(REMOVE_ANSWER);
+  const [editWish] = useMutation(EDIT_ANSWER, {
+    refetchQueries: [
+      'MyWishlist'
+    ]
+  });
+  const [removeWish] = useMutation(REMOVE_ANSWER, {
+    refetchQueries: [
+      'MyWishlist'
+    ]
+  });
 
   const showButtons = (event) => {
     event.preventDefault();
@@ -53,8 +61,6 @@ export default function Wish({ answer }) {
     const data = await removeWish({
       variables: { answerId: wishState.answerId }
     })
-    
-    event.target.closest("article.wishlist-row").remove();
   }
 
   const handleWishState = (event) => {
@@ -79,7 +85,7 @@ export default function Wish({ answer }) {
         <h4 className="wishlist-item">
           {answer.answerLink ? (<a href={answer.answerLink} target="_blank" className="answer-link">{answer.answerText}</a>) : <>{answer.answerText}</>}
         </h4>
-        <h4 className="wishlist-rank">{ranks[answer.rank]}</h4>
+        <h4 className="wishlist-rank">{ranks[answer.rank][1]}</h4>
         <h4 className="wishlist-amount">{amounts[answer.amount]}</h4>
       </div>
       <div className="wish-actions">
@@ -123,10 +129,7 @@ export default function Wish({ answer }) {
                 value={wishState.rank}
                 onChange={handleWishState}
               >
-                <option value={0}>Really Want to Have</option>
-                <option value={1}>Great to Have</option>
-                <option value={2}>Seems Interesting</option>
-                <option value={3}>Could Always Use More</option>
+                {ranks.map(([rank], index) => <option value={index}>{rank}</option> )}
               </select>
             </div>
             <div className="form-group">

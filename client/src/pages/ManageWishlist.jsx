@@ -4,6 +4,7 @@ import { useQuery, useMutation } from '@apollo/client';
 
 import { MY_WISHLIST } from '../utils/queries';
 import { MAKE_WISH} from '../utils/mutations';
+import { ranks } from '../utils/enums';
 import WishlistRow from '../components/WishlistRow';
 
 const WishlistContext = createContext();
@@ -19,7 +20,11 @@ export default function Wishlist() {
     amount: 1,
   });
 
-  const [makeWish] = useMutation(MAKE_WISH);
+  const [makeWish] = useMutation(MAKE_WISH, {
+    refetchQueries: [
+      MY_WISHLIST
+    ]
+  });
   
   const handleMakeWish = async (event) => {
     event.preventDefault();
@@ -46,9 +51,10 @@ export default function Wishlist() {
   };
 
   const { loading, data } = useQuery(MY_WISHLIST);
-
+  console.log(loading)
   if (!loading) {
-    sortedAnswers = data.myWishlist.toSorted((a, b) => a.rank - b.rank);
+    const sortedData = [...data.myWishlist.toSorted((a, b) => a.rank - b.rank)];
+    sortedAnswers = sortedData;
   };
 
   return (
@@ -93,10 +99,7 @@ export default function Wishlist() {
                 value={answerState.rank}
                 onChange={handleWishState}
               >
-                <option value={0}>Really Want to Have</option>
-                <option value={1}>Great to Have</option>
-                <option value={2}>Seems Interesting</option>
-                <option value={3}>Could Always Use More</option>
+                {ranks.map(([rank], index) => <option value={index}>{rank}</option> )}
               </select>
             </div>
             <div className="form-group">
