@@ -84,7 +84,8 @@ export default function Question({ question, family, isAdmin }) {
       </div>
       {isAdmin ? (<div className="row-actions">
         <div className="row-buttons">
-          <button className="wide-button" onClick={handleOpenEdit}>Edit Wish</button><button className="wide-button" onClick={handleRemoveQuestion}>Remove Wish</button>
+          <button className="wide-button" onClick={handleOpenEdit}>Edit Question</button>
+          <button className="wide-button" onClick={handleRemoveQuestion}>Remove Question</button>
         </div>
         <form className="question-form invisible" onSubmit={handleEditQuestion}>
           <div className="form-group">

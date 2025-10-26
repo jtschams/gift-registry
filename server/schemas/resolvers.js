@@ -122,7 +122,7 @@ const resolvers = {
     },
     
     login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email }).collation({ locale: 'en', strength: 2 });
       if (!user) {
         throw AuthenticationError;
       }
