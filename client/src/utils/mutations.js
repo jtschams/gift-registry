@@ -77,9 +77,35 @@ export const CREATE_GROUP = gql`
 `
 
 export const ADD_QUESTION = gql`
-  mutation AddQuestion($familyId: ID!, $question: String, $category: String, $claimable: Boolean) {
+  mutation AddQuestion($familyId: ID!, $question: String!, $category: String, $claimable: Boolean) {
     addQuestion(familyId: $familyId, question: $question, category: $category, claimable: $claimable) {
-      _id
+      family {
+        _id
+        familyName
+        questions {
+          _id
+          question
+          category
+          claimable
+        }
+        members {
+          nickname
+          user {
+            _id
+            name
+          }
+        }
+        admins {
+          _id
+        }
+      }
+      user {
+        nickname
+        user {
+          _id
+          name
+        }
+      }
     }
   }
 `
@@ -125,19 +151,67 @@ export const EDIT_ANSWER = gql`
 export const EDIT_QUESTION = gql`
   mutation EditQuestion($familyId: ID!, $questionId: ID!, $question: String, $category: String, $claimable: Boolean) {
     editQuestion(familyId: $familyId, questionId: $questionId, question: $question, category: $category, claimable: $claimable) {
-      _id
-      category
-      claimable
-      question
+      family {
+        _id
+        familyName
+        questions {
+          _id
+          question
+          category
+          claimable
+        }
+        members {
+          nickname
+          user {
+            _id
+            name
+          }
+        }
+        admins {
+          _id
+        }
+      }
+      user {
+        nickname
+        user {
+          _id
+          name
+        }
+      }
     }
   }
 `
 
 export const EDIT_FAMILY = gql`
-  mutation EditFamily($familyId: ID!, $familyName: String) {
+  mutation EditFamily($familyId: ID!, $familyName: String!) {
     editFamily(familyId: $familyId, familyName: $familyName) {
-      _id
-      familyName
+      family {
+        _id
+        familyName
+        questions {
+          _id
+          question
+          category
+          claimable
+        }
+        members {
+          nickname
+          user {
+            _id
+            name
+          }
+        }
+        admins {
+          _id
+        }
+      }
+      user {
+        nickname
+        user {
+          _id
+          name
+        }
+      }
     }
   }
 `
@@ -145,8 +219,33 @@ export const EDIT_FAMILY = gql`
 export const EDIT_NICKNAME = gql`
   mutation EditNickname($familyId: ID!, $nickname: String) {
     editNickname(familyId: $familyId, nickname: $nickname) {
-      familyName
-      nickname
+      family {
+        _id
+        familyName
+        questions {
+          _id
+          question
+          category
+          claimable
+        }
+        members {
+          nickname
+          user {
+            _id
+            name
+          }
+        }
+        admins {
+          _id
+        }
+      }
+      user {
+        nickname
+        user {
+          _id
+          name
+        }
+      }
     }
   }
 `
@@ -192,12 +291,32 @@ export const REMOVE_ANSWER = gql`
 export const REMOVE_QUESTION = gql`
   mutation RemoveQuestion($familyId: ID!, $questionId: ID!) {
     removeQuestion(familyId: $familyId, questionId: $questionId) {
-      _id
-      familyName
-      questions {
-        question
-        category
-        claimable
+      family {
+        _id
+        familyName
+        questions {
+          _id
+          question
+          category
+          claimable
+        }
+        members {
+          nickname
+          user {
+            _id
+            name
+          }
+        }
+        admins {
+          _id
+        }
+      }
+      user {
+        nickname
+        user {
+          _id
+          name
+        }
       }
     }
   }
@@ -206,18 +325,32 @@ export const REMOVE_QUESTION = gql`
 export const REMOVE_MEMBER = gql`
   mutation RemoveFamilyMember($familyId: ID!, $userId: ID!) {
     removeFamilyMember(familyId: $familyId, userId: $userId) {
-      _id
-      familyName
-      members {
+      family {
+        _id
+        familyName
+        questions {
+          _id
+          question
+          category
+          claimable
+        }
+        members {
+          nickname
+          user {
+            _id
+            name
+          }
+        }
+        admins {
+          _id
+        }
+      }
+      user {
         nickname
         user {
           _id
           name
         }
-      }
-      admins {
-        _id
-        name
       }
     }
   }

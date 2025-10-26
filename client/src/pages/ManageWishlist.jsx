@@ -116,7 +116,7 @@ export default function Wishlist() {
               </select>
             </div>
           </div>
-          <button type="submit" className="wide-button">Submit Answer</button>
+          <button type="submit" className="wide-button">Save Wish</button>
         </form>
       </article>
       {loading ? <h3 className="loading">Loading...</h3> : (sortedAnswers.map((answer) => (

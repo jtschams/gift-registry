@@ -19,13 +19,17 @@ const resolvers = {
         .populate({ path: 'answers', populate: ['question', 'answers'] });
     },
     
-    family: async (parent, { familyId }) => {
-      return await Family.findById(familyId)
+    family: async (parent, { familyId }, context) => {
+      const family = await Family.findById(familyId)
         .populate([
           'questions',
           'admins',
           { path: 'members', populate: { path: 'user', populate: 'groups' }}
         ]);
+
+      const user = family.members.find(m => m.user._id == context.user._id);
+
+      return {family, user};
     },
     
     relatedUsers: async(parent, args, context) => {
@@ -155,7 +159,7 @@ const resolvers = {
         const family = await Family.findById(familyId)
           .populate({ path: 'members', populate: 'user' });
         const user = await User.findById(context.user._id).populate('groups');
-        nickname = nickname ? nickname : context.user.name;
+        nickname = nickname ? nickname : user.name();
         
         // Verifies existence of user and family
         if (!user) {
@@ -188,12 +192,20 @@ const resolvers = {
     },
     
     addQuestion: async (parent, { question, category, claimable, familyId }, context) => {
-      const family = await Family.findById(familyId).populate(['admins', 'questions']);
+      const family = await Family.findById(familyId)
+        .populate([
+          'questions',
+          'admins',
+          { path: 'members', populate: { path: 'user', populate: 'groups' }}
+        ]);
       if (family?.admins.some((admin) => admin._id == context.user?._id)) {
         const newQuestion = await Question.create({ question, category, claimable });
         family.questions.push(newQuestion);
         await family.save();
-        return newQuestion;
+
+        const user = family.members.find(m => m.user._id == context.user._id);
+
+        return {family, user};
       }
       throw AuthenticationError;
     },
@@ -305,7 +317,11 @@ const resolvers = {
 
     editQuestion: async (parent, { familyId, questionId, question, category, claimable }, context) => {
       const family = await Family.findById(familyId)
-        .populate(["questions", "admins"]);
+        .populate([
+          'questions',
+          'admins',
+          { path: 'members', populate: { path: 'user', populate: 'groups' }}
+        ]);
       if (family?.admins.some((admin) => admin._id == context.user?._id)) {
         const questionObj = family.questions.find(q => q._id == questionId);
         if (!questionObj) throw InvalidActionError("Edit Question", "Could not locate question in group.");
@@ -316,21 +332,29 @@ const resolvers = {
         
         await questionObj.save();
 
-        return questionObj;
+        const user = family.members.find(m => m.user._id == context.user._id);
+
+        return {family, user};
       }
       throw AuthenticationError;
     },
 
     editFamily: async (parent, { familyId, familyName }, context) => {
       const family = await Family.findById(familyId)
-        .populate("admins");
+        .populate([
+          'questions',
+          'admins',
+          { path: 'members', populate: { path: 'user', populate: 'groups' }}
+        ]);
       if (family?.admins.some((admin) => admin._id == context.user?._id)) {
 
         family.familyName = familyName;
 
         await family.save();
         
-        return family;
+        const user = family.members.find(m => m.user._id == context.user._id);
+
+        return {family, user};
       }
       throw AuthenticationError;
     },
@@ -338,14 +362,18 @@ const resolvers = {
     editNickname: async (parent, { familyId, nickname }, context) => {
       if (context.user) {
         const family = await Family.findById(familyId)
-          .populate("members");
-        const member = family.members.find(m => m.user._id == context.user._id);
+        .populate([
+          'questions',
+          'admins',
+          { path: 'members', populate: { path: 'user', populate: 'groups' }}
+        ]);
+        const user = family.members.find(m => m.user._id == context.user._id);
 
-        member.nickname = nickname;
+        user.nickname = nickname || user.user.name();
 
         await family.save();
 
-        return { familyName: family.familyName, nickname };
+        return {family, user};
       }
       throw AuthenticationError;
     },
@@ -416,21 +444,31 @@ const resolvers = {
 
     removeQuestion: async (parent, { familyId, questionId }, context) => {
       const family = await Family.findById(familyId)
-        .populate(["questions", "admins"]);
+        .populate([
+          'questions',
+          'admins',
+          { path: 'members', populate: { path: 'user', populate: 'groups' }}
+        ]);
       if (family?.admins.some((admin) => admin._id == context.user?._id)) {
         const index = family.questions.findIndex(q => q._id == questionId);
         if (index != -1) family.questions.splice(index, 1);
         
         await family.save();
   
-        return family;
+        const user = family.members.find(m => m.user._id == context.user._id);
+
+        return {family, user};
       }
       throw AuthenticationError;
     },
 
     removeFamilyMember: async (parent, { familyId, userId }, context) => {
       const family = await Family.findById(familyId)
-        .populate(["admins", { path: "members", populate: { path: "user", populate: "groups" } }]);
+        .populate([
+          'questions',
+          'admins',
+          { path: 'members', populate: { path: 'user', populate: 'groups' }}
+        ]);
       if (family?.admins.some((admin) => admin._id == context.user?._id)) {
         const saveArray = [];
         const memberIndex = family.members.findIndex(m => m.user._id == userId);
@@ -457,7 +495,9 @@ const resolvers = {
 
         await Promise.all(saveArray);
         
-        return family;
+        const user = family.members.find(m => m.user._id == context.user._id);
+
+        return {family, user};
       }
       throw AuthenticationError;
     },

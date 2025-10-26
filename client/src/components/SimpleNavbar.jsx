@@ -20,8 +20,7 @@ export default function Navbar() {
     </figure>
     <nav id="site-nav">
       <ul>
-        <li key="my-account" onClick={burgerButton}><Link to="/">My Account</Link></li>
-        <li key="my-friends" onClick={burgerButton}><Link to="/my-friends">My Friends</Link></li>
+        <li key="my-profile" onClick={burgerButton}><Link to="/">Return to Account</Link></li>
         <li key="logout" onClick={burgerButton}><a href="/login-signup" onClick={handleLogout}>Logout</a></li>
       </ul>
     </nav>

@@ -126,22 +126,32 @@ export const USER_WISHLIST = gql`
 export const FAMILY = gql`
   query Family($familyId: ID!) {
     family(familyId: $familyId) {
-      familyName
-      questions {
+      family {
         _id
-        question
-        category
-        claimable
+        familyName
+        questions {
+          _id
+          question
+          category
+          claimable
+        }
+        members {
+          nickname
+          user {
+            _id
+            name
+          }
+        }
+        admins {
+          _id
+        }
       }
-      members {
+      user {
         nickname
         user {
           _id
           name
         }
-      }
-      admins {
-        _id
       }
     }
   }

@@ -41,8 +41,7 @@ export default function Question({ answerSet }) {
     document.getElementById(question._id).querySelector(".single-answer.editing").classList.remove("editing");
   }
 
-  const handleEditAnswer = async (event) => {
-    event.preventDefault();
+  const handleEditAnswer = async () => {
     const {data} = await editAnswer({
       variables: { ...answerState, questionId: questionState }
     });
@@ -66,6 +65,8 @@ export default function Question({ answerSet }) {
     const data = await removeAnswer({
       variables: { questionId: question._id, answerId: answerState.answerId }
     })
+    //  TODO: change alert to dialog
+    alert("Answer removed from your account.");
     
     let answerList = [...answerSet.answers];
     const answerIndex = answerList.findIndex(a => a._id == answerState.answerId);
@@ -140,18 +141,6 @@ export default function Question({ answerSet }) {
                 onChange={handleAnswerChange}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="answer-link">Link to your Answer (Optional):</label>
-              <input
-                id="answer-link"
-                className="answer-input"
-                placeholder="Answer Link"
-                name="answerLink"
-                type="text"
-                value={answerState.answerLink}
-                onChange={handleAnswerChange}
-              />
-            </div>
             {!question.claimable ? null : (
             <div className="form-group">
               <label htmlFor="answer-amount">How may of this do you want?</label>
@@ -168,8 +157,7 @@ export default function Question({ answerSet }) {
               </select>
             </div>
             )}
-            <button className="answer-button add-answer invisible" type="submit">Add Answer</button>
-            <button className="answer-button edit-answer invisible" type="submit">Edit Answer</button>
+            <button className="answer-button edit-answer add-answer invisible" type="submit">Save Answer</button>
             <button className="answer-button edit-answer invisible" type="button" onClick={handleRemoveAnswer}>Remove Answer</button>
           </form>
         </article>

@@ -307,7 +307,7 @@ input:focus-visible {
   border-bottom: 1px solid var(--accent);
 }
 
-.family-component, .single-answer, .wishlist-details h4 {
+.family-component, .single-answer, .row-details h4 {
   position: relative;
   background-color: var(--menu);
   padding: 1px 1px;
@@ -318,7 +318,7 @@ input:focus-visible {
   border-radius: 10px;
 }
 
-.question-component:last-child, article.wishlist-row, .answer-set, #manage-wishlist > article {
+.question-component:last-child, article.wishlist-row, article.question-row, .answer-set, #manage-wishlist > article {
   border-bottom: none;
 }
 
@@ -529,58 +529,54 @@ input:focus-visible {
 
 /* #endregion */
 
-/* #region MARK: Manage Wishlist */
+/* #region MARK: Rows */
 
-.wishlist-options {
+.row-options {
   min-width: calc(var(--link-size) * .8 + 4px);
 }
 
-.wishlist-options .miniburger {
+.row-options .miniburger {
   left: 2px;
 }
 
-.wishlist-details h4 {
+.row-details h4 {
   text-align: center;
   margin: 15px 5px 0;
 }
 
-.wishlist-details {
+.row-details {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
 }
 
-.wishlist-rank {
+.row-info {
   width: 200px;
 }
 
-.wishlist-item {
+.row-content {
   min-width: 345px;
   width: calc(100% - 404px - (var(--button-size) * 1.2) - (var(--link-size) * .8));
 }
 
-.wishlist-amount {
-  width: 200px;
-}
-
-.wish-actions {
+.row-actions {
   overflow: hidden;
 }
 
-.wish-buttons {
+.row-buttons {
   display: flex;
   justify-content: center;
   max-height: 0;
   transition: max-height .4s ;
 }
 
-.editing .wish-buttons {
+.editing .row-buttons {
   margin: 0;
   max-height: 50px;
 }
 
-.wish-buttons button {
+.row-buttons button {
   border-color: var(--mark);
 }
 
@@ -660,23 +656,23 @@ main#error {
 
 /* #endregion */
 
-/* #region MARK: Wishlist Row(930px)  */
+/* #region MARK: Rows(930px)  */
 @media screen and (max-width: 930px) {
 
-  .wishlist-details h4 {
+  .row-details h4 {
     margin: 15px 0 0;
   }
 
-  article.wishlist-row {
+  article.wishlist-row, article.question-row {
     padding-bottom: 15px;
     border-bottom: 1px solid var(--accent);
   }
 
-  .wishlist-rank, .wishlist-amount {
+  .row-info {
     width: 48%;
   }
 
-  .wishlist-item {
+  .row-content {
     min-width: calc(100% - 8px - var(--link-size) * 8);
     width: calc(100% - 20px - var(--link-size));
   }

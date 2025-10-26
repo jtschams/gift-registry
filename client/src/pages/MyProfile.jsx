@@ -12,11 +12,11 @@ export default function MyProfile() {
 
   return (
     <>
-      <h2>My Profile</h2>
+      <h2>My Account</h2>
       <article className="profile-selection"><Link to="/questionnaire"><h3>Tastes & Preferences Questionnaire</h3></Link></article>
-      <article className="profile-selection"><Link to="/manage-wishlist"><h3>Manage Wishlist</h3></Link></article>
-      <article className="profile-selection"><Link to="/wishlist"><h3>My Wishlist</h3></Link></article>
-      <article className="profile-selection"><Link to="/shopping-list"><h3>Gifts I Plan to Give</h3></Link></article>
+      <article className="profile-selection"><Link to="/manage-wishlist"><h3>Manage My Wishlist</h3></Link></article>
+      <article className="profile-selection"><Link to="/my-friends"><h3>My Friends</h3></Link></article>
+      <article className="profile-selection"><Link to="/shopping-list"><h3>Gifts I Have Selected for Others</h3></Link></article>
       <article className="profile-selection"><Link to="/change-theme"><h3>Change Theme</h3></Link></article>
       <article className="profile-selection">
         <h3>My Groups</h3>

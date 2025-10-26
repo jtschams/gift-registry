@@ -64,7 +64,7 @@ export default function Answer({ answer, claimInfo, activateQuestion }) {
               ))}
             </select>
           </div>
-          <button className="confirm-claim" type="submit">Confirm Claim</button>
+          <button className="confirm-claim" type="submit">Save Claim</button>
         </form>
       </>
     )

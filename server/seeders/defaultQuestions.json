@@ -30,21 +30,6 @@
     "claimable": false
   },
   {
-    "question": "Favorite authors or directors?",
-    "category": "Likes",
-    "claimable": false
-  },
-  {
-    "question": "Favorite genres?",
-    "category": "Likes",
-    "claimable": false
-  },
-  {
-    "question": "Movies or shows you would like to own?",
-    "category": "Likes",
-    "claimable": true
-  },
-  {
     "question": "Shirt Size:",
     "category": "Sizes Etc",
     "claimable": false

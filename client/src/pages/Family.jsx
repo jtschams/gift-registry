@@ -5,11 +5,19 @@ import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 
 import { FAMILY } from '../utils/queries'
-import { ADD_QUESTION } from '../utils/mutations'
+import { ADD_QUESTION, EDIT_FAMILY, EDIT_NICKNAME, LEAVE_FAMILY } from '../utils/mutations'
+import QuestionRow from '../components/QuestionRow';
+
+let family = {};
+let isAdmin = false;
+const questions = [];
 
 export default function Family() {
+  //#region Variable Handling
   const {familyId} = useParams();
   const [ linkState ] = useState(`${location.origin}/join-family/${familyId}`);
+  const [ nicknameState, setNicknameState ] = useState(null);
+  const [ familyState, setFamilyState ] = useState(null);
   const [ newQuestionState, setNewQuestionState ] = useState({
     question: '',
     category: 'Likes',
@@ -17,23 +25,63 @@ export default function Family() {
   });
   
   const { loading, data } = useQuery(FAMILY, { variables: { familyId } })
-  const family = data?.family;
   const [addQuestion] = useMutation(ADD_QUESTION);
+  const [editFamily] = useMutation(EDIT_FAMILY);
+  const [changeNickname] = useMutation(EDIT_NICKNAME);
+  const [leaveFamily] = useMutation(LEAVE_FAMILY);
+
+  if (!loading && data?.family) {
+    family = data.family.family
+    isAdmin = data.family.family.admins.some(a => a._id == data.family.user.user._id)
+
+    questions.length = 0;
+    // Sort Questions
+    questions.push(
+      ...family.questions.filter(q => q.category === "Likes"),
+      ...family.questions.filter(q => q.category === "Sizes Etc"),
+      ...family.questions.filter(q => q.category === "Dislikes"),
+      ...family.questions.filter(q => q.category === "Miscellaneous"),
+    );
+
+    if (familyState === null) setFamilyState(data.family.family.familyName)
+    if (nicknameState === null) setNicknameState(data.family.user.nickname)
+  }
+  //#endregion
   
+  //#region Form Handling
   const generateInvite = (event) => {
     event.preventDefault();
-    document.getElementById('invite-div').classList.remove('invisible');
-    document.getElementById('add-question-form').classList.add('invisible');
-    document.getElementById('invite-link').select();
-    
+    const show = document.getElementById('invite-div').classList.contains("invisible");
+    document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
+    if (show) {
+      document.getElementById('invite-div').classList.remove('invisible');
+      document.getElementById('invite-link').select();
+    }
   }
   
-  const showAddQuestion = (event) => {
+  const handleQuestionForm = (event) => {
     event.preventDefault();
-    document.getElementById('invite-div').classList.add('invisible');
-    document.getElementById('add-question-form').classList.remove('invisible');
+    const show = document.getElementById('add-question-form').classList.contains("invisible");
+    document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
+    if (show) document.getElementById('add-question-form').classList.remove('invisible');
   }
 
+  const handleEditForm = (event) => {
+    event.preventDefault();
+    const show = document.getElementById('edit-family-form').classList.contains("invisible");
+    document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
+    if (show) document.getElementById('edit-family-form').classList.remove('invisible');
+  }
+
+  const handleNicknameForm = (event) => {
+    event.preventDefault();
+    const show = document.getElementById('change-nickname-form').classList.contains("invisible");
+    document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
+    if (show) document.getElementById('change-nickname-form').classList.remove('invisible');
+  }
+  //#endregion
+
+  //#region Mutation Handling
   const handleQuestionAdd = async (event) => {
     event.preventDefault();
     const {data} = await addQuestion({ variables: {
@@ -42,10 +90,56 @@ export default function Family() {
       claimable: false
       // claimable: newQuestionState.category === "Specific Gifts"
     }});
+    //  TODO: change alert to dialog
     alert("Question added.");
-    window.location.reload();
+    setNewQuestionState({
+      question: '',
+      category: 'Likes',
+      familyId
+    });
+
+    family = data.addQuestion.family;
+    document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
   }
 
+  const handleEditFamily = async (event) => {
+    event.preventDefault();
+    const {data} = await editFamily({ variables: {
+      familyId,
+      familyName: familyState
+    }});
+    //  TODO: change alert to dialog
+    alert("Family Name Changed.");
+    family = data.editFamily.family;
+    document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
+  }
+  
+  const handleChangeNickname = async (event) => {
+    event.preventDefault();
+    const {data} = await changeNickname({ variables: { 
+      familyId,
+      nickname: nicknameState
+    }});
+    //  TODO: change alert to dialog
+    alert("Nickname Changed.");
+    document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
+    setNicknameState(data.editNickname.user.nickname);
+  }
+
+  const handleLeaveFamily = async (event) => {
+    event.preventDefault();
+    if (!confirm(`Do you want to leave "${family.familyName}"?`)) return;
+    const {data} = await leaveFamily({ variables: {
+      familyId
+    }});
+
+    //  TODO: change alert to dialog
+    alert(`You have left "${family.familyName}".  You can rejoin if invited by another member.`);
+    window.location.assign("/");
+  }
+  //#endregion
+
+  //#region Form State Handling
   const handleFormChange = (event) => {
     const { name, value } = event.target;
 
@@ -54,12 +148,19 @@ export default function Family() {
       [name]: value
     })
   }
+  const handleFamilyChange = (event) => {
+    setFamilyState(event.target.value)
+  }
+  const handleNicknameChange = (event) => {
+    setNicknameState(event.target.value)
+  }
 
   const copyLink = (event) => {
     event.preventDefault();
     navigator.clipboard.writeText(linkState);
     event.target.textContent = "Copied!"
   }
+  //#endregion
 
   return (
     <>
@@ -69,13 +170,16 @@ export default function Family() {
           <h2>Group Actions</h2>
           <article id="family-action-list">
             <button onClick={generateInvite}>Generate Invite Link</button>
-            <button onClick={showAddQuestion}>Add New Question</button>
-            <div id="invite-div" className="form-group invisible">
+            {isAdmin ? (<><button onClick={handleQuestionForm}>Add New Question</button>
+            <button onClick={handleEditForm}>Edit Family</button></>) : null}
+            <button onClick={handleNicknameForm}>Change Nickname</button>
+            <button onClick={handleLeaveFamily}>Leave Family</button>
+            <div id="invite-div" className="family-form form-group invisible">
               <label htmlFor="invite-link">Invite Link for this Group:</label>
               <button id="copy-button" onClick={copyLink}>Copy Link</button>
               <input id="invite-link" name="invite-link" value={linkState} readOnly/>
             </div>
-            <form id="add-question-form" className="invisible" onSubmit={handleQuestionAdd}>
+            {isAdmin ? (<><form id="add-question-form" className="family-form invisible" onSubmit={handleQuestionAdd}>
               <div className="form-group">
                 <label htmlFor="question">Question</label>
                 <input
@@ -103,21 +207,43 @@ export default function Family() {
                   <option>Miscellaneous</option>
                 </select>
               </div>
-              <button type="submit">Add Question</button>
+              <button type="submit">Save Question</button>
+            </form>
+            <form id="edit-family-form" className="family-form invisible" onSubmit={handleEditFamily}>
+              <div className="form-group">
+                <label htmlFor="family-name">Family Name</label>
+                <input
+                  id="family-name"
+                  className="family-input"
+                  placeholder="Question"
+                  name="family-name"
+                  type="text"
+                  value={familyState}
+                  onChange={handleFamilyChange}    
+                />
+              </div>
+              <button type="submit">Save Family</button>
+            </form></>) : null}
+            <form id="change-nickname-form" className="family-form invisible" onSubmit={handleChangeNickname}>
+              <div className="form-group">
+                <label htmlFor="nickname">Nickname</label>
+                <input
+                  id="nickname"
+                  className="nickname-input"
+                  placeholder="Nickname"
+                  name="nickname"
+                  type="text"
+                  value={nicknameState}
+                  onChange={handleNicknameChange}    
+                />
+              </div>
+              <button type="submit">Save Nickname</button>
             </form>
           </article>
-        </section>
+        </section>      
         <section id="family-questions">
           <h2>Group Questions</h2>
-          {family.questions.map((question) => (
-            <article key={question._id} className="family-question">
-              <p>{question.question}</p>
-              <div className="details">
-                <small>({question.category})</small>
-                {question.claimable ? (<small>(Claimable)</small>) : null}
-              </div>
-            </article>
-          ))}
+          {questions.map((question) => (<QuestionRow key={question._id} question={question} family={family} isAdmin={isAdmin} />))}
         </section>
       </>)}
     </>

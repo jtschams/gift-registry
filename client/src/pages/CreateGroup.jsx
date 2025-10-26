@@ -56,7 +56,7 @@ export default function CreateGroup() {
             onChange={handleGroupFormChange}
           />
         </div>
-        <button type="submit">Create New Group</button>
+        <button type="submit">Save Group</button>
       </form>
     </article>
   </>)

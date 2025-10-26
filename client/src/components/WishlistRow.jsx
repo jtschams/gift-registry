@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 
 import { EDIT_ANSWER, REMOVE_ANSWER } from '../utils/mutations'
-import { useWishlistContext } from '../pages/ManageWishlist';
 import { ranks, amounts } from '../utils/enums';
 
 export default function Wish({ answer }) {
@@ -30,16 +29,16 @@ export default function Wish({ answer }) {
   const showButtons = (event) => {
     event.preventDefault();
     const selected = event.target.closest(".wishlist-row:not(.editing)");
-    document.querySelectorAll(".wish-actions > .wish-form:not(.invisible)").forEach((el) => el?.classList.add("invisible"));
+    document.querySelectorAll(".row-actions > .wish-form:not(.invisible)").forEach((el) => el?.classList.add("invisible"));
     document.querySelectorAll(".wishlist-row.editing").forEach((el) => el?.classList.remove("editing"));
     selected?.classList.add("editing");
   }
 
   const handleOpenEdit = (event) => {
     event.preventDefault();
-    document.querySelectorAll(".wish-actions > .wish-form:not(.invisible)").forEach((el) => el?.classList.add("invisible"));
+    document.querySelectorAll(".row-actions > .wish-form:not(.invisible)").forEach((el) => el?.classList.add("invisible"));
     // TODO: on .editing change from buttons to form with edit and delete buttons maybe hide h4s apart from name
-    event.target.closest(".wish-actions").querySelector(".wish-form").classList.remove("invisible");
+    event.target.closest(".row-actions").querySelector(".wish-form").classList.remove("invisible");
   }
 
   const handleEditWish = async (event) => {
@@ -74,22 +73,22 @@ export default function Wish({ answer }) {
 
   return (
     <article id={answer._id} className="wishlist-row">
-      <div className="wishlist-details">
-        <h4 className="wishlist-options">
+      <div className="row-details">
+        <h4 className="row-options">
           <figure className='burger miniburger' onClick={showButtons}>
             <div className='bar1'></div>
             <div className='bar2'></div>
             <div className='bar3'></div>
           </figure>
         </h4>
-        <h4 className="wishlist-item">
+        <h4 className="row-content">
           {answer.answerLink ? (<a href={answer.answerLink} target="_blank" className="answer-link">{answer.answerText}</a>) : <>{answer.answerText}</>}
         </h4>
-        <h4 className="wishlist-rank">{ranks[answer.rank][1]}</h4>
-        <h4 className="wishlist-amount">{amounts[answer.amount]}</h4>
+        <h4 className="row-info">{ranks[answer.rank][1]}</h4>
+        <h4 className="row-info">{amounts[answer.amount]}</h4>
       </div>
-      <div className="wish-actions">
-        <div className="wish-buttons">
+      <div className="row-actions">
+        <div className="row-buttons">
           <button className="wide-button" onClick={handleOpenEdit}>Edit Wish</button><button className="wide-button" onClick={handleRemoveWish}>Remove Wish</button>
         </div>
         <form className="wish-form invisible" onSubmit={handleEditWish}>
@@ -146,7 +145,7 @@ export default function Wish({ answer }) {
               </select>
             </div>
           </div>
-          <button type="submit" className="wide-button">Edit Wish</button>
+          <button type="submit" className="wide-button">Save Wish</button>
         </form>
       </div>
     </article>

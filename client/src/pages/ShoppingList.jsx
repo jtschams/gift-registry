@@ -9,7 +9,7 @@ export default function ShoppingList() {
   const claims = data?.myClaims
 
   return (<>
-    <h2>Gifts I Plan to Give</h2>
+    <h2>Gifts I Have Selected for Others</h2>
     <section className="card-container">
       {loading ? <h1>Loading...</h1> : claims.map((claim) => (
         <Claim key={claim.answer._id} claim={claim} />

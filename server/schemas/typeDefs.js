@@ -68,10 +68,15 @@ type Auth {
   user: User
 }
 
+type FamilyResponse {
+  family: Family!
+  user: Member!
+}
+
 type Query {
   me: User
   user(userId: ID!): User
-  family(familyId: ID!): Family
+  family(familyId: ID!): FamilyResponse
   relatedUsers: [RelatedUser]
   myQuestions: [Question]
   myAnswers: [AnswerSet]
@@ -86,21 +91,21 @@ type Mutation {
   login(email: String!, password: String!): Auth
   addFamily(familyName: String!, nickname: String): Family
   joinFamily(familyId: ID!, nickname: String): User
-  addQuestion(question: String!, category: String, claimable: Boolean, familyId: ID!): Question
+  addQuestion(question: String!, category: String, claimable: Boolean, familyId: ID!): FamilyResponse
   answerQuestion(questionId: ID!, answerText: String!, answerLink: String, amount: Int!): AnswerSet
   makeWish(rank: Int!, answerText: String!, answerLink: String, amount: Int!): Answer
   claimAnswer(userId: ID!, questionId: ID, answerId: ID!, nickname: String!): Claimed
 
   editUser(firstName: String, lastName: String, birthday: String, likesSurprises: Boolean, email: String): User
   editAnswer(questionId: ID, answerId: ID!, answerText: String, answerLink: String, rank: Int, amount: Int): Answer
-  editQuestion(familyId: ID!, questionId: ID!, question: String, category: String, claimable: Boolean): Question
-  editFamily(familyId: ID!, familyName: String!): Family
-  editNickname(familyId: ID!, nickname: String!): Relation
+  editQuestion(familyId: ID!, questionId: ID!, question: String, category: String, claimable: Boolean): FamilyResponse
+  editFamily(familyId: ID!, familyName: String!): FamilyResponse
+  editNickname(familyId: ID!, nickname: String): FamilyResponse
   leaveFamily(familyId: ID!): User
 
   removeAnswer(questionId: ID, answerId: ID!): User
-  removeQuestion(familyId: ID!, questionId: ID!): Family
-  removeFamilyMember(familyId: ID!, userId: ID!): Family
+  removeQuestion(familyId: ID!, questionId: ID!): FamilyResponse
+  removeFamilyMember(familyId: ID!, userId: ID!): FamilyResponse
   unclaimAnswer(answerId: ID!): User
 
   deleteUser(removeAnswers: Boolean): User
