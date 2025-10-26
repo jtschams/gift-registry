@@ -24,7 +24,7 @@ export default function Wishlist() {
     for (const answer of data[queryName]) {
       sortedAnswers[answer.rank].push(answer);
     }
-    if (data.relatedUsers) {
+    if (data.relatedUsers?.length) {
       user = data.relatedUsers.find((member) => member.user._id === userId);
       const realName = [{ __typename: 'Relation', familyName: 'default', nickname: user.user.name }];
       relations = realName.concat(user.relations);
@@ -33,7 +33,7 @@ export default function Wishlist() {
 
   return (
     <WishlistContext.Provider value={[ wishlistState, setWishlistState ]}>
-      {!userId ? <h2>My Wishlist</h2> : loading ? <h1>Loading...</h1> : <>
+      {!userId || !user ? <h2>My Wishlist</h2> : loading ? <h1>Loading...</h1> : <>
         <h1 id="answers-user">{user.user.name}</h1>
         {user.relations.map((relation) => <div key={relation.familyName} className="nickname">
           <small>{relation.nickname}</small><small>({relation.familyName})</small>

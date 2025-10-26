@@ -27,7 +27,7 @@ export default function Answers() {
   let relations = null;
   if (!loading) {
     for (const answerSet of data[queryName]) sortedAnswers[answerSet.question.category].push(answerSet);
-    if (data.relatedUsers) {
+    if (data.relatedUsers?.length) {
       user = data.relatedUsers.find((member) => member.user._id === userId);
       const realName = [{ __typename: 'Relation', familyName: 'default', nickname: user.user.name }];
       relations = realName.concat(user.relations);
@@ -36,7 +36,7 @@ export default function Answers() {
 
   return (
     <AnswerContext.Provider value={[ answerState, setAnswerState ]}>
-      {!userId ? <h2>My Tastes & Preferences</h2> : loading ? <h1>Loading...</h1> : <>
+      {!userId || !user ? <h2>My Tastes & Preferences</h2> : loading ? <h1>Loading...</h1> : <>
         <h1 id="answers-user">{user.user.name}</h1>
         {user.relations.map((relation) => <div key={relation.familyName} className="nickname">
           <small>{relation.nickname}</small><small>({relation.familyName})</small>
