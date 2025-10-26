@@ -296,6 +296,7 @@ input:focus-visible {
   border-radius: 20px;
   margin: 20px;
   text-align: center;
+  min-width: 300px;
 }
 
 .card-container > article > p {
@@ -397,7 +398,7 @@ input:focus-visible {
 
 /* #region MARK: Nickname */
 
-.single-friend > button {
+.single-friend  button {
   min-width: 130px;
 }
 
@@ -620,9 +621,10 @@ input:focus-visible {
   justify-content: space-around;
 }
 
-.theme-sample {
+.card-container > article.theme-sample {
   height: 150px;
   width: 200px;
+  min-width: unset;
   background-color: var(--main);
 }
 

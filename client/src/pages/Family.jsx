@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 
+import FamilyMember from '../components/FamilyMember';
 import { FAMILY } from '../utils/queries'
 import { ADD_QUESTION, EDIT_FAMILY, EDIT_NICKNAME, LEAVE_FAMILY } from '../utils/mutations'
 import QuestionRow from '../components/QuestionRow';
@@ -11,6 +12,7 @@ import QuestionRow from '../components/QuestionRow';
 let family = {};
 let isAdmin = false;
 const questions = [];
+const members = [];
 
 export default function Family() {
   //#region Variable Handling
@@ -43,6 +45,9 @@ export default function Family() {
       ...family.questions.filter(q => q.category === "Miscellaneous"),
     );
 
+    members.length = 0;
+    members.push(...family.members);
+
     if (familyState === null) setFamilyState(data.family.family.familyName)
     if (nicknameState === null) setNicknameState(data.family.user.nickname)
   }
@@ -56,6 +61,17 @@ export default function Family() {
     if (show) {
       document.getElementById('invite-div').classList.remove('invisible');
       document.getElementById('invite-link').select();
+    }
+  }
+
+  const handleEditMembers = (event) => {
+    event.preventDefault();
+    event.target.classList.toggle("editing");
+    document.querySelectorAll(".admin-buttons, .member-buttons").forEach(el => el.classList.toggle("invisible"));
+    if (event.target.classList.contains("editing")) {
+      event.target.innerHTML = "Stop Editing Members";
+    } else {
+      event.target.innerHTML = "Edit Members";
     }
   }
   
@@ -171,6 +187,7 @@ export default function Family() {
           <article id="family-action-list">
             <button onClick={generateInvite}>Generate Invite Link</button>
             {isAdmin ? (<><button onClick={handleQuestionForm}>Add New Question</button>
+            <button onClick={handleEditMembers}>Edit Members</button>
             <button onClick={handleEditForm}>Edit Family</button></>) : null}
             <button onClick={handleNicknameForm}>Change Nickname</button>
             <button onClick={handleLeaveFamily}>Leave Family</button>
@@ -209,6 +226,7 @@ export default function Family() {
               </div>
               <button type="submit">Save Question</button>
             </form>
+
             <form id="edit-family-form" className="family-form invisible" onSubmit={handleEditFamily}>
               <div className="form-group">
                 <label htmlFor="family-name">Family Name</label>
@@ -224,6 +242,7 @@ export default function Family() {
               </div>
               <button type="submit">Save Family</button>
             </form></>) : null}
+
             <form id="change-nickname-form" className="family-form invisible" onSubmit={handleChangeNickname}>
               <div className="form-group">
                 <label htmlFor="nickname">Nickname</label>
@@ -240,7 +259,15 @@ export default function Family() {
               <button type="submit">Save Nickname</button>
             </form>
           </article>
-        </section>      
+        </section>
+
+        <section id="family-members">
+          <h2>Group Members</h2>
+          <div className="card-container">
+            {members.map((member) => (<FamilyMember key={member.user._id} member={member} family={family} isAdmin={isAdmin} />))}
+          </div>
+        </section>
+            
         <section id="family-questions">
           <h2>Group Questions</h2>
           {questions.map((question) => (<QuestionRow key={question._id} question={question} family={family} isAdmin={isAdmin} />))}
