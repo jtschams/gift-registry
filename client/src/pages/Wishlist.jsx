@@ -24,8 +24,7 @@ export default function Wishlist() {
     for (const answer of data[queryName]) {
       sortedAnswers[answer.rank].push(answer);
     }
-    if (data.relatedUsers?.length) {
-      user = data.relatedUsers.find((member) => member.user._id === userId);
+    if (user = data.relatedUsers?.find((member) => member.user._id === userId)) {
       const realName = [{ __typename: 'Relation', familyName: 'default', nickname: user.user.name }];
       relations = realName.concat(user.relations);
     }

@@ -27,8 +27,7 @@ export default function Answers() {
   let relations = null;
   if (!loading) {
     for (const answerSet of data[queryName]) sortedAnswers[answerSet.question.category].push(answerSet);
-    if (data.relatedUsers?.length) {
-      user = data.relatedUsers.find((member) => member.user._id === userId);
+    if (user = data.relatedUsers?.find((member) => member.user._id === userId)) {
       const realName = [{ __typename: 'Relation', familyName: 'default', nickname: user.user.name }];
       relations = realName.concat(user.relations);
     }
