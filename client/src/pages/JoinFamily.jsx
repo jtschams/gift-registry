@@ -11,7 +11,7 @@ export default function JoinFamily() {
   const [ nicknameState, setNicknameState ] = useState("");
   const {familyId} = useParams();
   const { loading, data } = useQuery(FAMILY, { variables: { familyId } });
-  const family = data?.family;
+  const family = data?.family.family;
   const [joinFamily] = useMutation(JOIN_FAMILY)
 
   const members = family?.members.filter((member) => member.user._id === family.admins[0]._id);
