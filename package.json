@@ -14,7 +14,8 @@
     "init-build": "npm install && npm run set-default && npm run build",
     "seed": "cd server && npm run seed",
     "test": "SET \"NODE_ENV=dev\" && node server/server.js",
-    "build-test": "npm run update-build && npm run test"
+    "build-test": "npm run update-build && npm run test",
+    "prod-update": "git pull && npm run build && pm2 restart all"
   },
   "keywords": [
     "gift",

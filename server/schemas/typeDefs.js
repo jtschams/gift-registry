@@ -70,7 +70,7 @@ type Auth {
 
 type FamilyResponse {
   family: Family!
-  user: Member!
+  user: Member
 }
 
 type Query {

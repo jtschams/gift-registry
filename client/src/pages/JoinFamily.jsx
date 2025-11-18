@@ -16,13 +16,14 @@ export default function JoinFamily() {
 
   const members = family?.members.filter((member) => member.user._id === family.admins[0]._id);
   
-  const handleJoinFamily = async () => {
+  const handleJoinFamily = async (event) => {
+    event.preventDefault();
     const {data} = await joinFamily({ variables: {
       familyId,
       nickname: nicknameState
     }});
     alert("Joined family sucessfully.");
-    window.location.assign('/');
+    window.location.assign('/family/' + familyId);
   }
 
   const handleNicknameChange = (event) => {

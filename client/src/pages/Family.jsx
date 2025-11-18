@@ -33,6 +33,11 @@ export default function Family() {
   const [leaveFamily] = useMutation(LEAVE_FAMILY);
 
   if (!loading && data?.family) {
+    if (!data.family.user) {
+      window.location.assign('/');
+      return;
+    }
+
     family = data.family.family
     isAdmin = data.family.family.admins.some(a => a._id == data.family.user.user._id)
 
