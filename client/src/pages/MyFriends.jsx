@@ -7,8 +7,9 @@ import { RELATED_USERS } from '../utils/queries';
 export default function MyFriends() {
 
   const { loading, data } = useQuery(RELATED_USERS);
-  const friends = data?.relatedUsers;
-  friends?.sort((first, last) => first.user._id <= last.user._id ? -1 : 1)
+  const friends = []
+  if (data?.relatedUsers) friends.push(...data.relatedUsers);
+  if (friends.length) friends.sort((first, last) => first.user._id <= last.user._id ? -1 : 1)
 
   return (<>
     <h2>Related Users</h2>

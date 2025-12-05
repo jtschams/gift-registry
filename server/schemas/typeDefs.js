@@ -54,6 +54,7 @@ type Family {
 }
 
 type Relation {
+  familyId: ID
   familyName: String
   nickname: String
 }

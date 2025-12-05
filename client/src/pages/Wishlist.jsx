@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client';
 
 import { MY_WISHLIST, USER_WISHLIST } from '../utils/queries';
 import Wish from '../components/Wish';
+import Nickname from '../components/Nickname';
 import { ranks } from '../utils/enums';
 
 const WishlistContext = createContext();
@@ -34,9 +35,7 @@ export default function Wishlist() {
     <WishlistContext.Provider value={[ wishlistState, setWishlistState ]}>
       {!userId || !user ? <h2>My Wishlist</h2> : loading ? <h1>Loading...</h1> : <>
         <h1 id="answers-user">{user.user.name}</h1>
-        {user.relations.map((relation) => <div key={relation.familyName} className="nickname">
-          <small>{relation.nickname}</small><small>({relation.familyName})</small>
-        </div>)}
+        {user.relations.map((relation) => <Nickname key={user.user._id + relation.familyName} member={relation} small={true} />)}
         <h2>Wishlist</h2>
       </>}
       {loading ? <h3 className="loading">Loading...</h3> : (sortedAnswers.map((rank, index) => (

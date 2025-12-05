@@ -79,6 +79,7 @@ export const USER_ANSWERS = gql`
         name
       }
       relations {
+        familyId
         familyName
         nickname
       }
@@ -116,6 +117,7 @@ export const USER_WISHLIST = gql`
         name
       }
       relations {
+        familyId
         familyName
         nickname
       }
@@ -165,6 +167,7 @@ export const RELATED_USERS = gql`
         _id
       }
       relations {
+        familyId
         familyName
         nickname
       }

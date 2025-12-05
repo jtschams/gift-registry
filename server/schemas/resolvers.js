@@ -49,10 +49,10 @@ const resolvers = {
           if (userIndex === -1) {
             relatedUsers.push({
               user: member.user,
-              relations: [{ familyName: family.familyName, nickname: member.nickname }]
+              relations: [{ familyId: family._id, familyName: family.familyName, nickname: member.nickname }]
             });
           } else {
-            relatedUsers[userIndex].relations.push({ familyName: family.familyName, nickname: member.nickname })
+            relatedUsers[userIndex].relations.push({ familyId: family._id, familyName: family.familyName, nickname: member.nickname })
           }
         }
       }

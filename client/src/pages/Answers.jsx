@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client';
 
 import { MY_ANSWERS, USER_ANSWERS } from '../utils/queries';
 import AnswerSet from '../components/AnswerSet';
+import Nickname from '../components/Nickname';
 
 const AnswerContext = createContext();
 export const useAnswerContext = () => useContext(AnswerContext);
@@ -37,9 +38,7 @@ export default function Answers() {
     <AnswerContext.Provider value={[ answerState, setAnswerState ]}>
       {!userId || !user ? <h2>My Tastes & Preferences</h2> : loading ? <h1>Loading...</h1> : <>
         <h1 id="answers-user">{user.user.name}</h1>
-        {user.relations.map((relation) => <div key={relation.familyName} className="nickname">
-          <small>{relation.nickname}</small><small>({relation.familyName})</small>
-        </div>)}
+        {user.relations.map((relation) => <Nickname key={user.user._id + relation.familyName} member={relation} small={true} />)}
         <h2>Tastes & Preferences</h2>
       </>}
       {loading ? <h3 className="loading">Loading...</h3> : (Object.keys(sortedAnswers).map((category) => (

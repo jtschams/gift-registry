@@ -61,7 +61,7 @@ export default function Wishlist() {
     <WishlistContext.Provider value={[ wishlistState, setWishlistState ]}>
       <h2>Manage Wishlist</h2>
       <article>
-        <p className="wishlist-directions">Let your friends and family know what you want.  The more specific, the easier it is for the gift giver.  If appropriate, add a link to Amazon or another website.</p>
+        <p className="wishlist-directions">Let your friends and family know what you want.  Make sure to create a separate wish for each item so that they can be claimed separately.  The more specific, the easier it is for the gift giver.  If appropriate, add a link to Amazon or another website.</p>
         <form className="wish-form" onSubmit={handleMakeWish}>
           <div className="form-wish-details">
             <div className="form-group">

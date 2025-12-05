@@ -9,12 +9,14 @@ import Auth from '../utils/auth';
 
 export default function Wish({ answer, relations }) {
   const { userId } = useParams();
-  const isClaimable = userId && answer.amount - (answer.claims > 0) && !(answer.claims.some((user) => user._id == Auth.getProfile().data._id));
+  const isClaimable = userId && answer.amount - (answer.claims.length > 0);
+  const myClaim = userId && (answer.claims.some((user) => user._id == Auth.getProfile().data._id));
 
   const generateClaimForm = () => {
 
     if (!relations || answer.amount === 0) return;
-    if (!isClaimable) return (<button className="already-claimed">Claimed by Someone Else</button>);
+    if (myClaim) return (<button className="already-claimed">You have already claimed this item.</button>);
+    else if (!isClaimable) return (<button className="already-claimed">Claimed by Someone Else</button>);
     
     const [ wishlistState, setWishlistState ] = useWishlistContext();
     const [ nicknameState, setNicknameState ] = useState(relations[0].nickname);
