@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 
-import FamilyMember from '../components/FamilyMember';
+import RelatedUser from '../components/RelatedUser';
 import { FAMILY } from '../utils/queries'
 import { ADD_QUESTION, EDIT_FAMILY, EDIT_NICKNAME, LEAVE_FAMILY } from '../utils/mutations'
 import QuestionRow from '../components/QuestionRow';
@@ -111,7 +111,7 @@ export default function Family() {
       claimable: false
       // claimable: newQuestionState.category === "Specific Gifts"
     }});
-    //  TODO: change alert to dialog
+    // TODO: Create Popup Component
     alert("Question added.");
     setNewQuestionState({
       question: '',
@@ -129,7 +129,7 @@ export default function Family() {
       familyId,
       familyName: familyState
     }});
-    //  TODO: change alert to dialog
+    // TODO: Create Popup Component
     alert("Family Name Changed.");
     family = data.editFamily.family;
     document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
@@ -141,7 +141,7 @@ export default function Family() {
       familyId,
       nickname: nicknameState
     }});
-    //  TODO: change alert to dialog
+      // TODO: Create Popup Component
     alert("Nickname Changed.");
     document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
     setNicknameState(data.editNickname.user.nickname);
@@ -154,7 +154,7 @@ export default function Family() {
       familyId
     }});
 
-    //  TODO: change alert to dialog
+    // TODO: Create Popup Component
     alert(`You have left "${family.familyName}".  You can rejoin if invited by another member.`);
     window.location.assign("/");
   }
@@ -269,7 +269,7 @@ export default function Family() {
         <section id="family-members">
           <h2>Group Members</h2>
           <div className="card-container">
-            {members.map((member) => (<FamilyMember key={member.user._id} member={member} family={family} isAdmin={isAdmin} />))}
+            {members.map((member) => (<RelatedUser key={member.user._id} friend={member} family={family} isAdmin={isAdmin} />))}
           </div>
         </section>
             

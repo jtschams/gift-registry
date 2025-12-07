@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 import { MY_WISHLIST, USER_WISHLIST } from '../utils/queries';
-import Wish from '../components/Wish';
+import Answer from '../components/Answer';
 import Nickname from '../components/Nickname';
 import { ranks } from '../utils/enums';
 
@@ -44,7 +44,7 @@ export default function Wishlist() {
           <h3>{ranks[index][0]}</h3>
           <section className="card-container">
             {rank.map((answer) => (
-              <Wish key={answer._id} answer={answer} relations={relations}/>
+              <Answer key={answer._id} answer={answer} relations={relations}/>
             ))}
           </section>
         </div>

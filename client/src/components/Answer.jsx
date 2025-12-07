@@ -4,22 +4,26 @@ import { useParams } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
 import { useAnswerContext } from '../pages/Answers';
+import { useWishlistContext } from '../pages/Wishlist';
 import { CLAIM_ANSWER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
-export default function Answer({ answer, claimInfo, activateQuestion }) {
+export default function Answer({ answer, claimInfo, activateQuestion, relations }) {
   const { userId } = useParams();
   const isClaimable = userId && answer.amount - (answer.claims.length > 0);
   const myClaim = userId && (answer.claims.some((user) => user._id == Auth.getProfile().data._id));
 
+  if (!relations) relations = claimInfo?.relations;
+
   const generateClaimForm = () => {
 
-    if (!claimInfo?.relations || answer.amount === 0) return;
+    if (!relations || answer.amount === 0) return;
     if (myClaim) return (<button className="already-claimed">You have already claimed this item.</button>);
     else if (!isClaimable) return (<button className="already-claimed">Claimed by Someone Else</button>);
     
-    const [ answerState, setAnswerState ] = useAnswerContext();
-    const [ nicknameState, setNicknameState ] = useState(claimInfo.relations[0].nickname);
+    const [ answerState, setAnswerState ] = useAnswerContext() ? useAnswerContext() : useWishlistContext();
+    //const [ wishlistState, setWishlistState ] = useWishlistContext();
+    const [ nicknameState, setNicknameState ] = useState(relations[0].nickname);
   
     const [claimAnswer] = useMutation(CLAIM_ANSWER);
 
@@ -27,10 +31,11 @@ export default function Answer({ answer, claimInfo, activateQuestion }) {
       event.preventDefault();
       const {data} = await claimAnswer({variables: {
         userId,
-        questionId: claimInfo.questionId,
+        questionId: claimInfo?.questionId || null,
         answerId: answer._id,
         nickname: nicknameState
       }});
+      // TODO: Create Popup Component
       alert("Answer Claimed.");
       window.location.replace('/shopping-list');
     }
@@ -47,8 +52,8 @@ export default function Answer({ answer, claimInfo, activateQuestion }) {
       setAnswerState(`claim-${answer._id}`);
       event.target.classList.add("invisible");
       event.target.nextElementSibling.classList.remove("invisible");
-    }  
-  
+    }
+
     return (
       <>
         <button id={`claim-${answer._id}`} onClick={activateClaim}>Claim Answer</button>
@@ -61,7 +66,7 @@ export default function Answer({ answer, claimInfo, activateQuestion }) {
               value={nicknameState}
               onChange={handleNicknameChange}
             >
-              {claimInfo.relations.map((relation) => (
+              {relations.map((relation) => (
                 <option key={relation.familyName}>{relation.nickname}</option>
               ))}
             </select>

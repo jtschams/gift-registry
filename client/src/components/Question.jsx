@@ -31,7 +31,7 @@ export default function Question({ answerSet }) {
     const {data} = await answerQuestion({
       variables: { ...answerState, questionId: questionState }
     });
-    //  TODO: change alert to dialog
+    // TODO: Create Popup Component
     alert("Answer added to your account.");
     answerSet.answers = data.answerQuestion.answers;
     setAnswerState({answerText: '', answerLink: '', amount: question.claimable ? 1 : 0 });
@@ -45,7 +45,7 @@ export default function Question({ answerSet }) {
     const {data} = await editAnswer({
       variables: { ...answerState, questionId: questionState }
     });
-    //  TODO: change alert to dialog
+    // TODO: Create Popup Component
     alert("Answer has been updated.");
     
     let answerList = [...answerSet.answers];
@@ -65,7 +65,7 @@ export default function Question({ answerSet }) {
     const data = await removeAnswer({
       variables: { questionId: question._id, answerId: answerState.answerId }
     })
-    //  TODO: change alert to dialog
+    // TODO: Create Popup Component
     alert("Answer removed from your account.");
     
     let answerList = [...answerSet.answers];

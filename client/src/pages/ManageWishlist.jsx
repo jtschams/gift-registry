@@ -31,7 +31,7 @@ export default function Wishlist() {
     const {data} = await makeWish({
       variables: answerState
     });
-    //  TODO: change alert to dialog
+    // TODO: Create Popup Component
     alert("Answer added to your account.");
 
     let newWishlist = [...sortedAnswers, answerState];

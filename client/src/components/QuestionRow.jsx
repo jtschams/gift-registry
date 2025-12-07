@@ -37,7 +37,7 @@ export default function Question({ question, family, isAdmin }) {
     const {data} = await editQuestion({
       variables: { ...questionState }
     });
-    //  TODO: change alert to dialog
+    // TODO: Create Popup Component
     alert("Wish has been updated.");
     
     //question = questionState;

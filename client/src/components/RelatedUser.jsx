@@ -1,28 +1,42 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
 
+import { REMOVE_MEMBER } from '../utils/mutations'
 import Nickname from './Nickname';
 
-export default function RelatedUser({user}) {
+export default function RelatedUser({friend, family, isAdmin}) {
 
-  const handleSelectAnswers = () => {
-    window.location.assign(`/user-answers/${user.user._id}`)
-  }
+  const [removeMember] = useMutation(REMOVE_MEMBER)
 
-  const handleSelectWishlist = () => {
-    window.location.assign(`/wishlist/${user.user._id}`)
+  const handleRemoveMember = async (event) => {
+    event.preventDefault();
+    if (!confirm(`Remove ${friend.nickname} (${friend.user.name}) from group?`)) return;
+    const {data} = await removeMember({ variables: {
+      familyId: family._id,
+      userId: friend.user._id
+    }});
+    // TODO: Create Popup Component
+    alert("Member Removed.");
+    family = data.removeMember.family;
   }
 
   return (
     <article className="single-friend">
-      <h4>{user.user.name}</h4>
-      {user.relations.map((relation) => {
+      <h4>{(family ? friend.nickname : friend.user.name)}</h4>
+      {/*  // TODO: Maybe Include full name for family members? */}
+      {!family ? friend.relations.map((relation) => {
         return <Nickname 
-          key={user.user._id + relation.familyName} 
+          key={friend.user._id + relation.familyName} 
           member={relation}
         />}
-      )}
-      <button className="select-user" onClick={handleSelectAnswers}>View Preferences</button>
-      <button className="select-user" onClick={handleSelectWishlist}>View Wishlist</button>
+      ) : null}
+      <div className="member-buttons">
+        <Link className="select-user button" to={"/user-answers/" + friend.user._id}>View Preferences</Link>
+        <Link className="select-user button" to={"/wishlist/" + friend.user._id}>View Wishlist</Link>
+      </div>
+      {isAdmin ? (<><div className="admin-buttons invisible"><button className="select-user" onClick={handleRemoveMember}>Remove Member</button>
+      </div></>) : null}
     </article>
   )
 }

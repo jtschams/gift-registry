@@ -22,6 +22,7 @@ export default function JoinFamily() {
       familyId,
       nickname: nicknameState
     }});
+    // TODO: Create Popup Component
     alert("Joined family sucessfully.");
     window.location.assign('/family/' + familyId);
   }

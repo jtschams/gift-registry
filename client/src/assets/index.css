@@ -20,7 +20,8 @@
   --right-ribbon: #999999;
   
   --button-size: 70px;
-  --link-size: calc((var(--button-size) - 30px) * .8)
+  --link-size: calc((var(--button-size) - 30px) * .8);
+  --small-button: calc((var(--button-size) - 30px) / 3);
 }
 
 /* #region MARK: Defaults */
@@ -66,7 +67,8 @@ main {
 }
 
 
-button {
+button, .button {
+  display: inline-flex;
   height: calc(var(--button-size) / 2);
   margin: 10px;
   color: inherit;
@@ -74,13 +76,19 @@ button {
   border: 1px solid var(--accent);
   border-radius: 12px;
   transition: all .4s;
+  font-family: Arial;
+  font-size: var(--small-button);
+  padding: 1px 6px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
 }
 
-button:hover {
+button:hover, .button:hover {
   border: 4px solid var(--mark);
 }
 
-button:active {
+button:active, .button:active {
   background-color: var(--accent);
   color: var(--main);
   border: 3px solid var(--mark);
@@ -373,7 +381,7 @@ input:focus-visible {
   flex-wrap: wrap;
 }
 
-#invite-div > button {
+#invite-div > button, #invite-div > .button {
   height: 27px;
 }
 
@@ -398,7 +406,7 @@ input:focus-visible {
 
 /* #region MARK: Nickname */
 
-.single-friend  button {
+.single-friend button, .single-friend .button {
   min-width: 130px;
 }
 
@@ -468,7 +476,7 @@ input:focus-visible {
   border-radius: 20px;
 }
 
-.single-answer button, .unclaim-button {
+.single-answer button, .unclaim-button, .single-answer .button {
   height: 26px;
   padding: 3px;
   background-color: var(--main);
@@ -577,7 +585,7 @@ input:focus-visible {
   max-height: 50px;
 }
 
-.row-buttons button {
+.row-buttons button, .row-buttons .button {
   border-color: var(--mark);
 }
 

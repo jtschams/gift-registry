@@ -46,7 +46,7 @@ export default function Wish({ answer }) {
     const {data} = await editWish({
       variables: { ...wishState }
     });
-    //  TODO: change alert to dialog
+    // TODO: Create Popup Component
     alert("Wish has been updated.");
     
     answer = wishState;
