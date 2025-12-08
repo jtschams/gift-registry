@@ -4,9 +4,10 @@ import { useMutation } from '@apollo/client';
 
 import { EDIT_ANSWER, REMOVE_ANSWER } from '../utils/mutations'
 import { ranks, amounts } from '../utils/enums';
+import { usePopupContext } from '../App';
 
 export default function Wish({ answer }) {
-
+  const { openPopup, closePopup } = usePopupContext();
   const [wishState, setWishState] = useState({
     answerId: answer._id,
     answerText: answer.answerText,
@@ -46,8 +47,12 @@ export default function Wish({ answer }) {
     const {data} = await editWish({
       variables: { ...wishState }
     });
-    // TODO: Create Popup Component
-    alert("Wish has been updated.");
+
+    const options = [{
+      text: "Return to Page",
+      onClick: closePopup
+    }];
+    openPopup("Wish Updated", "Wish has been updated.", options)
     
     answer = wishState;
         
@@ -128,7 +133,7 @@ export default function Wish({ answer }) {
                 value={wishState.rank}
                 onChange={handleWishState}
               >
-                {ranks.map(([rank], index) => <option value={index}>{rank}</option> )}
+                {ranks.map(([rank], index) => <option key={index} value={index}>{rank}</option> )}
               </select>
             </div>
             <div className="form-group">

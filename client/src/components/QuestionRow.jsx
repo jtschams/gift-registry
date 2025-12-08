@@ -3,9 +3,10 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 
 import { EDIT_QUESTION, REMOVE_QUESTION } from '../utils/mutations'
+import { usePopupContext } from '../App';
 
 export default function Question({ question, family, isAdmin }) {
-
+  const { openPopup, closePopup } = usePopupContext();
   const [questionState, setQuestionState] = useState({
     questionId: question._id,
     question: question.question,
@@ -37,8 +38,12 @@ export default function Question({ question, family, isAdmin }) {
     const {data} = await editQuestion({
       variables: { ...questionState }
     });
-    // TODO: Create Popup Component
-    alert("Wish has been updated.");
+
+    const options = [{
+      text: "Return to Page",
+      onClick: closePopup
+    }];
+    openPopup("Wish Updated", "The Wish has been updated.", options);
     
     //question = questionState;
     family = data.editQuestion.family

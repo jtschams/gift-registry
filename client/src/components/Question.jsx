@@ -5,10 +5,12 @@ import { useMutation } from '@apollo/client';
 import { ANSWER_QUESTION, EDIT_ANSWER, REMOVE_ANSWER } from '../utils/mutations'
 import { useQuestionContext } from '../pages/Questionnaire';
 import AnswerSet from '../components/AnswerSet';
+import { usePopupContext } from '../App';
 
 export default function Question({ answerSet }) {
   const question = answerSet.question;
 
+  const { openPopup, closePopup } = usePopupContext();
   const [ questionState, setQuestionState ] = useQuestionContext();
   const [ answerState, setAnswerState ] = useState({
     answerId: '',
@@ -31,8 +33,13 @@ export default function Question({ answerSet }) {
     const {data} = await answerQuestion({
       variables: { ...answerState, questionId: questionState }
     });
-    // TODO: Create Popup Component
-    alert("Answer added to your account.");
+      
+    const options = [{
+      text: "Return to Page",
+      onClick: closePopup
+    }];
+    openPopup("Question Answered", "The answer has been added to you account", options);
+
     answerSet.answers = data.answerQuestion.answers;
     setAnswerState({answerText: '', answerLink: '', amount: question.claimable ? 1 : 0 });
     setQuestionState(null);
@@ -45,8 +52,12 @@ export default function Question({ answerSet }) {
     const {data} = await editAnswer({
       variables: { ...answerState, questionId: questionState }
     });
-    // TODO: Create Popup Component
-    alert("Answer has been updated.");
+
+    const options = [{
+      text: "Return to Page",
+      onClick: closePopup
+    }];
+    openPopup("Answer Updated", "The answer has been updated.", options);
     
     let answerList = [...answerSet.answers];
     const answerIndex = answerList.findIndex(a => a._id == answerState.answerId);
@@ -65,8 +76,12 @@ export default function Question({ answerSet }) {
     const data = await removeAnswer({
       variables: { questionId: question._id, answerId: answerState.answerId }
     })
-    // TODO: Create Popup Component
-    alert("Answer removed from your account.");
+
+    const options = [{
+      text: "Return to Page",
+      onClick: closePopup
+    }];
+    openPopup("Answer Removed", "The answer has been removed from you account.", options);
     
     let answerList = [...answerSet.answers];
     const answerIndex = answerList.findIndex(a => a._id == answerState.answerId);

@@ -1,9 +1,11 @@
 import React from 'react';
 import { useMutation } from '@apollo/client';
 
+import { usePopupContext } from '../App';
 import { UNCLAIM_ANSWER } from '../utils/mutations';
 
 export default function Claim({claim}) {
+  const { openPopup, closePopup } = usePopupContext();
 
   const [unclaimAnswer] = useMutation(UNCLAIM_ANSWER);
 
@@ -14,7 +16,11 @@ export default function Claim({claim}) {
       answerId: claim.answer._id,
     }});
     claimEl.remove();
-    alert("Claim removed.");
+    const options = [{
+      text: "Return to Page",
+      onClick: closePopup
+    }];
+    openPopup("Claim Removed", "Your claim has been removed from this answer.  Answer removed from your shopping list.", options);
   }
 
   return (

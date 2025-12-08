@@ -18,6 +18,7 @@
   --mark: #38383880;
   --left-ribbon: #99999980;
   --right-ribbon: #999999;
+  --overlay: #E1E1E1C0;
   
   --button-size: 70px;
   --link-size: calc((var(--button-size) - 30px) * .8);
@@ -662,6 +663,58 @@ main#error {
 
 #error > #site-nav > ul {
   width: 100%;
+}
+
+/* #endregion */
+
+/* #region MARK: Popup  */
+
+#popup-background {
+  position: absolute;
+  display: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--overlay);
+  z-index: 10;
+  align-items: center;
+  justify-content: center;
+}
+
+#popup-background.open {
+  display: flex;
+}
+
+#popup-foreground {
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--main);
+  border: solid 2px var(--mark);
+  width: 500px;
+  max-width: 80%;
+}
+
+#popup-foreground > h2 {
+  border-top: none;
+}
+
+#popup-foreground > section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#popup-foreground button, #popup-foreground .button {
+  min-width: 130px;
+  width: calc((100% / 3) - 20px);
+}
+
+#popup-foreground button.button-1, #popup-foreground .button.button-1,
+#popup-foreground button.button-2, #popup-foreground .button.button-2,
+#popup-foreground button.button-4, #popup-foreground .button.button-4 {
+  min-width: 130px;
+  width: calc((100% / 2) - 20px);
 }
 
 /* #endregion */

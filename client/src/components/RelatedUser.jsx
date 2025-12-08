@@ -4,9 +4,10 @@ import { useMutation } from '@apollo/client';
 
 import { REMOVE_MEMBER } from '../utils/mutations'
 import Nickname from './Nickname';
+import { usePopupContext } from '../App';
 
 export default function RelatedUser({friend, family, isAdmin}) {
-
+  const { openPopup, closePopup } = usePopupContext();
   const [removeMember] = useMutation(REMOVE_MEMBER)
 
   const handleRemoveMember = async (event) => {
@@ -16,8 +17,13 @@ export default function RelatedUser({friend, family, isAdmin}) {
       familyId: family._id,
       userId: friend.user._id
     }});
-    // TODO: Create Popup Component
-    alert("Member Removed.");
+
+    const options = [{
+      text: "Return to Page",
+      onClick: closePopup
+    }];
+    openPopup("Member Removed", "The member has been removed from this family.", options);
+
     family = data.removeMember.family;
   }
 

@@ -7,9 +7,12 @@ import { useAnswerContext } from '../pages/Answers';
 import { useWishlistContext } from '../pages/Wishlist';
 import { CLAIM_ANSWER } from '../utils/mutations';
 import Auth from '../utils/auth';
+import { usePopupContext } from '../App';
 
 export default function Answer({ answer, claimInfo, activateQuestion, relations }) {
   const { userId } = useParams();
+  const { openPopup, closePopup } = usePopupContext();
+
   const isClaimable = userId && answer.amount - (answer.claims.length > 0);
   const myClaim = userId && (answer.claims.some((user) => user._id == Auth.getProfile().data._id));
 
@@ -35,9 +38,16 @@ export default function Answer({ answer, claimInfo, activateQuestion, relations 
         answerId: answer._id,
         nickname: nicknameState
       }});
-      // TODO: Create Popup Component
-      alert("Answer Claimed.");
-      window.location.replace('/shopping-list');
+
+      // TODO: Handle after close
+      const options = [{
+        text: "Return to Page",
+        onClick: closePopup
+      },{
+        text: "Go To Shopping List",
+        href: "/shopping-list"
+      }];
+      openPopup("Answer Claimed", "Answer has been claimed and added to your shopping list.", options);
     }
 
     const handleNicknameChange = (event) => {

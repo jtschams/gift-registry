@@ -6,12 +6,14 @@ import { MY_WISHLIST } from '../utils/queries';
 import { MAKE_WISH} from '../utils/mutations';
 import { ranks } from '../utils/enums';
 import WishlistRow from '../components/WishlistRow';
+import { usePopupContext } from '../App';
 
 const WishlistContext = createContext();
 export const useWishlistContext = () => useContext(WishlistContext);
 let sortedAnswers;
 
 export default function Wishlist() {
+  const { openPopup, closePopup } = usePopupContext();
   const [ wishlistState, setWishlistState ] = useState('');
   const [ answerState, setAnswerState ] = useState({
     rank: 0,
@@ -31,8 +33,12 @@ export default function Wishlist() {
     const {data} = await makeWish({
       variables: answerState
     });
-    // TODO: Create Popup Component
-    alert("Answer added to your account.");
+
+    const options = [{
+      text: "Return to Page",
+      onClick: closePopup
+    }];
+    openPopup("Wish Added", "Wish has been added to your wishlist.", options)
 
     let newWishlist = [...sortedAnswers, answerState];
 
@@ -51,7 +57,6 @@ export default function Wishlist() {
   };
 
   const { loading, data } = useQuery(MY_WISHLIST);
-  console.log(loading)
   if (!loading) {
     const sortedData = [...data.myWishlist.toSorted((a, b) => a.rank - b.rank)];
     sortedAnswers = sortedData;
@@ -99,7 +104,7 @@ export default function Wishlist() {
                 value={answerState.rank}
                 onChange={handleWishState}
               >
-                {ranks.map(([rank], index) => <option value={index}>{rank}</option> )}
+                {ranks.map(([rank], index) => <option key={index} value={index}>{rank}</option> )}
               </select>
             </div>
             <div className="form-group">

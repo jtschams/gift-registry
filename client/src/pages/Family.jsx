@@ -8,6 +8,7 @@ import RelatedUser from '../components/RelatedUser';
 import { FAMILY } from '../utils/queries'
 import { ADD_QUESTION, EDIT_FAMILY, EDIT_NICKNAME, LEAVE_FAMILY } from '../utils/mutations'
 import QuestionRow from '../components/QuestionRow';
+import { usePopupContext } from '../App';
 
 let family = {};
 let isAdmin = false;
@@ -17,6 +18,7 @@ const members = [];
 export default function Family() {
   //#region Variable Handling
   const {familyId} = useParams();
+  const { openPopup, closePopup } = usePopupContext();
   const [ linkState ] = useState(`${location.origin}/join-family/${familyId}`);
   const [ nicknameState, setNicknameState ] = useState(null);
   const [ familyState, setFamilyState ] = useState(null);
@@ -111,8 +113,12 @@ export default function Family() {
       claimable: false
       // claimable: newQuestionState.category === "Specific Gifts"
     }});
-    // TODO: Create Popup Component
-    alert("Question added.");
+
+    const options = [{
+      text: "Return to Page",
+      onClick: closePopup
+    }];
+    openPopup("Question Added", "Question has been added to family.", options)
     setNewQuestionState({
       question: '',
       category: 'Likes',
@@ -129,8 +135,12 @@ export default function Family() {
       familyId,
       familyName: familyState
     }});
-    // TODO: Create Popup Component
-    alert("Family Name Changed.");
+
+    const options = [{
+      text: "Return to Page",
+      onClick: closePopup
+    }];
+    openPopup("Name Changed", "Family name has been changed", options)
     family = data.editFamily.family;
     document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
   }
@@ -141,8 +151,15 @@ export default function Family() {
       familyId,
       nickname: nicknameState
     }});
-      // TODO: Create Popup Component
-    alert("Nickname Changed.");
+
+    const options = [{
+      text: "Return to Page",
+      onClick: closePopup
+    },{
+      text: "Option",
+      href: "closePopup"
+    }];
+    openPopup("Nickname Changed", "Your nickname in this family has been changed.", options)
     document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
     setNicknameState(data.editNickname.user.nickname);
   }
@@ -154,9 +171,11 @@ export default function Family() {
       familyId
     }});
 
-    // TODO: Create Popup Component
-    alert(`You have left "${family.familyName}".  You can rejoin if invited by another member.`);
-    window.location.assign("/");
+    const options = [{
+      text: "OK",
+      href: "/"
+    }];
+    openPopup("Family Left", `You have left "${family.familyName}".  You can rejoin if invited by another member.`, options, false)
   }
   //#endregion
 

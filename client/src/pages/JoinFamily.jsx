@@ -6,8 +6,10 @@ import { useQuery, useMutation } from '@apollo/client';
 import { FAMILY } from '../utils/queries';
 import { JOIN_FAMILY } from '../utils/mutations';
 import Nickname from '../components/Nickname';
+import { usePopupContext } from '../App';
 
 export default function JoinFamily() {
+  const { openPopup, closePopup } = usePopupContext();
   const [ nicknameState, setNicknameState ] = useState("");
   const {familyId} = useParams();
   const { loading, data } = useQuery(FAMILY, { variables: { familyId } });
@@ -22,9 +24,15 @@ export default function JoinFamily() {
       familyId,
       nickname: nicknameState
     }});
-    // TODO: Create Popup Component
-    alert("Joined family sucessfully.");
-    window.location.assign('/family/' + familyId);
+
+    const options = [{
+      text: "Go To Family",
+      href: "/family/" + familyId
+    },{
+      text: "Home",
+      href: "/"
+    }];
+    openPopup("title", "message", options, false)
   }
 
   const handleNicknameChange = (event) => {
