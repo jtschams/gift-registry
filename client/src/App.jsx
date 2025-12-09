@@ -48,14 +48,18 @@ export default function App() {
     setPopupState({ title, message, options })
     const overlay = document.getElementById("popup-background")
     overlay.classList.add("open");
-    if (allowClickout) overlay.addEventListener("click", closePopup);
+    if (allowClickout) overlay.addEventListener("click", handleClickOff);
   }
 
   function closePopup() {
     setPopupState({ title: "", message: "", options: [] })
     const overlay = document.getElementById("popup-background")
     overlay.classList.remove("open");
-    overlay.removeEventListener("click", closePopup);
+    overlay.removeEventListener("click", handleClickOff);
+  }
+
+  function handleClickOff(event) {
+    if (!event.target.closest("#popup-foreground")) closePopup()
   }
 
   const loggedIn = Auth.loggedIn();

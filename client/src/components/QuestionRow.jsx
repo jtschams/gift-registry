@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/client';
 
 import { EDIT_QUESTION, REMOVE_QUESTION } from '../utils/mutations'
 import { usePopupContext } from '../App';
+import { getErrorMessage } from '../utils/popup';
 
 export default function Question({ question, family, isAdmin }) {
   const { openPopup, closePopup } = usePopupContext();
@@ -35,34 +36,55 @@ export default function Question({ question, family, isAdmin }) {
 
   const handleEditQuestion = async (event) => {
     event.preventDefault();
-    const {data} = await editQuestion({
-      variables: { ...questionState }
-    });
+    try {
+      const {data} = await editQuestion({
+        variables: { ...questionState }
+      });
+  
+      const options = [{
+        text: "Return to Page",
+        onClick: closePopup
+      }];
+      openPopup("Wish Updated", "The Wish has been updated.", options);
+      
+      //question = questionState;
+      family = data.editQuestion.family
+          
+      event.target.closest(".question-row.editing").classList.remove("editing");
+      event.target.classList.add("invisible");
+    } catch (err) {
+      const options = [{
+        text: "Return to Page",
+        onClick: closePopup
+      }];
+      const [title, message] = getErrorMessage(err.message)
 
-    const options = [{
-      text: "Return to Page",
-      onClick: closePopup
-    }];
-    openPopup("Wish Updated", "The Wish has been updated.", options);
-    
-    //question = questionState;
-    family = data.editQuestion.family
-        
-    event.target.closest(".question-row.editing").classList.remove("editing");
-    event.target.classList.add("invisible");
-    
+      openPopup(title, message, options);
+      return;
+    }
   }
 
   const handleRemoveQuestion = async (event) => {
     event.preventDefault();
-    const data = await removeQuestion({
-      variables: { 
-        questionId: questionState.questionId,
-        familyId: family._id
-      }
-    })
+    try {
+      const data = await removeQuestion({
+        variables: { 
+          questionId: questionState.questionId,
+          familyId: family._id
+        }
+      })
+  
+      family = data.removeQuestion.family
+    } catch (err) {
+      const options = [{
+        text: "Return to Page",
+        onClick: closePopup
+      }];
+      const [title, message] = getErrorMessage(err.message)
 
-    family = data.removeQuestion.family
+      openPopup(title, message, options);
+      return;
+    }
   }
 
   const handleQuestionState = (event) => {

@@ -1,22 +1,22 @@
 const { GraphQLError } = require('graphql');
 
 module.exports = {
-  AuthenticationError: new GraphQLError('Could not authenticate user.', {
+  AuthenticationError: new GraphQLError('Authentication Error; Unable to authenticate user.', {
     extensions: {
       code: 'UNAUTHENTICATED',
     },
   }),
-  InvalidDataError: (type, name) => new GraphQLError(`Could not find data for "${name}" in type "${type}".`,{
+  InvalidDataError: (type, name) => new GraphQLError(`${type[0].toUpperCase() + type.slice(1)} not Found; Unable to find "${name}" in type "${type}".`,{
     extensions: {
       code: 'INVALIDDATA'
     }
   }),
-  InvalidActionError: (action, reason) => new GraphQLError(`Action "${action}" could not be completed due to error: ${reason}`, {
+  InvalidActionError: (action, reason) => new GraphQLError(`Failed to ${action}; ${reason}`, {
     extensions: {
       code: 'INVALIDACTION'
     }
   }),
-  IncompleteDataError: (type) => new GraphQLError(`Insufficient data to find or create object of type "${type}".`,{
+  IncompleteDataError: (type, data) => new GraphQLError(`Failed to create ${type}; Unable to create "${type}".  Missing data for "${data}".`,{
     extensions: {
       code: 'INCOMPLETEDATA'
     }

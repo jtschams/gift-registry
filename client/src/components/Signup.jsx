@@ -4,8 +4,11 @@ import { useMutation } from '@apollo/client';
 
 import { ADD_USER } from '../utils/mutations'
 import Auth from '../utils/auth';
+import { getErrorMessage } from '../utils/popup';
+import { usePopupContext } from '../App';
 
 export default function Signup({familyId}) {
+  const { openPopup, closePopup } = usePopupContext();
   const [ signupState, setSignupState ] = useState({
     firstName: '',
     lastName: '',
@@ -18,11 +21,38 @@ export default function Signup({familyId}) {
 
   const handleSignup = async (event) => {
     event.preventDefault();
-    const {data} = await addUser({
-      variables: { ...signupState, birthday: signupState.birthday.split('\\').join('/') }
-    });
-    const token = data.addUser.token;
-    Auth.login(token, familyId);
+    const options = [{
+      text: "Return to Page",
+      onClick: closePopup
+    }];
+
+    let birthday = signupState.birthday.replaceAll('\\', '/')
+
+    // Handle bad/missing inputs
+    if (Object.values(signupState).some(x=>!x)) {
+      openPopup("Signup Failed", "All signup fields are required.", options)
+      return;
+    } else if (!signupState.email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
+      openPopup("Signup Failed", "Email field must be a valid email address.", options)
+      return;
+    } else if (!birthday.match(/^[0-1][0-9]\\[0-3][0-9](\\[0-9]{2,4})$/)) {
+      openPopup("Signup Failed", "Date field must contain a date.", options)
+      return;
+    }
+
+    try{
+      const {data} = await addUser({
+        variables: { ...signupState, birthday: signupState.birthday.replaceAll('\\', '/') }
+      });
+
+      const token = data.addUser.token;
+      Auth.login(token, familyId);
+    } catch (err) {
+      const [title, message] = getErrorMessage(err.message)
+
+      openPopup(title, message, options);
+      return;
+    }
   };
 
   const handleSignupChange = (event) => {

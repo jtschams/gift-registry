@@ -4,8 +4,11 @@ import { useMutation } from '@apollo/client';
 
 import { LOGIN } from '../utils/mutations'
 import Auth from '../utils/auth';
+import { usePopupContext } from '../App';
+import { getErrorMessage } from '../utils/popup';
 
 const Login = ({familyId}) => {
+  const { openPopup, closePopup } = usePopupContext();
   const [ loginState, setLoginState ] = useState({
     email: '',
     password: ''
@@ -15,11 +18,23 @@ const Login = ({familyId}) => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    const {data} = await login({
-      variables: { ...loginState }
-    });
-    const token = data.login.token;
-    Auth.login(token, familyId);
+    try {
+      const {data} = await login({
+        variables: { ...loginState }
+      });
+      
+      const token = data.login.token;
+      Auth.login(token, familyId);
+    } catch (err) {
+      const options = [{
+        text: "Return to Page",
+        onClick: closePopup
+      }];
+      const [title, message] = getErrorMessage(err.message)
+
+      openPopup(title, message, options);
+      return;
+    }
   };
 
   const handleLoginChange = (event) => {

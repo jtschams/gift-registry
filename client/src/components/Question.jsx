@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 
 import { ANSWER_QUESTION, EDIT_ANSWER, REMOVE_ANSWER } from '../utils/mutations'
+import { getErrorMessage } from '../utils/popup';
 import { useQuestionContext } from '../pages/Questionnaire';
 import AnswerSet from '../components/AnswerSet';
 import { usePopupContext } from '../App';
@@ -22,6 +23,11 @@ export default function Question({ answerSet }) {
   const [answerQuestion] = useMutation(ANSWER_QUESTION);
   const [editAnswer] = useMutation(EDIT_ANSWER);
   const [removeAnswer] = useMutation(REMOVE_ANSWER);
+  
+  const options = [{
+    text: "Return to Page",
+    onClick: closePopup
+  }];
 
   const handleSaveAnswer = async (event) => {
     event.preventDefault();
@@ -30,68 +36,89 @@ export default function Question({ answerSet }) {
   }
 
   const handleAnswerQuestion = async () => {
-    const {data} = await answerQuestion({
-      variables: { ...answerState, questionId: questionState }
-    });
-      
-    const options = [{
-      text: "Return to Page",
-      onClick: closePopup
-    }];
-    openPopup("Question Answered", "The answer has been added to you account", options);
+    try {
+      const {data} = await answerQuestion({
+        variables: { ...answerState, questionId: questionState }
+      });
+        
+      openPopup("Question Answered", "The answer has been added to you account", options);
+  
+      answerSet.answers = data.answerQuestion.answers;
+      setAnswerState({answerText: '', answerLink: '', amount: question.claimable ? 1 : 0 });
+      setQuestionState(null);
+  
+      document.getElementById(question._id).querySelector(".question-form").classList.add("invisible");
+      document.getElementById(question._id).querySelector(".single-answer.editing").classList.remove("editing");
+    } catch (err) {
+      const options = [{
+        text: "Return to Page",
+        onClick: closePopup
+      }];
+      const [title, message] = getErrorMessage(err.message)
 
-    answerSet.answers = data.answerQuestion.answers;
-    setAnswerState({answerText: '', answerLink: '', amount: question.claimable ? 1 : 0 });
-    setQuestionState(null);
-
-    document.getElementById(question._id).querySelector(".question-form").classList.add("invisible");
-    document.getElementById(question._id).querySelector(".single-answer.editing").classList.remove("editing");
+      openPopup(title, message, options);
+      return;
+    }
   }
 
   const handleEditAnswer = async () => {
-    const {data} = await editAnswer({
-      variables: { ...answerState, questionId: questionState }
-    });
+    try {
+      const {data} = await editAnswer({
+        variables: { ...answerState, questionId: questionState }
+      });
+  
+      openPopup("Answer Updated", "The answer has been updated.", options);
+      
+      let answerList = [...answerSet.answers];
+      const answerIndex = answerList.findIndex(a => a._id == answerState.answerId);
+      answerList.splice(answerIndex, 1, data.editAnswer)
+      
+      answerSet.answers = answerList;
+      setAnswerState({ answerId: '', answerText: '', answerLink: '', amount: question.claimable ? 1 : 0 });
+      setQuestionState(null);
+          
+      document.getElementById(question._id).querySelector(".question-form").classList.add("invisible");
+      document.getElementById(question._id).querySelector(".single-answer.editing").classList.remove("editing");
+    } catch (err) {
+      const options = [{
+        text: "Return to Page",
+        onClick: closePopup
+      }];
+      const [title, message] = getErrorMessage(err.message)
 
-    const options = [{
-      text: "Return to Page",
-      onClick: closePopup
-    }];
-    openPopup("Answer Updated", "The answer has been updated.", options);
-    
-    let answerList = [...answerSet.answers];
-    const answerIndex = answerList.findIndex(a => a._id == answerState.answerId);
-    answerList.splice(answerIndex, 1, data.editAnswer)
-    
-    answerSet.answers = answerList;
-    setAnswerState({ answerId: '', answerText: '', answerLink: '', amount: question.claimable ? 1 : 0 });
-    setQuestionState(null);
-        
-    document.getElementById(question._id).querySelector(".question-form").classList.add("invisible");
-    document.getElementById(question._id).querySelector(".single-answer.editing").classList.remove("editing");
+      openPopup(title, message, options);
+      return;
+    }
   }
 
   const handleRemoveAnswer = async (event) => {
     event.preventDefault();
-    const data = await removeAnswer({
-      variables: { questionId: question._id, answerId: answerState.answerId }
-    })
+    try {
+      const data = await removeAnswer({
+        variables: { questionId: question._id, answerId: answerState.answerId }
+      })
+  
+      openPopup("Answer Removed", "The answer has been removed from you account.", options);
+      
+      let answerList = [...answerSet.answers];
+      const answerIndex = answerList.findIndex(a => a._id == answerState.answerId);
+      answerList.splice(answerIndex, 1)
+      
+      answerSet.answers = answerList;
+      setAnswerState({ answerId: '', answerText: '', answerLink: '', amount: question.claimable ? 1 : 0 });
+      setQuestionState(null);
+  
+      document.getElementById(question._id).querySelector(".question-form").classList.add("invisible");
+    } catch (err) {
+      const options = [{
+        text: "Return to Page",
+        onClick: closePopup
+      }];
+      const [title, message] = getErrorMessage(err.message)
 
-    const options = [{
-      text: "Return to Page",
-      onClick: closePopup
-    }];
-    openPopup("Answer Removed", "The answer has been removed from you account.", options);
-    
-    let answerList = [...answerSet.answers];
-    const answerIndex = answerList.findIndex(a => a._id == answerState.answerId);
-    answerList.splice(answerIndex, 1)
-    
-    answerSet.answers = answerList;
-    setAnswerState({ answerId: '', answerText: '', answerLink: '', amount: question.claimable ? 1 : 0 });
-    setQuestionState(null);
-
-    document.getElementById(question._id).querySelector(".question-form").classList.add("invisible");
+      openPopup(title, message, options);
+      return;
+    }
   }
 
   const handleAnswerChange = (event) => {

@@ -7,12 +7,14 @@ import { MAKE_WISH} from '../utils/mutations';
 import { ranks } from '../utils/enums';
 import WishlistRow from '../components/WishlistRow';
 import { usePopupContext } from '../App';
+import { getErrorMessage } from '../utils/popup';
 
 const WishlistContext = createContext();
 export const useWishlistContext = () => useContext(WishlistContext);
 let sortedAnswers;
 
 export default function Wishlist() {
+  // States and Variables
   const { openPopup, closePopup } = usePopupContext();
   const [ wishlistState, setWishlistState ] = useState('');
   const [ answerState, setAnswerState ] = useState({
@@ -21,31 +23,45 @@ export default function Wishlist() {
     answerLink: "",
     amount: 1,
   });
+  const options = [{
+    text: "Return to Page",
+    onClick: closePopup
+  }];  
 
+  // Functions and Mutations
   const [makeWish] = useMutation(MAKE_WISH, {
     refetchQueries: [
       MY_WISHLIST
-    ]
-  });
+    ]  
+  });  
   
+  const { loading, data } = useQuery(MY_WISHLIST);
+  if (!loading) {
+    const sortedData = [...data.myWishlist.toSorted((a, b) => a.rank - b.rank)];
+    sortedAnswers = sortedData;
+  };
+ 
   const handleMakeWish = async (event) => {
     event.preventDefault();
-    const {data} = await makeWish({
-      variables: answerState
-    });
+    try {
+      const {data} = await makeWish({
+        variables: answerState
+      });  
+  
+      openPopup("Wish Added", "Wish has been added to your wishlist.", options)
+  
+      let newWishlist = [...sortedAnswers, answerState];
+  
+      sortedAnswers = newWishlist.toSorted((a, b) => a.rank - b.rank);
+  
+      setAnswerState({rank: 0, answerText: '', answerLink: '', amount: 1 });
+    } catch (err) {
+      const [title, message] = getErrorMessage(err.message)
 
-    const options = [{
-      text: "Return to Page",
-      onClick: closePopup
-    }];
-    openPopup("Wish Added", "Wish has been added to your wishlist.", options)
-
-    let newWishlist = [...sortedAnswers, answerState];
-
-    sortedAnswers = newWishlist.toSorted((a, b) => a.rank - b.rank);
-
-    setAnswerState({rank: 0, answerText: '', answerLink: '', amount: 1 });
-  }
+      openPopup(title, message, options);
+      return;
+    }  
+  }  
 
   const handleWishState = (event) => {
     let { name, value } = event.target;
@@ -53,14 +69,8 @@ export default function Wishlist() {
     setAnswerState({
       ...answerState,
       [name]: value
-    });
-  };
-
-  const { loading, data } = useQuery(MY_WISHLIST);
-  if (!loading) {
-    const sortedData = [...data.myWishlist.toSorted((a, b) => a.rank - b.rank)];
-    sortedAnswers = sortedData;
-  };
+    });  
+  };  
 
   return (
     <WishlistContext.Provider value={[ wishlistState, setWishlistState ]}>

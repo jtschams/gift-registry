@@ -172,7 +172,7 @@ const resolvers = {
         // Tracks changes and prevents duplicates
         const changes = { user: false, family: false};
         if (family.members.some((mem) => mem.user.firstName === user.firstName && mem.user.lastName === user.lastName)) {
-          throw InvalidActionError("Join Family", "This user is already a member of this group.");
+          throw InvalidActionError("Join Family", "You are already a member of this group.");
         } else if (family.members.some((mem) => mem.nickname === nickname)) {
           throw InvalidActionError("Join Family", "A user with this nickname is already in this group.");
         } else {
@@ -257,7 +257,7 @@ const resolvers = {
         if (!user) {throw InvalidDataError('user', userId)}
         else if (!question) {throw InvalidDataError('question', questionId)}
         else if (!answer) {throw InvalidDataError('answer', answerId)}
-        else if (!nickname) {throw IncompleteDataError('nickname')}
+        else if (!nickname) {throw IncompleteDataError('Claim Answer', 'nickname')}
 
         const claimable = await answer.claimable(context.user._id);
         if (!claimable.claimable) {throw InvalidActionError('Claim',  claimable.message)};
@@ -300,7 +300,7 @@ const resolvers = {
 
         let answer = questionId ? me.answers.find(as => as.question._id == questionId)?.answers.find(a => a._id == answerId) : false;
         if (!answer) answer = me.wishlist.find(a => a._id == answerId);
-        if (!answer) throw InvalidActionError("Edit Answer", "Unable to find answer in user answer list.");
+        if (!answer) throw InvalidActionError("Edit Answer", "Unable to find answer in your answer list.");
 
         answer.answerText = answerText || answer.answerText;
         if (amount !== null) answer.amount = amount;
@@ -324,7 +324,7 @@ const resolvers = {
         ]);
       if (family?.admins.some((admin) => admin._id == context.user?._id)) {
         const questionObj = family.questions.find(q => q._id == questionId);
-        if (!questionObj) throw InvalidActionError("Edit Question", "Could not locate question in group.");
+        if (!questionObj) throw InvalidActionError("Edit Question", "Unable to locate question in this group.");
 
         questionObj.question = question || questionObj.question;
         questionObj.category = category || questionObj.category;
@@ -390,7 +390,7 @@ const resolvers = {
         const memberIndex = family.members.findIndex(m => m.user._id == context.user._id);
         const adminIndex = family.admins.findIndex(a => a._id == context.user._id);
 
-        if (familyIndex == -1 && memberIndex == -1) throw InvalidActionError("Leave Family", "User is not a member of this family.");
+        if (familyIndex == -1 && memberIndex == -1) throw InvalidActionError("Leave Family", "You are not a member of this family.");
         
         if (familyIndex != -1) {
           me.groups.splice(familyIndex, 1);

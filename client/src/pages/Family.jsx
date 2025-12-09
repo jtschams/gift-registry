@@ -5,10 +5,11 @@ import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 
 import RelatedUser from '../components/RelatedUser';
-import { FAMILY } from '../utils/queries'
-import { ADD_QUESTION, EDIT_FAMILY, EDIT_NICKNAME, LEAVE_FAMILY } from '../utils/mutations'
+import { FAMILY } from '../utils/queries';
+import { ADD_QUESTION, EDIT_FAMILY, EDIT_NICKNAME, LEAVE_FAMILY } from '../utils/mutations';
 import QuestionRow from '../components/QuestionRow';
 import { usePopupContext } from '../App';
+import { getErrorMessage } from '../utils/popup';
 
 let family = {};
 let isAdmin = false;
@@ -17,8 +18,10 @@ const members = [];
 
 export default function Family() {
   //#region Variable Handling
-  const {familyId} = useParams();
+  
+  // States and Variables
   const { openPopup, closePopup } = usePopupContext();
+  const {familyId} = useParams();
   const [ linkState ] = useState(`${location.origin}/join-family/${familyId}`);
   const [ nicknameState, setNicknameState ] = useState(null);
   const [ familyState, setFamilyState ] = useState(null);
@@ -27,12 +30,21 @@ export default function Family() {
     category: 'Likes',
     familyId
   });
+  const options = [{
+    text: "Return to Page",
+    onClick: closePopup
+  }];
   
-  const { loading, data } = useQuery(FAMILY, { variables: { familyId } })
+  // Mutations
   const [addQuestion] = useMutation(ADD_QUESTION);
   const [editFamily] = useMutation(EDIT_FAMILY);
   const [changeNickname] = useMutation(EDIT_NICKNAME);
   const [leaveFamily] = useMutation(LEAVE_FAMILY);
+  
+  //#endregion
+  
+  //#region Query Handling
+  const { loading, data } = useQuery(FAMILY, { variables: { familyId } });
 
   if (!loading && data?.family) {
     if (!data.family.user) {
@@ -40,8 +52,8 @@ export default function Family() {
       return;
     }
 
-    family = data.family.family
-    isAdmin = data.family.family.admins.some(a => a._id == data.family.user.user._id)
+    family = data.family.family;
+    isAdmin = data.family.family.admins.some(a => a._id == data.family.user.user._id);
 
     questions.length = 0;
     // Sort Questions
@@ -55,8 +67,8 @@ export default function Family() {
     members.length = 0;
     members.push(...family.members);
 
-    if (familyState === null) setFamilyState(data.family.family.familyName)
-    if (nicknameState === null) setNicknameState(data.family.user.nickname)
+    if (familyState === null) setFamilyState(data.family.family.familyName);
+    if (nicknameState === null) setNicknameState(data.family.user.nickname);
   }
   //#endregion
   
@@ -107,75 +119,103 @@ export default function Family() {
   //#region Mutation Handling
   const handleQuestionAdd = async (event) => {
     event.preventDefault();
-    const {data} = await addQuestion({ variables: {
-      ...newQuestionState,
-      // TODO: Add option to make claimable?
-      claimable: false
-      // claimable: newQuestionState.category === "Specific Gifts"
-    }});
+    try {
+      const {data} = await addQuestion({ variables: {
+        ...newQuestionState,
+        // TODO: Add option to make claimable?
+        claimable: false
+        // claimable: newQuestionState.category === "Specific Gifts"
+      }});
+  
+      openPopup("Question Added", "Question has been added to family.", options);
 
-    const options = [{
-      text: "Return to Page",
-      onClick: closePopup
-    }];
-    openPopup("Question Added", "Question has been added to family.", options)
-    setNewQuestionState({
-      question: '',
-      category: 'Likes',
-      familyId
-    });
+      setNewQuestionState({
+        question: '',
+        category: 'Likes',
+        familyId
+      });
+  
+      family = data.addQuestion.family;
+      document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
+    } catch (err) {
+      const [title, message] = getErrorMessage(err.message);
 
-    family = data.addQuestion.family;
-    document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
+      openPopup(title, message, options);
+      return;
+    }
   }
 
   const handleEditFamily = async (event) => {
     event.preventDefault();
-    const {data} = await editFamily({ variables: {
-      familyId,
-      familyName: familyState
-    }});
+    try {
+      const {data} = await editFamily({ variables: {
+        familyId,
+        familyName: familyState
+      }});
+  
+      openPopup("Name Changed", "Family name has been changed", options);
+      
+      family = data.editFamily.family;
+      document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
+    } catch (err) {
+      const [title, message] = getErrorMessage(err.message);
 
-    const options = [{
-      text: "Return to Page",
-      onClick: closePopup
-    }];
-    openPopup("Name Changed", "Family name has been changed", options)
-    family = data.editFamily.family;
-    document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
+      openPopup(title, message, options);
+      return;
+    }
   }
   
   const handleChangeNickname = async (event) => {
     event.preventDefault();
-    const {data} = await changeNickname({ variables: { 
-      familyId,
-      nickname: nicknameState
-    }});
+    try {
+      const {data} = await changeNickname({ variables: { 
+        familyId,
+        nickname: nicknameState
+      }});
+  
+      openPopup("Nickname Changed", "Your nickname in this family has been changed.", options);
+      
+      document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
+      setNicknameState(data.editNickname.user.nickname);
+    } catch (err) {
+      const [title, message] = getErrorMessage(err.message);
 
-    const options = [{
-      text: "Return to Page",
-      onClick: closePopup
-    },{
-      text: "Option",
-      href: "closePopup"
-    }];
-    openPopup("Nickname Changed", "Your nickname in this family has been changed.", options)
-    document.querySelectorAll('.family-form').forEach(el => el.classList.add('invisible'));
-    setNicknameState(data.editNickname.user.nickname);
+      openPopup(title, message, options);
+      return;
+    }
   }
 
-  const handleLeaveFamily = async (event) => {
-    event.preventDefault();
-    if (!confirm(`Do you want to leave "${family.familyName}"?`)) return;
-    const {data} = await leaveFamily({ variables: {
-      familyId
-    }});
+  async function handleLeaveFamily() {
+    try {
+      const {data} = await leaveFamily({ variables: {
+        familyId
+      }});
+  
+      const options = [{
+        text: "OK",
+        href: "/"
+      }];
 
+      openPopup("Group Left", `You have left "${family.familyName}".  You can rejoin if invited by another member.`, options, false);
+    } catch (err) {
+      const [title, message] = getErrorMessage(err.message);
+
+      openPopup(title, message, options);
+      return;
+    }
+  }
+
+  function confirmLeaveFamily(event) {
+    event.preventDefault()
     const options = [{
-      text: "OK",
-      href: "/"
-    }];
-    openPopup("Family Left", `You have left "${family.familyName}".  You can rejoin if invited by another member.`, options, false)
+      text: "Leave",
+      onClick: handleLeaveFamily
+    },{
+      text: "Cancel",
+      onClick: closePopup
+    }]
+
+    openPopup("Leave Group?",  `Leave the "${family.familyName}" group?`, options);
   }
   //#endregion
 
@@ -214,7 +254,7 @@ export default function Family() {
             <button onClick={handleEditMembers}>Edit Members</button>
             <button onClick={handleEditForm}>Edit Family</button></>) : null}
             <button onClick={handleNicknameForm}>Change Nickname</button>
-            <button onClick={handleLeaveFamily}>Leave Family</button>
+            <button onClick={confirmLeaveFamily}>Leave Family</button>
             <div id="invite-div" className="family-form form-group invisible">
               <label htmlFor="invite-link">Invite Link for this Group:</label>
               <button id="copy-button" onClick={copyLink}>Copy Link</button>

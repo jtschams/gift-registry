@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/client';
 
 import { usePopupContext } from '../App';
 import { UNCLAIM_ANSWER } from '../utils/mutations';
+import { getErrorMessage } from '../utils/popup';
 
 export default function Claim({claim}) {
   const { openPopup, closePopup } = usePopupContext();
@@ -11,16 +12,28 @@ export default function Claim({claim}) {
 
   const handleUnclaim = async (event) => {
     event.preventDefault();
-    const claimEl = document.getElementById("claim-" + claim.answer._id);
-    const {data} = await unclaimAnswer({variables: {
-      answerId: claim.answer._id,
-    }});
-    claimEl.remove();
-    const options = [{
-      text: "Return to Page",
-      onClick: closePopup
-    }];
-    openPopup("Claim Removed", "Your claim has been removed from this answer.  Answer removed from your shopping list.", options);
+    try {
+      const claimEl = document.getElementById("claim-" + claim.answer._id);
+      const {data} = await unclaimAnswer({variables: {
+        answerId: claim.answer._id,
+      }});
+      claimEl.remove();
+      const options = [{
+        text: "Return to Page",
+        onClick: closePopup
+      }];
+  
+      openPopup("Claim Removed", "Your claim has been removed from this answer.  Answer removed from your shopping list.", options);
+    } catch (err) {
+      const options = [{
+        text: "Return to Page",
+        onClick: closePopup
+      }];
+      const [title, message] = getErrorMessage(err.message)
+
+      openPopup(title, message, options);
+      return;
+    }
   }
 
   return (

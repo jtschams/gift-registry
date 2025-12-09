@@ -699,6 +699,10 @@ main#error {
   border-top: none;
 }
 
+#popup-foreground > p {
+  margin: 15px 25px 0 35px;
+}
+
 #popup-foreground > section {
   display: flex;
   flex-wrap: wrap;

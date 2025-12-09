@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/client';
 import { EDIT_ANSWER, REMOVE_ANSWER } from '../utils/mutations'
 import { ranks, amounts } from '../utils/enums';
 import { usePopupContext } from '../App';
+import { getErrorMessage } from '../utils/popup';
 
 export default function Wish({ answer }) {
   const { openPopup, closePopup } = usePopupContext();
@@ -15,6 +16,10 @@ export default function Wish({ answer }) {
     rank: answer.rank,
     amount: answer.amount
   })
+  const options = [{
+    text: "Return to Page",
+    onClick: closePopup
+  }];
 
   const [editWish] = useMutation(EDIT_ANSWER, {
     refetchQueries: [
@@ -44,27 +49,39 @@ export default function Wish({ answer }) {
 
   const handleEditWish = async (event) => {
     event.preventDefault();
-    const {data} = await editWish({
-      variables: { ...wishState }
-    });
+    try {
+      const {data} = await editWish({
+        variables: { ...wishState }
+      });
+  
+      openPopup("Wish Updated", "Wish has been updated.", options)
+      
+      answer = wishState;
+          
+      event.target.closest(".wishlist-row.editing").classList.remove("editing");
+      event.target.classList.add("invisible");
+    } catch (err) {
+      const [title, message] = getErrorMessage(err.message)
 
-    const options = [{
-      text: "Return to Page",
-      onClick: closePopup
-    }];
-    openPopup("Wish Updated", "Wish has been updated.", options)
-    
-    answer = wishState;
-        
-    event.target.closest(".wishlist-row.editing").classList.remove("editing");
-    event.target.classList.add("invisible");
+      openPopup(title, message, options);
+      return;
+    }
   }
 
   const handleRemoveWish = async (event) => {
     event.preventDefault();
-    const data = await removeWish({
-      variables: { answerId: wishState.answerId }
-    })
+    try {
+      const data = await removeWish({
+        variables: { answerId: wishState.answerId }
+      });
+
+      openPopup("Wish Removed",  "Wish has been removed from your account.", options)
+    } catch (err) {
+      const [title, message] = getErrorMessage(err.message)
+
+      openPopup(title, message, options);
+      return;
+    }
   }
 
   const handleWishState = (event) => {

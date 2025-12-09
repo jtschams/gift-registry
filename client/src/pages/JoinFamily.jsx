@@ -5,34 +5,58 @@ import { useQuery, useMutation } from '@apollo/client';
 
 import { FAMILY } from '../utils/queries';
 import { JOIN_FAMILY } from '../utils/mutations';
+import { getErrorMessage } from '../utils/popup';
 import Nickname from '../components/Nickname';
 import { usePopupContext } from '../App';
 
 export default function JoinFamily() {
+  // States and Variables
   const { openPopup, closePopup } = usePopupContext();
-  const [ nicknameState, setNicknameState ] = useState("");
   const {familyId} = useParams();
-  const { loading, data } = useQuery(FAMILY, { variables: { familyId } });
-  const family = data?.family.family;
-  const [joinFamily] = useMutation(JOIN_FAMILY)
+  const [ nicknameState, setNicknameState ] = useState("");
+  let family = null, members = null;
 
-  const members = family?.members.filter((member) => member.user._id === family.admins[0]._id);
+  // Functions and Mutations
+  const [joinFamily] = useMutation(JOIN_FAMILY)
+  
+  // Query with Error Handling
+  const { loading, data } = useQuery(FAMILY, { variables: { familyId } });
+  family = data?.family.family;
+
+  members = family?.members.filter((member) => member.user._id === family.admins[0]._id);
   
   const handleJoinFamily = async (event) => {
     event.preventDefault();
-    const {data} = await joinFamily({ variables: {
-      familyId,
-      nickname: nicknameState
-    }});
+    try {
+      const {data} = await joinFamily({ variables: {
+        familyId,
+        nickname: nicknameState
+      }});
+  
+      const options = [{
+        text: "Go To Family",
+        href: "/family/" + familyId
+      },{
+        text: "Home",
+        href: "/"
+      }];
 
-    const options = [{
-      text: "Go To Family",
-      href: "/family/" + familyId
-    },{
-      text: "Home",
-      href: "/"
-    }];
-    openPopup("title", "message", options, false)
+      openPopup("Family Joined", `You have sucessfully joined the "${family.familyName}" group.`, options, false)
+    } catch (err) {
+      console.log(err)
+
+      const options = [{
+        text: "Return to Page",
+        onClick: closePopup
+      },{
+        text: "Home",
+        href: "/"
+      }];
+      const [title, message] = getErrorMessage(err.message)
+
+      openPopup(title, message, options);
+      return;
+    }
   }
 
   const handleNicknameChange = (event) => {

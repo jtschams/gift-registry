@@ -3,20 +3,33 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 
 import { CREATE_GROUP } from '../utils/mutations';
+import { usePopupContext } from '../App';
+import { getErrorMessage } from '../utils/popup';
 
 export default function CreateGroup() {
+  const { openPopup, closePopup } = usePopupContext();
   const [ groupFormState, setGroupFormState ] = useState({
     familyName: '',
     nickname: ''
   });
+  const options = [{
+    text: "Return to Page",
+    onClick: closePopup
+  }];
 
   const [createGroup] = useMutation(CREATE_GROUP);
 
   const handleCreateGroup = async (event) => {
     event.preventDefault();
-    const {data} = await createGroup({variables: {...groupFormState}});
-    const familyId = data.addFamily._id;
-    window.location.assign(`/family/${familyId}`);
+    try {
+      const {data} = await createGroup({variables: {...groupFormState}});
+      const familyId = data.addFamily._id;
+      window.location.assign(`/family/${familyId}`);
+    } catch (err) {
+      const [title, message] = getErrorMessage(err.message)
+
+      openPopup(title, message, options);
+    }
   }
 
   const handleGroupFormChange = (event) => {

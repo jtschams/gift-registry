@@ -8,6 +8,7 @@ import { useWishlistContext } from '../pages/Wishlist';
 import { CLAIM_ANSWER } from '../utils/mutations';
 import Auth from '../utils/auth';
 import { usePopupContext } from '../App';
+import { getErrorMessage } from '../utils/popup';
 
 export default function Answer({ answer, claimInfo, activateQuestion, relations }) {
   const { userId } = useParams();
@@ -25,29 +26,39 @@ export default function Answer({ answer, claimInfo, activateQuestion, relations 
     else if (!isClaimable) return (<button className="already-claimed">Claimed by Someone Else</button>);
     
     const [ answerState, setAnswerState ] = useAnswerContext() ? useAnswerContext() : useWishlistContext();
-    //const [ wishlistState, setWishlistState ] = useWishlistContext();
     const [ nicknameState, setNicknameState ] = useState(relations[0].nickname);
   
     const [claimAnswer] = useMutation(CLAIM_ANSWER);
 
     const handleClaimAnswer = async (event) => {
       event.preventDefault();
-      const {data} = await claimAnswer({variables: {
-        userId,
-        questionId: claimInfo?.questionId || null,
-        answerId: answer._id,
-        nickname: nicknameState
-      }});
+      try{
+        const {data} = await claimAnswer({variables: {
+          userId,
+          questionId: claimInfo?.questionId || null,
+          answerId: answer._id,
+          nickname: nicknameState
+        }});
+  
+        // TODO: Handle after close
+        const options = [{
+          text: "Return to Page",
+          onClick: closePopup
+        },{
+          text: "Go To Shopping List",
+          href: "/shopping-list"
+        }];
+        openPopup("Answer Claimed", "Answer has been claimed and added to your shopping list.", options);
+      } catch (err) {
+        const options = [{
+          text: "Return to Page",
+          onClick: closePopup
+        }];
+        const [title, message] = getErrorMessage(err.message)
 
-      // TODO: Handle after close
-      const options = [{
-        text: "Return to Page",
-        onClick: closePopup
-      },{
-        text: "Go To Shopping List",
-        href: "/shopping-list"
-      }];
-      openPopup("Answer Claimed", "Answer has been claimed and added to your shopping list.", options);
+        openPopup(title, message, options);
+        return;
+      }
     }
 
     const handleNicknameChange = (event) => {
