@@ -26,7 +26,7 @@ export default function Signup({familyId}) {
       onClick: closePopup
     }];
 
-    let birthday = signupState.birthday.replaceAll('\\', '/')
+    let birthday = signupState.birthday.replaceAll('\\', '/').replaceAll('-', '/')
 
     // Handle bad/missing inputs
     if (Object.values(signupState).some(x=>!x)) {
@@ -35,7 +35,7 @@ export default function Signup({familyId}) {
     } else if (!signupState.email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
       openPopup("Signup Failed", "Email field must be a valid email address.", options)
       return;
-    } else if (!birthday.match(/^[0-1][0-9]\\[0-3][0-9](\\[0-9]{2,4})$/)) {
+    } else if (!birthday.match(/^[0-1][0-9]\/[0-3][0-9](\/[0-9]{2,4})$/)) {
       openPopup("Signup Failed", "Date field must contain a date.", options)
       return;
     }
